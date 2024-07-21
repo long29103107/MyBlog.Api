@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+   #database section
+   identitydb:
+      image: mcr.microsoft.com/mssql/server:2019-latest
+
+   postdb:
+      image: mcr.microsoft.com/mssql/server:2019-latest
+
+   portainer:
+      image: portainer/portainer-ce
+
+#network section
+networks:
+   default:
+      name: blog
+      driver: bridge
+
+#volumes section
+volumes:
+   post_data:
+      name: post_data
+
+   identity_data:
+      name: identity_data
+
+   portainer_data:
+      name: portainer_data
