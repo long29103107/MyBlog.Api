@@ -1,0 +1,6 @@
+@MyBlog.Category.Api_HostAddress = http://localhost:5105
+
+GET {{MyBlog.Category.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

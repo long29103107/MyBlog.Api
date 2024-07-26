@@ -27,6 +27,18 @@ services:
     ports:
       - "1436:1433"
 
+  #categorydb:  sql server 
+  categorydb:
+    container_name: categorydb
+    environment:
+      SA_PASSWORD: "Passw0rd!"
+      ACCEPT_EULA: "Y"
+    restart: always
+    volumes:
+      - category_data:/var/lib/sqlserver/category_data
+    ports:
+      - "1437:1433"
+
   portainer:
     container_name: portainer
     restart: always

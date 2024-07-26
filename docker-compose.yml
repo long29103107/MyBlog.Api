@@ -8,6 +8,9 @@ services:
    postdb:
       image: mcr.microsoft.com/mssql/server:2019-latest
 
+   categorydb:
+      image: mcr.microsoft.com/mssql/server:2019-latest
+
    portainer:
       image: portainer/portainer-ce
 
@@ -21,6 +24,9 @@ networks:
 volumes:
    post_data:
       name: post_data
+
+   category_data:
+      name: category_data
 
    identity_data:
       name: identity_data

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Validations\" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Autofac" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" />
+		<PackageReference Include="AutoMapper" />
+		<PackageReference Include="FluentValidation.AspNetCore" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Dtos\MyBlog.Shared.Dtos.csproj" />
+    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.ServiceBase\MyBlog.Shared.ServiceBase.csproj" />
+    <ProjectReference Include="..\MyBlog.Category.Repository\MyBlog.Category.Repository.csproj" />
+  </ItemGroup>
+
+</Project>
