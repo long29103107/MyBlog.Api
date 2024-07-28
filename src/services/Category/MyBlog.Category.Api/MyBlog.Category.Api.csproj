@@ -20,7 +20,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Autofac\MyBlog.Shared.Autofac.csproj" />
+    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Middleware\MyBlog.Shared.Middleware.csproj" />
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.RepositoryEF\MyBlog.Shared.RepositoryEF.csproj" />
+    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Serilog\MyBlog.Shared.Serilog.csproj" />
     <ProjectReference Include="..\MyBlog.Category.Repository\MyBlog.Category.Repository.csproj" />
     <ProjectReference Include="..\MyBlog.Category.Service\MyBlog.Category.Service.csproj" />
   </ItemGroup>

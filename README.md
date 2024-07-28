@@ -14,7 +14,7 @@ Post: http://localhost:5003
 |  Service  |  Method   |      Migration command                                                      |
 |-----------|-----------|-----------------------------------------------------------------------------|
 |  Category |  Add      | add-migration Init -Context CategoryDbContext -o Category/Migrations        | 
-|  Category |  Update   | update-database Init -Context CategoryDbContext                             | 
+|  Category |  Update   | update-database -Context CategoryDbContext                              s    | 
  
 # Identity
 // Configuration

@@ -8,5 +8,6 @@ namespace MyBlog.Category.Service.Interfaces;
 public interface ICategoryService : IBaseService<RepositoryManager>
 {
     Task<List<ListCategoryResponse>> GetListAsync();
+    Task SeedDataAsync();
 }
 

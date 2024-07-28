@@ -11,6 +11,14 @@ public class CategoriesController : ControllerBase
     public CategoriesController(ICategoryService service)
     {
         _service = service;
+
+    }
+
+    [HttpPost("seed")]
+    public async Task<IActionResult> SeedDataAsync()
+    {
+        await _service.SeedDataAsync();
+        return Ok("Seeding data successfully");
     }
 
     [HttpGet]

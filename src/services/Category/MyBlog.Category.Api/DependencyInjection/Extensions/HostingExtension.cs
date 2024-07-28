@@ -1,13 +1,17 @@
 ﻿using Autofac;
-using Autofac.Core;
+using MyBlog.Shared.Serilog;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using MyBlog.Category.Repository;
 using MyBlog.Category.Repository.Implements;
 using MyBlog.Category.Repository.Interfaces;
 using MyBlog.Category.Service.MappingProfiles;
 using MyBlog.Shared.Autofac.Modules;
+using MyBlog.Shared.Middleware;
 using MyBlog.Shared.RepositoryEF.DependencyInjection.Extensions;
+using Serilog;
+using Serilog.Exceptions;
 
 namespace MyBlog.Category.Api.DependencyInjection.Extensions;
 
@@ -17,11 +21,32 @@ public static class HostingExtension
     {
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+        Log.Logger = new LoggerConfiguration()
+           .MinimumLevel.Information()
+           .Enrich.FromLogContext()
+           .Enrich.WithExceptionDetails()
+           .Enrich.WithMachineName()
+           .WriteTo.Console()
+           .CreateLogger();
+
+        builder.Host.UseSerilog((context, loggerConfig) 
+            => loggerConfig.ReadFrom.Configuration(context.Configuration));
+        builder.Host.ConfigureLogging(HostBuilderExtensions.ConfigureLogging);
+
+        builder.Host.ConfigureAppConfiguration((context, config) =>
+        {
+            var env = context.HostingEnvironment;
+            config.AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+                .AddEnvironmentVariables();
+        });
+
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddRouting(x => x.LowercaseUrls = true);
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddScoped<ExceptionHandlingMiddleware>();
         builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
         builder.Services.AddDbContext<CategoryDbContext>(
           options => options.UseSqlServer(connectionString,
@@ -48,6 +73,8 @@ public static class HostingExtension
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseHttpsRedirection();
 

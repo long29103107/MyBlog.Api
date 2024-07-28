@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Dtos\MyBlog.Shared.Dtos.csproj" />
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.ServiceBase\MyBlog.Shared.ServiceBase.csproj" />
+    <ProjectReference Include="..\MyBlog.Category.Domain\MyBlog.Category.Domain.csproj" />
     <ProjectReference Include="..\MyBlog.Category.Repository\MyBlog.Category.Repository.csproj" />
   </ItemGroup>
 
