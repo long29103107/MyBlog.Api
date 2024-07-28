@@ -5,10 +5,18 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 
 ## Endpoint
 
+Gateway: http://localhost:5000
+Identity: http://localhost:5001
+Category: http://localhost:5002
+Post: http://localhost:5003
+
 ## Migrations
-
+|  Service  |  Method   |      Migration command                                                      |
+|-----------|-----------|-----------------------------------------------------------------------------|
+|  Category |  Add      | add-migration Init -Context CategoryDbContext -o Category/Migrations        | 
+|  Category |  Update   | update-database Init -Context CategoryDbContext                             | 
+ 
 # Identity
-
 // Configuration
 Add-Migration Initial -Context ConfigurationDbContext -o Identity/Migrations/Configuration
 Update-Database -Context ConfigurationDbContext
