@@ -26,9 +26,15 @@
     <ProjectReference Include="..\MyBlog.Category.Repository\MyBlog.Category.Repository.csproj" />
     <ProjectReference Include="..\MyBlog.Category.Service\MyBlog.Category.Service.csproj" />
   </ItemGroup>
-
+	<Target Name="CopyAppSettings" BeforeTargets="BeforeBuild" Returns="@(BuiltProjectOutputGroupOutput)">
+		<Copy SourceFiles="../../../shared/SharedSettings/sharedSettings.Development.json" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="../../../shared/SharedSettings/sharedSettings.json" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="../../../shared/SharedSettings/sharedSettings.Local.json" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="../../../shared/SharedSettings/sharedSettings.Production.json" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+	</Target>
   <ItemGroup>
     <Folder Include="DependencyInjection\Options\" />
   </ItemGroup>
+	
 
 </Project>

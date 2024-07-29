@@ -8,10 +8,13 @@ namespace MyBlog.Category.Api.Controllers;
 public class CategoriesController : ControllerBase
 {
     private readonly ICategoryService _service;
-    public CategoriesController(ICategoryService service)
+    private readonly IConfiguration _config;
+    public CategoriesController(ICategoryService service, IConfiguration config)
     {
         _service = service;
+        _config = config;
 
+        var aa = _config["ConnectionStrings:DefaultConnection"];
     }
 
     [HttpPost("seed")]

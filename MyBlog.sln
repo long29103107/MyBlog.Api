@@ -28,10 +28,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedSettings", "SharedSettings", "{E3E07D9E-71AA-419D-BD5D-A79C10BBF8B2}"
 	ProjectSection(SolutionItems) = preProject
 		src\shared\SharedSettings\global.json = src\shared\SharedSettings\global.json
-		src\shared\SharedSettings\sharedsetting.Development.json = src\shared\SharedSettings\sharedsetting.Development.json
-		src\shared\SharedSettings\sharedsetting.json = src\shared\SharedSettings\sharedsetting.json
-		src\shared\SharedSettings\sharedsetting.Local.json = src\shared\SharedSettings\sharedsetting.Local.json
-		src\shared\SharedSettings\sharedsetting.Production.json = src\shared\SharedSettings\sharedsetting.Production.json
+		src\shared\SharedSettings\sharedSettings.Development.json = src\shared\SharedSettings\sharedSettings.Development.json
+		src\shared\SharedSettings\sharedSettings.Production.json = src\shared\SharedSettings\sharedSettings.Production.json
+		src\shared\SharedSettings\sharedSettings.json = src\shared\SharedSettings\sharedSettings.json
+		src\shared\SharedSettings\sharedSettings.Local.json = src\shared\SharedSettings\sharedSettings.Local.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Category", "4. Category", "{63F7A4E1-B76B-46CA-B917-51FE7819C0AA}"
@@ -62,7 +62,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Category.Service", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Shared.Autofac", "src\packages\MyBlog.Shared.Autofac\MyBlog.Shared.Autofac.csproj", "{B11B1AEC-041A-40C6-8C9A-7A94507FBC19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Shared.Middleware", "src\packages\MyBlog.Shared.Middleware\MyBlog.Shared.Middleware.csproj", "{A4ACDA75-A0D0-4E61-B73F-8CEC3B59121D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Shared.Middleware", "src\packages\MyBlog.Shared.Middleware\MyBlog.Shared.Middleware.csproj", "{A4ACDA75-A0D0-4E61-B73F-8CEC3B59121D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Shared.Serilog", "src\packages\MyBlog.Shared.Serilog\MyBlog.Shared.Serilog.csproj", "{A29000E1-40CC-4A50-9081-87005EC11F37}"
 EndProject

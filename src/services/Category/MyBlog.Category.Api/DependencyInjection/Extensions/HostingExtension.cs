@@ -36,7 +36,10 @@ public static class HostingExtension
         builder.Host.ConfigureAppConfiguration((context, config) =>
         {
             var env = context.HostingEnvironment;
-            config.AddJsonFile("appsettings.json", false, true)
+            config.SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .AddJsonFile("sharedSettings.json", true, true)
+                .AddJsonFile($"sharedSettings.{env.EnvironmentName}.json", true, true)
+                .AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
         });
