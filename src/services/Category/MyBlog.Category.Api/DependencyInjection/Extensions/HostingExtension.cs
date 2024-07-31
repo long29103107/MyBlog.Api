@@ -52,7 +52,7 @@ public static class HostingExtension
         builder.Services.AddScoped<ExceptionHandlingMiddleware>();
         builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
         builder.Services.AddDbContext<CategoryDbContext>(
-          options => options.UseSqlServer(connectionString,
+          options => options.UseNpgsql(connectionString,
           b => b.MigrationsAssembly(AssemblyReference.AssemblyName)));
 
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
