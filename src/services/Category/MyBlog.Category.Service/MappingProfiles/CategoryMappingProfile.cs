@@ -20,5 +20,6 @@ public class CategoryMappingProfile : Profile
     private void ModelToResponse()
     {
         CreateMap<Entities.Category, ListCategoryResponse>().ReverseMap();
+        CreateMap<Entities.Category, CategoryResponse>().ReverseMap();
     }
 }

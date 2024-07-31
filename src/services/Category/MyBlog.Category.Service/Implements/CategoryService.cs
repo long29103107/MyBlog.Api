@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;using Microsoft.EntityFrameworkCore;
 using MyBlog.Category.Repository.Interfaces;
 using MyBlog.Category.Service.Interfaces;
 using MyBlog.Shared.Databases.Category;
@@ -20,6 +19,15 @@ public class CategoryService : BaseService<IRepositoryManager>, ICategoryService
         var categories = await _repoManager.Category.FindAll().ToListAsync();
 
         var result = _mapper.Map<List<ListCategoryResponse>>(categories);
+
+        return result;
+    }
+
+    public async Task<CategoryResponse> GetAsync(int id)
+    {
+        var category = await _repoManager.Category.FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
+
+        var result = _mapper.Map<CategoryResponse>(category);
 
         return result;
     }

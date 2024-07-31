@@ -8,7 +8,6 @@ namespace MyBlog.Shared.RepositoryEF.Implements;
 
 public class RepositoryBase<T, TContext, TKey> : IRepositoryBase<T, TContext, TKey>
     where T : EntityAuditBase<TKey>
-    where TKey : struct
     where TContext : DbContext
 {
     protected readonly TContext _context;

@@ -7,7 +7,6 @@ namespace MyBlog.Shared.RepositoryEF.Interfaces;
 
 public interface IRepositoryBase<T, TContext, TKey>
     where T : EntityAuditBase<TKey>
-    where TKey : struct
     where TContext : DbContext
 {
     #region Query
