@@ -53,14 +53,14 @@ public static class HostingExtension
         builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
         builder.Services.AddDbContext<CategoryDbContext>(
           options => options.UseNpgsql(connectionString,
-          b => b.MigrationsAssembly(AssemblyReference.AssemblyName)));
+          b => b.MigrationsAssembly(CategoryApiReference.AssemblyName)));
 
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureContainer<ContainerBuilder>((container) =>
             {
                 container.RegisterModule(new GeneralModule<IRepositoryManager, RepositoryManager>(
-                    MyBlog.Category.Service.AssemblyReference.Assembly,
-                     MyBlog.Category.Repository.AssemblyReference.Assembly)
+                    MyBlog.Category.Service.CategoryServiceReference.Assembly,
+                     MyBlog.Category.Repository.CategoryApiReference.Assembly)
                 );
             });
         builder.Services.AddGenericRepository();

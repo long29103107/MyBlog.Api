@@ -4,28 +4,28 @@ services:
   #databasec section
 
   #identitydb: sql server 
-  identitydb:
-    container_name: identitydb
-    environment:
-      SA_PASSWORD: "Passw0rd!"
-      ACCEPT_EULA: "Y"
-    restart: always
-    volumes:
-      - identity_data:/var/lib/sqlserver/identity_data
-    ports:
-      - "1435:1433"
+  # identitydb:
+  #   container_name: identitydb
+  #   environment:
+  #     SA_PASSWORD: "Passw0rd!"
+  #     ACCEPT_EULA: "Y"
+  #   restart: always
+  #   volumes:
+  #     - identity_data:/var/lib/sqlserver/identity_data
+  #   ports:
+  #     - "1435:1433"
 
   #postdb:  sql server 
-  postdb:
-    container_name: postdb
-    environment:
-      SA_PASSWORD: "Passw0rd!"
-      ACCEPT_EULA: "Y"
-    restart: always
-    volumes:
-      - post_data:/var/lib/sqlserver/post_data
-    ports:
-      - "1436:1433"
+  # postdb:
+  #   container_name: postdb
+  #   environment:
+  #     SA_PASSWORD: "Passw0rd!"
+  #     ACCEPT_EULA: "Y"
+  #   restart: always
+  #   volumes:
+  #     - post_data:/var/lib/sqlserver/post_data
+  #   ports:
+  #     - "1436:1433"
 
   #categorydb:  sql server 
   categorydb:

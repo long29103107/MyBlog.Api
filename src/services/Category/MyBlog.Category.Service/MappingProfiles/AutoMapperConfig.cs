@@ -8,7 +8,7 @@ public static class AutoMapperConfig
     {
         var config = new MapperConfiguration(cfg =>
         {
-            cfg.AddMaps(AssemblyReference.AssemblyName);
+            cfg.AddMaps(CategoryServiceReference.AssemblyName);
         });
 
         return config;

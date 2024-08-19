@@ -18,7 +18,7 @@ public class DesignTimeDbContextFactory<T> : IDesignTimeDbContextFactory<T> wher
         var builder = new DbContextOptionsBuilder<T>();
         var connectionString = configuration.GetSection($"ConnectionStrings:{_dbConnStrKey}").Value;
         Console.WriteLine(connectionString);
-        builder.UseNpgsql(connectionString, b => b.MigrationsAssembly(AssemblyReference.AssemblyName));
+        builder.UseNpgsql(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
         var dbContext = (T)Activator.CreateInstance(typeof(T), builder.Options);
         return dbContext;
     }

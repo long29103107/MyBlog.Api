@@ -2,11 +2,11 @@ version: '3.8'
 
 services:
    #database section
-   identitydb:
-      image: mcr.microsoft.com/mssql/server:2019-latest
+   # identitydb:
+   #    image: mcr.microsoft.com/mssql/server:2019-latest
 
-   postdb:
-      image: mcr.microsoft.com/mssql/server:2019-latest
+   # postdb:
+   #    image: mcr.microsoft.com/mssql/server:2019-latest
 
    categorydb:
       image: mcr.microsoft.com/mssql/server:2019-latest
@@ -22,14 +22,14 @@ networks:
 
 #volumes section
 volumes:
-   post_data:
-      name: post_data
+#    post_data:
+#       name: post_data
 
    category_data:
       name: category_data
 
-   identity_data:
-      name: identity_data
+   # # identity_data:
+   # #    name: identity_data
 
    portainer_data:
       name: portainer_data

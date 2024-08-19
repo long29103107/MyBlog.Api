@@ -6,7 +6,5 @@ public interface ITracking
     string CreatedBy { get; set; }
     DateTimeOffset? UpdatedAt { get; set; }
     string UpdatedBy { get; set; }
-    DateTimeOffset? DeletedAt { get; set; }
-    string DeletedBy { get; set; }
 }
 

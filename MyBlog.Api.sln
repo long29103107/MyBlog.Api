@@ -29,9 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedSettings", "SharedSet
 	ProjectSection(SolutionItems) = preProject
 		src\shared\SharedSettings\global.json = src\shared\SharedSettings\global.json
 		src\shared\SharedSettings\sharedSettings.Development.json = src\shared\SharedSettings\sharedSettings.Development.json
-		src\shared\SharedSettings\sharedSettings.Production.json = src\shared\SharedSettings\sharedSettings.Production.json
 		src\shared\SharedSettings\sharedSettings.json = src\shared\SharedSettings\sharedSettings.json
 		src\shared\SharedSettings\sharedSettings.Local.json = src\shared\SharedSettings\sharedSettings.Local.json
+		src\shared\SharedSettings\sharedSettings.Production.json = src\shared\SharedSettings\sharedSettings.Production.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Category", "4. Category", "{63F7A4E1-B76B-46CA-B917-51FE7819C0AA}"

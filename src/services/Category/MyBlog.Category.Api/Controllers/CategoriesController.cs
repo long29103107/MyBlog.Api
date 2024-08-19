@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Category.Service.Interfaces;
+using MyBlog.Contracts.Domains.ValueOf;
 
 namespace MyBlog.Category.Api.Controllers;
 
@@ -31,8 +32,9 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetAsync(int id)
+    public async Task<IActionResult> GetAsync(CategoryId id)
     {
         return Ok(await _service.GetAsync(id));
     }
+
 }

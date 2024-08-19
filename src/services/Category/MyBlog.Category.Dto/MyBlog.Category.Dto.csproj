@@ -6,12 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ValueOf" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\contracts\MyBlog.Contracts\MyBlog.Contracts.csproj" />
-  </ItemGroup>
-
 </Project>
