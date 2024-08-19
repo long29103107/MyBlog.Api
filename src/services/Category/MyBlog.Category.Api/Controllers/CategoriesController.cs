@@ -32,7 +32,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetAsync(CategoryId id)
+    public async Task<IActionResult> GetAsync(int id)
     {
         return Ok(await _service.GetAsync(id));
     }

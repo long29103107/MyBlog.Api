@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyBlog.Category.Repository.Configurations;
+using MyBlog.Category.Domain;
 using Entities = MyBlog.Category.Domain.Entities;
 
 namespace MyBlog.Category.Repository;
@@ -14,7 +14,7 @@ public class CategoryDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+        modelBuilder.ApplyConfigurationsFromAssembly(CategoryRepositoryReference.Assembly);
         base.OnModelCreating(modelBuilder);
     }
 }

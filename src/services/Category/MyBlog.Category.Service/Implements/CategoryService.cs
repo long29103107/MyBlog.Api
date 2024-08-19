@@ -25,9 +25,11 @@ public class CategoryService : BaseService<IRepositoryManager>, ICategoryService
         return result;
     }
 
-    public async Task<CategoryResponse> GetAsync(CategoryId id)
+    public async Task<CategoryResponse> GetAsync(int id)
     {
-        var category = await _repoManager.Category.FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
+        var category = await _repoManager.Category
+            .FindByCondition(x => x.Id == id)
+            .FirstOrDefaultAsync();
 
         var result = _mapper.Map<CategoryResponse>(category);
 

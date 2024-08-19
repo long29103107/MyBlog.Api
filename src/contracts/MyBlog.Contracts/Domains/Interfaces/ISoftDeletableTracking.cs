@@ -1,6 +1,6 @@
 ﻿namespace MyBlog.Contracts.Domains.Interfaces;
 
-public interface ISofeDeleteTracking
+public interface ISoftDeletableTracking
 {
     DateTimeOffset? DeletedAt { get; set; }
     string DeletedBy { get; set; }

@@ -6,7 +6,7 @@ using Entities = MyBlog.Category.Domain.Entities;
 
 namespace MyBlog.Category.Repository.Implements;
 
-public class CategoryRepository : RepositoryBase<Entities.Category, CategoryDbContext, CategoryId>, ICategoryRepository
+public class CategoryRepository : RepositoryBase<Entities.Category, CategoryDbContext, int>, ICategoryRepository
 {
     public CategoryRepository(CategoryDbContext context, IUnitOfWork<CategoryDbContext> unitOfWork) 
         : base(context, unitOfWork)
