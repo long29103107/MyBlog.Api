@@ -16,4 +16,23 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 |  Category |  Add      | Add-migration Init -Context CategoryDbContext -o Category/Migrations        | 
 |  Category |  Update   | Update-database -Context CategoryDbContext                                  | 
 |  Category |  Script   | Script-Migration -Context CategoryDbContext                                 | 
- 
+
+## Tech stack
+--- Common
+		|-- Design-time DbContext factory
+		|-- Entity framework
+		|-- Dapper
+		|-- Global error handling exception
+		|-- Serilog
+		|-- ValueOf
+		|-- Audit entity
+		|-- Autofac
+		|-- Unit of work
+		|-- Fluentvalidation
+		|-- AutoMapper
+		|-- Assembly reference
+		|-- 
+--- Category
+		|-- Structure: 3 layers
+		|-- Database: Postgres
+		|-- Entity configuration

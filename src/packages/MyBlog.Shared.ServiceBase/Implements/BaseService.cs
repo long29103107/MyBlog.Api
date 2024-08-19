@@ -1,4 +1,4 @@
-﻿using MyBlog.Shared.ServiceBase.Interfaces;
+﻿using MyBlog.Shared.ServiceBase.Abstractions;
 using AutoMapper;
 using ILogger = Serilog.ILogger;
 

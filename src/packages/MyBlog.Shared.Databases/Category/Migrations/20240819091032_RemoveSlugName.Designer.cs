@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyBlog.Shared.Databases.Category.Migrations
 {
     [DbContext(typeof(CategoryDbContext))]
-    [Migration("20240819051928_Init")]
-    partial class Init
+    [Migration("20240819091032_RemoveSlugName")]
+    partial class RemoveSlugName
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,23 +42,16 @@ namespace MyBlog.Shared.Databases.Category.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("SlugName")
-                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SlugName")
-                        .IsUnique();
 
                     b.ToTable("Categories");
                 });

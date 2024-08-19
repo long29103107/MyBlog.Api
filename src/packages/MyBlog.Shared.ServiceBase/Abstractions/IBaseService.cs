@@ -1,4 +1,4 @@
-﻿namespace MyBlog.Shared.ServiceBase.Interfaces;
+﻿namespace MyBlog.Shared.ServiceBase.Abstractions;
 
 public interface IBaseService<TRepoManager> where TRepoManager : class
 {

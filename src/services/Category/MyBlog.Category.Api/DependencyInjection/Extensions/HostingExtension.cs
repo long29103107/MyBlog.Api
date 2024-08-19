@@ -2,7 +2,6 @@
 using MyBlog.Shared.Serilog;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using MyBlog.Category.Repository;
 using MyBlog.Category.Repository.Implements;
 using MyBlog.Category.Repository.Interfaces;
@@ -12,6 +11,8 @@ using MyBlog.Shared.Middleware;
 using MyBlog.Shared.RepositoryEF.DependencyInjection.Extensions;
 using Serilog;
 using Serilog.Exceptions;
+using MyBlog.Category.Service;
+using Slugify;
 
 namespace MyBlog.Category.Api.DependencyInjection.Extensions;
 
@@ -51,6 +52,7 @@ public static class HostingExtension
         builder.Services.AddSwaggerGen();
         builder.Services.AddScoped<ExceptionHandlingMiddleware>();
         builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+        builder.Services.AddScoped<ISlugHelper, SlugHelper>();
         builder.Services.AddDbContext<CategoryDbContext>(
           options => options.UseNpgsql(connectionString,
           b => b.MigrationsAssembly(CategoryApiReference.AssemblyName)));
@@ -59,8 +61,8 @@ public static class HostingExtension
             .ConfigureContainer<ContainerBuilder>((container) =>
             {
                 container.RegisterModule(new GeneralModule<IRepositoryManager, RepositoryManager>(
-                    MyBlog.Category.Service.CategoryServiceReference.Assembly,
-                     MyBlog.Category.Repository.CategoryApiReference.Assembly)
+                    CategoryServiceReference.Assembly,
+                     CategoryApiReference.Assembly)
                 );
             });
         builder.Services.AddGenericRepository();
