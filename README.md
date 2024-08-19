@@ -19,21 +19,21 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 
 ## Tech stack
 ```md
-├── Common
-│   ├── Design-time DbContext factory
-│   ├── Entity framework
-│   ├── Dapper
-│   ├── Global error handling exception
-│   ├── Serilog
-│   ├── ValueOf
-│   ├── Audit entity
-│   ├── Autofac
-│   ├── Fluentvalidation
-│   ├── AutoMapper
-│   ├── Assembly reference
-│   └── Unit of work
-├── Category
-	├── Structure: 3 layers
-	├── Database: Postgres
-	└── Entity configuration
+Common
+├── Design-time DbContext factory
+├── Entity framework
+├── Dapper
+├── Global error handling exception
+├── Serilog
+├── ValueOf
+├── Audit entity
+├── Autofac
+├── Fluentvalidation
+├── AutoMapper
+├── Assembly reference
+└── Unit of work
+Category
+├── Structure: 3 layers
+├── Database: Postgres
+└── Entity configuration
 ```
