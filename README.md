@@ -18,7 +18,7 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 |  Category |  Script   | Script-Migration -Context CategoryDbContext                                 | 
 
 ## Tech stack
-
+```md
 ├── Common
 │   ├── Design-time DbContext factory
 │   ├── Entity framework
@@ -33,6 +33,7 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 │   ├── Assembly reference
 │   └── Unit of work
 ├── Category
-│	├── Structure: 3 layers
-│	├── Database: Postgres
-│	└── Entity configuration
+	├── Structure: 3 layers
+	├── Database: Postgres
+	└── Entity configuration
+```
