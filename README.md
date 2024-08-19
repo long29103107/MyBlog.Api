@@ -1,4 +1,4 @@
-## Docker command line
+﻿## Docker command line
 ```
 docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 ```
@@ -18,21 +18,21 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 |  Category |  Script   | Script-Migration -Context CategoryDbContext                                 | 
 
 ## Tech stack
---- Common
-		|-- Design-time DbContext factory
-		|-- Entity framework
-		|-- Dapper
-		|-- Global error handling exception
-		|-- Serilog
-		|-- ValueOf
-		|-- Audit entity
-		|-- Autofac
-		|-- Unit of work
-		|-- Fluentvalidation
-		|-- AutoMapper
-		|-- Assembly reference
-		|-- 
---- Category
-		|-- Structure: 3 layers
-		|-- Database: Postgres
-		|-- Entity configuration
+
+├── Common
+│   ├── Design-time DbContext factory
+│   ├── Entity framework
+│   ├── Dapper
+│   ├── Global error handling exception
+│   ├── Serilog
+│   ├── ValueOf
+│   ├── Audit entity
+│   ├── Autofac
+│   ├── Fluentvalidation
+│   ├── AutoMapper
+│   ├── Assembly reference
+│   └── Unit of work
+├── Category
+│	├── Structure: 3 layers
+│	├── Database: Postgres
+│	└── Entity configuration
