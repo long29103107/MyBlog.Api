@@ -13,9 +13,9 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 ## Migrations
 |  Service  |  Method   |      Migration command                                                      |
 |-----------|-----------|-----------------------------------------------------------------------------|
-|  Category |  Add      | Add-migration Init -Context CategoryDbContext -o Category/Migrations        | 
-|  Category |  Update   | Update-database -Context CategoryDbContext                                  | 
-|  Category |  Script   | Script-Migration -Context CategoryDbContext                                 | 
+|  Post     |  Add      | Add-migration Init -Context PostDbContext -o Post/Migrations	              | 
+|  Post     |  Update   | Update-database -Context PostDbContext                                      | 
+|  Post     |  Script   | Script-Migration -Context PostDbContext                                     | 
 
 ## Tech stack
 ```md

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using MyBlog.Contracts.Exceptions;
 
 namespace MyBlog.Contracts.Responses;
 

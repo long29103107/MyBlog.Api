@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyBlog.Contracts.Exceptions;
-
-namespace MyBlog.Contracts.Responses;
+﻿namespace MyBlog.Contracts.Responses;
 
 public class PagingResult<T> : Result<List<T>> where T : class
 {

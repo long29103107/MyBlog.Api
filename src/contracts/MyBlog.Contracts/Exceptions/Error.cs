@@ -1,4 +1,4 @@
-﻿namespace MyBlog.Contracts.Exceptions;
+﻿namespace MyBlog.Contracts;
 
 public class Error
 {

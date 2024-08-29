@@ -22,7 +22,7 @@
 </ItemGroup>
 
 <ItemGroup>
-  <ProjectReference Include="..\..\services\Category\MyBlog.Category.Repository\MyBlog.Category.Repository.csproj" />
+  <ProjectReference Include="..\..\services\Post\MyBlog.Post.Repository\MyBlog.Post.Repository.csproj" />
 </ItemGroup>
 
 </Project>
