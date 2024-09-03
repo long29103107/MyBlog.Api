@@ -45,11 +45,12 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
     }
     public async Task<PagingResponse<PostResponse>> GetPagedistAsync(PagingRequest request)
     {
-        List<Entities.Post> dataset = await _repoManager.Post.FindAll().ToListAsync();
+        var dataset = await _repoManager.Post.FindAll().ToListAsync();
 
-        var res = dataset.GetMakeList(request);
+        var res = _mapper.Map<List<PostResponse>>(dataset);
+        var result = res.GetMakeList(request);
 
-        return PagingResponse<PostResponse>.Success(res);
+        return PagingResponse<PostResponse>.Success(result);
     }
 
  public async Task<Response<PostResponse>> CreateAsync(PostCreateRequest request)

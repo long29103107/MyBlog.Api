@@ -1,5 +1,4 @@
 ﻿using Contracts.Abstractions.Shared;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,21 +6,21 @@ namespace Shared.APIs;
 
 public abstract class ApiEndpoint
 {
-    protected static IResult HandlerFailure(Result result) =>
+    protected static IResult HandlerFailure(Response result) =>
         result switch
         {
             { IsSuccess: true } => throw new InvalidOperationException(),
-            IValidationResult validationResult =>
-                Results.BadRequest(
-                    CreateProblemDetails(
-                        "Validation Error", StatusCodes.Status400BadRequest,
-            result.Error,
-                        validationResult.Errors)),
+            //IValidationResult validationResult =>
+            //    Results.BadRequest(
+            //        CreateProblemDetails(
+            //            "Validation Error", StatusCodes.Status400BadRequest,
+            //result.Error,
+            //            validationResult.Errors)),
             _ =>
                 Results.BadRequest(
                     CreateProblemDetails(
                         "Bab Request", StatusCodes.Status400BadRequest,
-                        result.Error))
+                        null))
         };
 
     private static ProblemDetails CreateProblemDetails(string title, int status, Error error, Error[]? errors = null)

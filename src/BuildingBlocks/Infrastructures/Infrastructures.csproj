@@ -7,14 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="DependencyInjection\Extensions\PagingExtensions.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="DependencyInjection\Extensions\PagingExtensions.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <PackageReference Include="AutoMapper" />
 	  <PackageReference Include="FluentValidation.AspNetCore" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
