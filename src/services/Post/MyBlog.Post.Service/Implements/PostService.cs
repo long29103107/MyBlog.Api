@@ -11,6 +11,8 @@ using MyBlog.Contracts;
 using MyBlog.Post.Domain.Exceptions;
 using static Shared.Dtos.Post.PostDtos;
 using Infrastructures.Common;
+using Contracts.Abstractions.Shared;
+using Infrastructures.DependencyInjection.Extensions;
 
 namespace MyBlog.Post.Service.Implements;
 
@@ -23,26 +25,34 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
         _validatorFactory = validatorFactory;
     }
 
-    public async Task<List<PostListResponse>> GetListAsync()
+    public async Task<Response<List<PostListResponse>>> GetListAsync()
     {
         var posts = await _repoManager.Post.FindAll()
             .ToListAsync();
 
         var result = _mapper.Map<List<PostListResponse>>(posts);
 
-        return result;
+        return Response<List<PostListResponse>>.Success(result);
     }
 
-    public async Task<PostResponse> GetAsync(int id)
+    public async Task<Response<PostResponse>> GetAsync(int id)
     {
         var post = await _InternalGetProductAsync(id);
 
         var result = _mapper.Map<PostResponse>(post);
 
-        return result;
+        return Response<PostResponse>.Success(result);
+    }
+    public async Task<PagingResponse<PostResponse>> GetPagedistAsync(PagingRequest request)
+    {
+        List<Entities.Post> dataset = await _repoManager.Post.FindAll().ToListAsync();
+
+        var res = dataset.GetMakeList(request);
+
+        return PagingResponse<PostResponse>.Success(res);
     }
 
-    public async Task<PostResponse> CreateAsync(PostCreateRequest request)
+ public async Task<Response<PostResponse>> CreateAsync(PostCreateRequest request)
     {
         var model = _mapper.Map<Entities.Post>(request);
 
@@ -51,10 +61,10 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
         _repoManager.Post.Add(model);
         await _repoManager.SaveAsync();
 
-        return _mapper.Map<PostResponse>(model);
+        return Response<PostResponse>.Success(_mapper.Map<PostResponse>(model));
     }
 
-    public async Task<PostResponse> UpdateAsync(int id, PostUpdateRequest request)
+    public async Task<Response<PostResponse>> UpdateAsync(int id, PostUpdateRequest request)
     {
         var model = await _InternalGetProductAsync(id);
 
@@ -65,10 +75,10 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
         _repoManager.Post.Update(model);
         await _repoManager.SaveAsync();
 
-        return _mapper.Map<PostResponse>(model);
+        return Response<PostResponse>.Success(_mapper.Map<PostResponse>(model));
     }
 
-    public async Task<PostResponse> UpdatePartialAsync(int id, [FromBody] JsonPathRequest<PostUpdatePartialRequest> request)
+    public async Task<Response<PostResponse>> UpdatePartialAsync(int id, [FromBody] JsonPathRequest<PostUpdatePartialRequest> request)
     {
         var model = await _InternalGetProductAsync(id);
 
@@ -79,15 +89,17 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
         _repoManager.Post.Update(model);
         await _repoManager.SaveAsync();
 
-        return _mapper.Map<PostResponse>(model);
+        return Response<PostResponse>.Success(_mapper.Map<PostResponse>(model));
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<Response> DeleteAsync(int id)
     {
         var model = await _InternalGetProductAsync(id);
 
         _repoManager.Post.Remove(model);
         await _repoManager.SaveAsync();
+
+        return Response.Success();
     }
 
     public async Task SeedDataAsync()

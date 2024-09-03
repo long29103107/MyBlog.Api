@@ -29,6 +29,12 @@ public class PostsController : ControllerBase
         return Ok(await _service.GetListAsync());
     }
 
+    [HttpGet("paging-list")]
+    public async Task<IActionResult> GetPagedListAsync()
+    {
+        return Ok(await _service.GetListAsync());
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync([FromRoute] int id)
     {

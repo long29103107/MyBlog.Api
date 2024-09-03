@@ -3,10 +3,10 @@ using MediatR;
 
 namespace Contracts.Abstractions.Message;
 
-public interface ICommandHandler<TCommand> : IRequestHandler<TCommand, Result>
+public interface ICommandHandler<TCommand> : IRequestHandler<TCommand, Response>
     where TCommand : ICommand
 { }
 
-public interface ICommandHandler<TCommand, TResponse> : IRequestHandler<TCommand, Result<TResponse>>
+public interface ICommandHandler<TCommand, TResponse> : IRequestHandler<TCommand, Response>
     where TCommand : ICommand<TResponse>
 { }

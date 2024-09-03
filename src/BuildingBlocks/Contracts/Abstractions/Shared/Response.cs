@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace MyBlog.Contracts.Responses;
+namespace Contracts.Abstractions.Shared;
 
-public class Result
+public class Response
 {
-    public Result(List<Error> errors, int statusCode)
+    public Response(List<Error> errors,  int statusCode)
     {
         Errors = errors;
         StatusCode = statusCode;
@@ -22,17 +22,17 @@ public class Result
         }
     }
 
-    public static Result Success(int? statusCode = null)
+    public static Response Success(int? statusCode = null)
     {
-        return new(new List<Error>(), statusCode ?? StatusCodes.Status200OK);
+        return new (new List<Error>(), statusCode ?? StatusCodes.Status200OK);
     }
 
-    public static Result Failure(List<Error> errors, int statusCode)
+    public static Response Failure(List<Error> errors, int statusCode)
     {
         return new(errors, statusCode);
     }
 
-    public static Result Failure(Error error, int statusCode)
+    public static Response Failure(Error error, int statusCode)
     {
         return new(new List<Error>() { error }, statusCode);
     }
