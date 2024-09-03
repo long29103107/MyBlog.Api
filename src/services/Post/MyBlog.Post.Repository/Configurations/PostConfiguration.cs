@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Entities = MyBlog.Post.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyBlog.Contracts.Domains.ValueOf;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MyBlog.Post.Repository.Configurations;

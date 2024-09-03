@@ -23,13 +23,6 @@ public interface IRepositoryBase<T, TContext>
     void RemoveRange(IEnumerable<T> entities);
     #endregion
 
-    #region Transaction
-    Task<int> SaveChangesAsync();
-    Task<IDbContextTransaction> BeginTransactionAsync();
-    Task EndTransactionAsync();
-    Task RollbackTransactionAsync();
-    #endregion
-
     #region Linq 
     bool Any();
     Task<bool> AnyAsync();

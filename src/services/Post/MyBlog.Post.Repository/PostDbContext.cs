@@ -11,6 +11,11 @@ public class PostDbContext : DbContext
     }
 
     public virtual DbSet<Entities.Post> Posts { get; set; }
+    public virtual DbSet<Entities.Category> Categories { get; set; }
+    public virtual DbSet<Entities.Comment> Comments { get; set; }
+    public virtual DbSet<Entities.PostImage> PostImages { get; set; }
+    public virtual DbSet<Entities.PostMetadata> PostMetadatas { get; set; }
+    public virtual DbSet<Entities.Tag> Tags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

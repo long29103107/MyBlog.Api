@@ -8,6 +8,6 @@ public class PostValidator : AbstractValidator<Entities.Post>
     public PostValidator()
     {
         RuleFor(p => p.Title).NotEmpty();
-        RuleFor(p => p.Description).NotEmpty();
+        RuleFor(p => p.Content).NotEmpty();
     }
 }

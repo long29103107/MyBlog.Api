@@ -1,22 +1,19 @@
-﻿using Contracts.Domain;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Contracts.Abstractions.Common;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructures.Common;
 
-public class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
+public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     where T : class
     where TContext : DbContext
 {
     protected readonly TContext _context;
-    protected readonly IUnitOfWork<TContext> _unitOfWork;
 
-    public RepositoryBase(TContext context, IUnitOfWork<TContext> unitOfWork)
+    public RepositoryBase(TContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(_context));
-        _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(_unitOfWork));
     }
 
     #region Filter
@@ -92,34 +89,6 @@ public class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
             return;
 
         _context.Set<T>().RemoveRange(entities);
-    }
-    #endregion
-
-    #region Transaction
-    public Task<int> SaveChangesAsync()
-    {
-        return _unitOfWork.CommitAsync();
-    }
-
-    public Task<IDbContextTransaction> BeginTransactionAsync()
-    {
-        return _context.Database.BeginTransactionAsync();
-    }
-
-    public async Task EndTransactionAsync()
-    {
-        await SaveChangesAsync();
-        await _context.Database.CommitTransactionAsync();
-    }
-
-    public async Task RollbackTransactionAsync()
-    {
-        await _context.Database.RollbackTransactionAsync();
-    }
-
-    public async Task SaveAsync()
-    {
-        await _context.SaveChangesAsync();
     }
     #endregion
 

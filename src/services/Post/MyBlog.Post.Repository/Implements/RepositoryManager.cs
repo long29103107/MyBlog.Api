@@ -1,15 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyBlog.Post.Repository.Interfaces;
-using MyBlog.Shared.RepositoryEF.Implements;
-using MyBlog.Shared.RepositoryEF.Interfaces;
+﻿using Contracts.Abstractions.Common;
+using Infrastructures.Common;
+using Microsoft.EntityFrameworkCore;
+using MyBlog.Post.Repository.Abstractions;
 using Entities = MyBlog.Post.Domain.Entities;
 
 namespace MyBlog.Post.Repository.Implements;
-public class RepositoryManager : RepositoryManagerBase<PostDbContext>, IRepositoryManager
+public class RepositoryManager : UnitOfWork<PostDbContext>, IRepositoryManager
 {
-    public RepositoryManager(IUnitOfWork<PostDbContext> unitOfWork, PostDbContext context) : base(unitOfWork, context)
+    public RepositoryManager(PostDbContext context) : base(context)
     {
     }
+
     private IPostRepository _post;
 
     public IPostRepository Post
@@ -18,7 +19,7 @@ public class RepositoryManager : RepositoryManagerBase<PostDbContext>, IReposito
         {
             if (_post == null)
             {
-                _post = new PostRepository(_context, _unitOfWork);
+                _post = new PostRepository(_context);
             }
 
             return _post;

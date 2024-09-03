@@ -11,4 +11,8 @@
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\Contracts\Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

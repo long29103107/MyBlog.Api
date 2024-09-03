@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MyBlog.Contracts.Dtos.Interfaces;
-
 namespace MyBlog.Shared.Lib;
 
 public class JsonPathRequest<T> : JsonPatchDocument<T>, IRequest where T : class

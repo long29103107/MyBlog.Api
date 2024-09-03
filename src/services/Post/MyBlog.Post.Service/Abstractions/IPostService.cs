@@ -1,9 +1,9 @@
-﻿using MyBlog.Post.Repository.Implements;
-using MyBlog.Shared.Dtos.Post;
+﻿using Contracts.Abstractions.Common;
+using MyBlog.Post.Repository.Implements;
 using MyBlog.Shared.Lib;
-using MyBlog.Shared.ServiceBase.Abstractions;
+using static Shared.Dtos.Post.PostDtos;
 
-namespace MyBlog.Post.Service.Interfaces;
+namespace MyBlog.Post.Service.Abstractions;
 
 public interface IPostService : IBaseService<RepositoryManager>
 {
@@ -12,6 +12,7 @@ public interface IPostService : IBaseService<RepositoryManager>
     Task<PostResponse> CreateAsync(PostCreateRequest request);
     Task<PostResponse> UpdateAsync(int id, PostUpdateRequest request);
     Task<PostResponse> UpdatePartialAsync(int id, JsonPathRequest<PostUpdatePartialRequest> request);
+    Task DeleteAsync(int id);
     Task SeedDataAsync();
 }
 

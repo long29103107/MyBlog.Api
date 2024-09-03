@@ -16,9 +16,9 @@
 		<PackageReference Include="Slugify.Core" />
 	</ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Dtos\MyBlog.Shared.Dtos.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Shared\Shared.csproj" />
+    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Autofac\MyBlog.Shared.Autofac.csproj" />
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Lib\MyBlog.Shared.Lib.csproj" />
-    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.ServiceBase\MyBlog.Shared.ServiceBase.csproj" />
     <ProjectReference Include="..\MyBlog.Post.Domain\MyBlog.Post.Domain.csproj" />
     <ProjectReference Include="..\MyBlog.Post.Repository\MyBlog.Post.Repository.csproj" />
   </ItemGroup>

@@ -1,21 +1,17 @@
 ﻿using Contracts.Abstractions.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructures.Common;
 
 public class UnitOfWork<TContext> : IUnitOfWork<TContext>
     where TContext : DbContext
 {
-    private readonly TContext _context;
+    protected readonly TContext _context;
 
     public UnitOfWork(TContext context)
     {
         _context = context;
-    }
-
-    public Task<int> CommitAsync()
-    {
-        return _context.SaveChangesAsync();
     }
 
     public void Dispose()
@@ -23,13 +19,25 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext>
         _context.Dispose();
     }
 
+    #region Transaction
     public async Task SaveAsync()
     {
         await _context.SaveChangesAsync();
     }
-
-    public void Save()
+    public Task<IDbContextTransaction> BeginTransactionAsync()
     {
-        _context.SaveChanges();
+        return _context.Database.BeginTransactionAsync();
     }
+
+    public async Task EndTransactionAsync()
+    {
+        await SaveAsync();
+        await _context.Database.CommitTransactionAsync();
+    }
+
+    public async Task RollbackTransactionAsync()
+    {
+        await _context.Database.RollbackTransactionAsync();
+    }
+    #endregion
 }

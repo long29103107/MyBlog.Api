@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyBlog.Post.Repository.Interfaces;
+using MyBlog.Post.Repository.Abstractions;
 using MyBlog.Shared.Lib;
-using MyBlog.Shared.ServiceBase.Implements;
 using MyBlog.Shared.Lib.Extensions;
 using Entities = MyBlog.Post.Domain.Entities;
 using FluentValidation;
-using MyBlog.Post.Service.Interfaces;
+using MyBlog.Post.Service.Abstractions;
 using MyBlog.Contracts;
-using MyBlog.Shared.Dtos.Post;
 using MyBlog.Post.Domain.Exceptions;
+using static Shared.Dtos.Post.PostDtos;
+using Infrastructures.Common;
 
 namespace MyBlog.Post.Service.Implements;
 
@@ -82,6 +82,14 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
         return _mapper.Map<PostResponse>(model);
     }
 
+    public async Task DeleteAsync(int id)
+    {
+        var model = await _InternalGetProductAsync(id);
+
+        _repoManager.Post.Remove(model);
+        await _repoManager.SaveAsync();
+    }
+
     public async Task SeedDataAsync()
     {
         if (!await _repoManager.Post.AnyAsync())
@@ -95,7 +103,7 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
                 products.Add(new Entities.Post()
                 {
                     Title = name,
-                    Description = name
+                    Content = name
                 });
                 index++;
             }

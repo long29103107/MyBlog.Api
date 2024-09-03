@@ -1,11 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Contracts.Abstractions.Common;
 
 public interface IUnitOfWork<TContext> : IDisposable
     where TContext : DbContext
 {
-    Task<int> CommitAsync();
+    #region Transaction
     Task SaveAsync();
-    void Save();
+    Task<IDbContextTransaction> BeginTransactionAsync();
+    Task EndTransactionAsync();
+    Task RollbackTransactionAsync();
+    #endregion
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
-using MyBlog.Contracts;
+using Contracts.Domain.Exceptions;
 
 namespace MyBlog.Shared.ExceptionHandler;
 

@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyBlog.Shared.RepositoryEF.Interfaces;
+﻿using Contracts.Abstractions.Common;
+using Microsoft.EntityFrameworkCore;
+using MyBlog.Post.Repository.Abstractions;
 using Entities = MyBlog.Post.Domain.Entities;
 
-namespace MyBlog.Post.Repository.Interfaces;
+namespace MyBlog.Post.Repository.Abstractions;
 
-public interface IRepositoryManager : IRepositoryManagerBase<PostDbContext>
+public interface IRepositoryManager : IUnitOfWork<PostDbContext>
 {
     public IPostRepository Post { get; }
 

@@ -1,8 +1,8 @@
-﻿using MyBlog.Shared.RepositoryEF.Interfaces;
-using Entities = MyBlog.Post.Domain.Entities;
+﻿using Entities = MyBlog.Post.Domain.Entities;
+using Contracts.Abstractions.Common;
 
-namespace MyBlog.Post.Repository.Interfaces;
+namespace MyBlog.Post.Repository.Abstractions;
 
-public interface IPostRepository : IRepositoryBase<Entities.Post, PostDbContext, int>
+public interface IPostRepository : IRepositoryBase<Entities.Post, PostDbContext>
 {
 }

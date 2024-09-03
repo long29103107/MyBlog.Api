@@ -6,14 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
-		<PackageReference Include="Microsoft.AspNet.Mvc" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />
-		<PackageReference Include="ValueOf" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\Contracts\Contracts.csproj" />
-	</ItemGroup>
+<ItemGroup>
+	<ProjectReference Include="..\Contracts\Contracts.csproj" />
+</ItemGroup>
 </Project>
