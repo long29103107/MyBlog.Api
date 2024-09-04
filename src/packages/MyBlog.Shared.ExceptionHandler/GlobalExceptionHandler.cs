@@ -39,22 +39,36 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
         return true;
     }
 
-    private static int _GetStatusCode(Exception exception) =>
-    exception switch
+    private static int _GetStatusCode(Exception exception)
     {
-        BadRequestException or ValidationException => StatusCodes.Status400BadRequest,
-        NotFoundException => StatusCodes.Status404NotFound,
-        FormatException => StatusCodes.Status422UnprocessableEntity,
-        ServiceUnavailableException => StatusCodes.Status503ServiceUnavailable,
-        _ => StatusCodes.Status500InternalServerError
-    };
+        var result = exception switch
+        {
+            BadRequestException => StatusCodes.Status400BadRequest,
+            ValidationException => StatusCodes.Status400BadRequest,
+            NotFoundException => StatusCodes.Status404NotFound,
+            FormatException => StatusCodes.Status422UnprocessableEntity,
+            ServiceUnavailableException => StatusCodes.Status503ServiceUnavailable,
+            _ => StatusCodes.Status500InternalServerError
+        };
 
-    private static string GetTitle(Exception exception) =>
-    exception switch
+        return result;
+    }
+
+    private static string GetTitle(Exception exception)
     {
-        DomainException applicationException => applicationException.Title,
-        _ => "Server Error"
-    };
+        if (exception is ValidationException validationException)
+        {
+            return validationException.Title;
+        }
+
+        var result = exception switch
+        {
+            DomainException applicationException => applicationException.Title,
+            _ => "Server Error"
+        };
+
+        return result;
+    }
 
     private static IReadOnlyCollection<ValidationError> GetErrors(Exception exception)
     {

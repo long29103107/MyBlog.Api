@@ -27,6 +27,8 @@ public static class HostingExtension
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
+        app.UseExceptionHandler();
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

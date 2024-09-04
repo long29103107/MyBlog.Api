@@ -7,12 +7,13 @@ using MyBlog.Shared.Lib.Extensions;
 using Entities = MyBlog.Post.Domain.Entities;
 using FluentValidation;
 using MyBlog.Post.Service.Abstractions;
-using MyBlog.Contracts;
+using Exceptions = Contracts.Domain.Exceptions;
 using MyBlog.Post.Domain.Exceptions;
 using static Shared.Dtos.Post.PostDtos;
 using Infrastructures.Common;
 using Contracts.Abstractions.Shared;
 using Infrastructures.DependencyInjection.Extensions;
+using Contracts.Domain.Exceptions;
 
 namespace MyBlog.Post.Service.Implements;
 
@@ -110,7 +111,7 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
             var index = 0;
             var products = new List<Entities.Post>();
 
-            while (index < 1000)
+            while (index < 10)
             {
                 var name = "Product " + (index + 1);
                 products.Add(new Entities.Post()
@@ -141,7 +142,7 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
         {
             var errors = result.Errors.Select(x => new ValidationError(x.PropertyName, x.ErrorMessage)).ToList();
 
-            throw new Contracts.ValidationException(errors);
+            throw new Exceptions.ValidationException(errors);
         }
     }
 }

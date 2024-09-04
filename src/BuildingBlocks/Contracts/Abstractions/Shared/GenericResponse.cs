@@ -16,8 +16,6 @@ public class Response<T> : Response
         }
     }
 
-    public T Result { get; set; }
-
     public static Response<T> Success(T result)
     {
         return new(new List<Error>(), result, StatusCodes.Status200OK);
@@ -42,4 +40,6 @@ public class Response<T> : Response
     {
         return new(new List<Error>() { error }, default(T), statusCode);
     }
+
+    public T Result { get; set; }
 }
