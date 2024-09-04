@@ -13,8 +13,8 @@ using static Shared.Dtos.Post.PostDtos;
 using Infrastructures.Common;
 using Contracts.Abstractions.Shared;
 using Infrastructures.DependencyInjection.Extensions;
-using Contracts.Domain.Exceptions;
 using FilteringAndSortingExpression.Extensions;
+using Contracts.Domain.Exceptions;
 
 namespace MyBlog.Post.Service.Implements;
 
@@ -114,16 +114,12 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
             var index = 0;
             var products = new List<Entities.Post>();
 
-            while (index < 10)
-            {
-                var name = "Product " + (index + 1);
-                products.Add(new Entities.Post()
-                {
-                    Title = name,
-                    Content = name
-                });
-                index++;
-            }
+            //while (index < 10)
+            //{
+            //    var name = "Product " + (index + 1);
+            //    products.Add(new Entities.Post(name, name));
+            //    index++;
+            //}
 
             _repoManager.Post.AddRange(products);
             await _repoManager.SaveAsync();

@@ -1,6 +1,5 @@
 ﻿using Contracts.Abstractions.Common;
 using Microsoft.EntityFrameworkCore;
-using MyBlog.Post.Repository.Abstractions;
 using Entities = MyBlog.Post.Domain.Entities;
 
 namespace MyBlog.Post.Repository.Abstractions;
@@ -8,6 +7,9 @@ namespace MyBlog.Post.Repository.Abstractions;
 public interface IRepositoryManager : IUnitOfWork<PostDbContext>
 {
     public IPostRepository Post { get; }
+    public ICategoryRepository Category { get; }
 
     DbSet<Entities.Post> Posts { get; }
+
+    DbSet<Entities.Category> Categories { get; }
 }

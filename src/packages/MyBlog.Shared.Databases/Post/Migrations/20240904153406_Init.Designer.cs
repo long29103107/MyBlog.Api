@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyBlog.Shared.Databases.Post.Migrations
 {
     [DbContext(typeof(PostDbContext))]
-    [Migration("20240903090906_InitService")]
-    partial class InitService
+    [Migration("20240904153406_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace MyBlog.Shared.Databases.Post.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("CategoryPost", b =>
-                {
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PostsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("CategoriesId", "PostsId");
-
-                    b.HasIndex("PostsId");
-
-                    b.ToTable("CategoryPost");
-                });
 
             modelBuilder.Entity("MyBlog.Post.Domain.Entities.Category", b =>
                 {
@@ -63,7 +48,7 @@ namespace MyBlog.Shared.Databases.Post.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ParentCategoryId")
+                    b.Property<int?>("ParentCategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -78,47 +63,6 @@ namespace MyBlog.Shared.Databases.Post.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("MyBlog.Post.Domain.Entities.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("ParentCommentId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentCommentId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("MyBlog.Post.Domain.Entities.Post", b =>
@@ -139,9 +83,6 @@ namespace MyBlog.Shared.Databases.Post.Migrations
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -167,10 +108,6 @@ namespace MyBlog.Shared.Databases.Post.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Caption")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -178,12 +115,12 @@ namespace MyBlog.Shared.Databases.Post.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("URL")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -192,11 +129,15 @@ namespace MyBlog.Shared.Databases.Post.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostImages");
+                    b.ToTable("PostImage");
                 });
 
             modelBuilder.Entity("MyBlog.Post.Domain.Entities.PostMetadata", b =>
@@ -218,7 +159,7 @@ namespace MyBlog.Shared.Databases.Post.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("PostId")
+                    b.Property<int?>("PostId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -236,7 +177,7 @@ namespace MyBlog.Shared.Databases.Post.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostMetadatas");
+                    b.ToTable("PostMetadata");
                 });
 
             modelBuilder.Entity("MyBlog.Post.Domain.Entities.Tag", b =>
@@ -254,13 +195,10 @@ namespace MyBlog.Shared.Databases.Post.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -274,112 +212,95 @@ namespace MyBlog.Shared.Databases.Post.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("PostTag", b =>
+            modelBuilder.Entity("PostCategory", b =>
                 {
-                    b.Property<int>("PostsId")
+                    b.Property<int>("PostId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TagsId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
-                    b.HasKey("PostsId", "TagsId");
+                    b.HasKey("PostId", "CategoryId");
 
-                    b.HasIndex("TagsId");
+                    b.HasIndex("CategoryId");
 
-                    b.ToTable("PostTag");
+                    b.ToTable("PostCategories", (string)null);
                 });
 
-            modelBuilder.Entity("CategoryPost", b =>
+            modelBuilder.Entity("PostTag", b =>
                 {
-                    b.HasOne("MyBlog.Post.Domain.Entities.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
 
-                    b.HasOne("MyBlog.Post.Domain.Entities.Post", null)
-                        .WithMany()
-                        .HasForeignKey("PostsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("TagId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PostId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("PostTags", (string)null);
                 });
 
             modelBuilder.Entity("MyBlog.Post.Domain.Entities.Category", b =>
                 {
                     b.HasOne("MyBlog.Post.Domain.Entities.Category", "ParentCategory")
                         .WithMany()
-                        .HasForeignKey("ParentCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentCategoryId");
 
                     b.Navigation("ParentCategory");
                 });
 
-            modelBuilder.Entity("MyBlog.Post.Domain.Entities.Comment", b =>
-                {
-                    b.HasOne("MyBlog.Post.Domain.Entities.Comment", "ParentComment")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentCommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyBlog.Post.Domain.Entities.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ParentComment");
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("MyBlog.Post.Domain.Entities.PostImage", b =>
                 {
-                    b.HasOne("MyBlog.Post.Domain.Entities.Post", "Post")
+                    b.HasOne("MyBlog.Post.Domain.Entities.Post", null)
                         .WithMany("Images")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyBlog.Post.Domain.Entities.PostMetadata", b =>
                 {
-                    b.HasOne("MyBlog.Post.Domain.Entities.Post", "Post")
+                    b.HasOne("MyBlog.Post.Domain.Entities.Post", null)
                         .WithMany("Metadata")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.Navigation("Post");
+            modelBuilder.Entity("PostCategory", b =>
+                {
+                    b.HasOne("MyBlog.Post.Domain.Entities.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PostCategory_Category_CategoryId");
+
+                    b.HasOne("MyBlog.Post.Domain.Entities.Post", null)
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PostCategory_Post_PostId");
                 });
 
             modelBuilder.Entity("PostTag", b =>
                 {
                     b.HasOne("MyBlog.Post.Domain.Entities.Post", null)
                         .WithMany()
-                        .HasForeignKey("PostsId")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MyBlog.Post.Domain.Entities.Tag", null)
                         .WithMany()
-                        .HasForeignKey("TagsId")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MyBlog.Post.Domain.Entities.Comment", b =>
-                {
-                    b.Navigation("Replies");
-                });
-
             modelBuilder.Entity("MyBlog.Post.Domain.Entities.Post", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Images");
 
                     b.Navigation("Metadata");

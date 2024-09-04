@@ -1,6 +1,6 @@
 ﻿using Contracts.Abstractions.Shared;
 using Microsoft.AspNetCore.Mvc;
-using MyBlog.Contracts.Dtos;
+using MyBlog.Post.Domain.Entities;
 using MyBlog.Post.Service.Abstractions;
 using MyBlog.Shared.Lib;
 using static Shared.Dtos.Post.PostDtos;
@@ -9,8 +9,17 @@ namespace MyBlog.Post.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PostsController : ControllerBase
+public partial class PostsController : ControllerBase
 {
+    //POST /posts: Tạo một bài viết mới.
+    //GET /posts/{id}: Lấy thông tin chi tiết về một bài viết.
+    //PUT /posts/{id}: Cập nhật thông tin một bài viết.
+    //DELETE /posts/{id}: Xóa một bài viết.
+    //POST /posts/{id}/ images: Thêm hình ảnh vào bài viết.
+    //POST /posts/{id}/ comments: Thêm bình luận vào bài viết.
+    //POST /posts/{id}/ tags: Thêm tag vào bài viết.
+    //DELETE /posts/{id}/ tags /{ tagName}: Xóa một tag khỏi bài viết.
+
     private readonly IPostService _service;
 
     public PostsController(IPostService service)

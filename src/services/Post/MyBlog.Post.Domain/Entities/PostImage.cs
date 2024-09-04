@@ -4,8 +4,12 @@ namespace MyBlog.Post.Domain.Entities;
 
 public class PostImage : AuditEntity<int>
 {
-    public int PostId { get; set; }
-    public string URL { get; set; }
-    public string Caption { get; set; }
-    public Post Post { get; set; }
+    public string Url { get; private set; }
+    public string Description { get; private set; }
+    public PostImage() { }
+    public PostImage(string url, string description)
+    {
+        Url = url;
+        Description = description;
+    }
 }
