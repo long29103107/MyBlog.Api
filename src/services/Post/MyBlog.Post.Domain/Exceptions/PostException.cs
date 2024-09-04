@@ -1,5 +1,4 @@
-﻿
-using Contracts.Domain.Exceptions;
+﻿using Contracts.Domain.Exceptions.Abtractions;
 
 namespace MyBlog.Post.Domain.Exceptions;
 

@@ -14,6 +14,7 @@ using Infrastructures.Common;
 using Contracts.Abstractions.Shared;
 using Infrastructures.DependencyInjection.Extensions;
 using Contracts.Domain.Exceptions;
+using FilteringAndSortingExpression.Extensions;
 
 namespace MyBlog.Post.Service.Implements;
 
@@ -26,9 +27,10 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
         _validatorFactory = validatorFactory;
     }
 
-    public async Task<Response<List<PostListResponse>>> GetListAsync()
+    public async Task<Response<List<PostListResponse>>> GetListAsync(PostListRequest request)
     {
         var posts = await _repoManager.Post.FindAll()
+            .Filter(request)
             .ToListAsync();
 
         var result = _mapper.Map<List<PostListResponse>>(posts);
@@ -44,7 +46,8 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
 
         return Response<PostResponse>.Success(result);
     }
-    public async Task<PagingResponse<PostResponse>> GetPagedistAsync(PagingRequest request)
+
+    public async Task<PagingResponse<PostResponse>> GetPagedListAsync(PagingRequest request)
     {
         var dataset = await _repoManager.Post.FindAll().ToListAsync();
 
@@ -54,7 +57,7 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
         return PagingResponse<PostResponse>.Success(result);
     }
 
- public async Task<Response<PostResponse>> CreateAsync(PostCreateRequest request)
+    public async Task<Response<PostResponse>> CreateAsync(PostCreateRequest request)
     {
         var model = _mapper.Map<Entities.Post>(request);
 

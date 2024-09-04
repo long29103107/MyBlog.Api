@@ -10,7 +10,7 @@ public abstract class ApiEndpoint
         result switch
         {
             { IsSuccess: true } => throw new InvalidOperationException(),
-            //IValidationResult validationResult =>
+            //ValidationResult validationResult =>
             //    Results.BadRequest(
             //        CreateProblemDetails(
             //            "Validation Error", StatusCodes.Status400BadRequest,

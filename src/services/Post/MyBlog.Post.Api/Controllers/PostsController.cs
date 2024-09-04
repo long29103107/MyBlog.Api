@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Contracts.Abstractions.Shared;
+using Microsoft.AspNetCore.Mvc;
+using MyBlog.Contracts.Dtos;
 using MyBlog.Post.Service.Abstractions;
 using MyBlog.Shared.Lib;
 using static Shared.Dtos.Post.PostDtos;
@@ -24,15 +26,15 @@ public class PostsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetListAsync()
+    public async Task<IActionResult> GetListAsync(PostListRequest request)
     {
-        return Ok(await _service.GetListAsync());
+        return Ok(await _service.GetListAsync(request));
     }
 
     [HttpGet("paging-list")]
-    public async Task<IActionResult> GetPagedListAsync()
+    public async Task<IActionResult> GetPagedListAsync(PagingRequest request)
     {
-        return Ok(await _service.GetListAsync());
+        return Ok(await _service.GetPagedListAsync(request));
     }
 
     [HttpGet("{id}")]

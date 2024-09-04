@@ -8,8 +8,8 @@ namespace MyBlog.Post.Service.Abstractions;
 
 public interface IPostService : IBaseService<RepositoryManager>
 {
-    Task<Response<List<PostListResponse>>> GetListAsync();
-    //Task<PagedList<PostListResponse>> GetPagedListAsync();
+    Task<Response<List<PostListResponse>>> GetListAsync(PostListRequest request);
+    Task<PagingResponse<PostResponse>> GetPagedListAsync(PagingRequest request);
     Task<Response<PostResponse>> GetAsync(int id);
     Task<Response<PostResponse>> CreateAsync(PostCreateRequest request);
     Task<Response<PostResponse>> UpdateAsync(int id, PostUpdateRequest request);

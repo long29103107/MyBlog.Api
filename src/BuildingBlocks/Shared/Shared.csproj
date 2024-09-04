@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
   </ItemGroup>
 
 <ItemGroup>
+	<ProjectReference Include="..\..\packages\FilteringAndSorting\FilteringAndSortingExpression.csproj" />
 	<ProjectReference Include="..\Contracts\Contracts.csproj" />
 </ItemGroup>
 </Project>

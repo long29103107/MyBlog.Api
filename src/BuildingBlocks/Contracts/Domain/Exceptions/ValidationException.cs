@@ -1,4 +1,6 @@
-﻿namespace Contracts.Domain.Exceptions;
+﻿using Contracts.Domain.Exceptions.Abtractions;
+
+namespace Contracts.Domain.Exceptions;
 
 public sealed class ValidationException : DomainException
 {

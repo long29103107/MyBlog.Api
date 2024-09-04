@@ -1,4 +1,7 @@
-﻿namespace Shared.Dtos.Post;
+﻿using FilteringAndSortingExpression.Extensions;
+using MyBlog.Contracts.Dtos;
+
+namespace Shared.Dtos.Post;
 
 public static class PostDtos
 {
@@ -10,4 +13,16 @@ public static class PostDtos
     //Response
     public sealed record PostListResponse(int Id, string Title, string Content);
     public sealed record PostResponse(int Id, string Content);
+
+    public sealed class PostListRequest : ListRequest
+    {
+        public override List<string> PropertiesWhiteList
+           => LinqExtensions.GetPropertiesAsString<PostResponse>();
+
+        /// <summary>
+        ///     Sort set: All fiels in response
+        /// </summary>
+        public override string Sort { get; set; }
+            = LinqExtensions.GetPropertiesDefaultSortAsString<PostResponse>($"-{nameof(PostResponse.Id).ToLower()}");
+    }
 }
