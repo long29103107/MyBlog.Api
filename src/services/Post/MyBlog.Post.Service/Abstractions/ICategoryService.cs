@@ -9,8 +9,8 @@ public interface ICategoryService : IBaseService<IRepositoryManager>
     Task<CategoryResponse> CreateAsync(CategoryCreateRequest request);
     Task<CategoryResponse> GetDetailAsync(int id);
     Task<IEnumerable<CategoryResponse>> GetCategoriesAsync();
-    Task<bool> UpdateAsync(CategoryUpdateRequest category);
-    Task<bool> DeleteAsync(int id);
-    Task<bool> AddPostToCategoryAsync(int categoryId, int postId);
-    Task<bool> RemovePostFromCategoryAsync(int categoryId, int postId);
+    Task<CategoryResponse> UpdateAsync(int id, CategoryUpdateRequest category);
+    Task DeleteAsync(int id);
+    Task AddPostToCategoryAsync(int categoryId, int postId);
+    Task RemovePostFromCategoryAsync(int categoryId, int postId);
 }

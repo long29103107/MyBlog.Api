@@ -2,6 +2,7 @@
 using Contracts.Abstractions.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructures.Common;
 
@@ -53,12 +54,34 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
             queryable = queryable.AsNoTracking();
         }
 
-        foreach (var expression in expressions)
+        if(!expressions.IsNullOrEmpty())
         {
-            queryable = queryable.Where(expression);
+            foreach (var expression in expressions)
+            {
+                queryable = queryable.Where(expression);
+            }
         }
 
         return queryable;
+    }
+
+    public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression, bool isTracking = false)
+    {
+        return await FindByCondition(expression, isTracking).FirstOrDefaultAsync();
+    }
+
+    public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>>[] expressions, bool isTracking = false)
+    {
+        return await FindByCondition(expressions, isTracking).FirstOrDefaultAsync();
+    }
+
+    public T FirstOrDefault(Expression<Func<T, bool>>[] expressions, bool isTracking = false)
+    {
+        return FindByCondition(expressions, isTracking).FirstOrDefault();
+    }
+    public T FirstOrDefault(Expression<Func<T, bool>> expression, bool isTracking = false)
+    {
+        return FindByCondition(expression, isTracking).FirstOrDefault();
     }
     #endregion
 
