@@ -10,13 +10,14 @@ using static Shared.Dtos.Category.CategoryDtos;
 using Entities = MyBlog.Post.Domain.Entities;
 using FilteringAndSortingExpression.Extensions;
 using Contracts.Domain.Exceptions.Abtractions;
-using System.Linq;
+using Contracts.Abstractions.Common;
+using MyBlog.Post.Repository;
 
 namespace MyBlog.Post.Service.Implements;
 
-public class CategoryService : BaseService<IRepositoryManager>, ICategoryService
+public class CategoryService : BaseService<IRepositoryManager, PostDbContext>, ICategoryService
 {
-    public CategoryService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory) : base(repoManager, mapper)
+    public CategoryService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, IUnitOfWork<PostDbContext> unitOfWork) : base(repoManager, mapper, validatorFactory, unitOfWork)
     {
        
     }
@@ -80,6 +81,11 @@ public class CategoryService : BaseService<IRepositoryManager>, ICategoryService
         if (existingChilrenCategory)
             throw new ErrorException("Cannot delete a category that is the parent category of another category!");
 
+       var posts = category.Posts.ToList();
+
+        posts.ForEach(x => x.RemoveCategory(category));
+
+        _repoManager.Post.UpdateRange(posts);
         _repoManager.Category.Remove(category);
         await _repoManager.SaveAsync();
     }
@@ -115,6 +121,7 @@ public class CategoryService : BaseService<IRepositoryManager>, ICategoryService
         if (category.Posts.Contains(post))
         {
             category.RemovePost(post);
+            _repoManager.Category.Update(category);
             await _repoManager.SaveAsync();
         }
     }

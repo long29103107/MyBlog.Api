@@ -1,10 +1,11 @@
 ﻿using Contracts.Abstractions.Common;
+using MyBlog.Post.Repository;
 using MyBlog.Post.Repository.Abstractions;
 using static Shared.Dtos.Category.CategoryDtos;
 
 namespace MyBlog.Post.Service.Abstractions;
 
-public interface ICategoryService : IBaseService<IRepositoryManager>
+public interface ICategoryService : IBaseService<IRepositoryManager, PostDbContext>
 {
     Task<CategoryResponse> CreateAsync(CategoryCreateRequest request);
     Task<CategoryResponse> GetAsync(int id);

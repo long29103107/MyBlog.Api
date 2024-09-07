@@ -7,27 +7,26 @@ using MyBlog.Shared.Lib.Extensions;
 using Entities = MyBlog.Post.Domain.Entities;
 using FluentValidation;
 using MyBlog.Post.Service.Abstractions;
-using Exceptions = Contracts.Domain.Exceptions;
-using MyBlog.Post.Domain.Exceptions;
 using static Shared.Dtos.Post.PostDtos;
 using Infrastructures.Common;
 using Contracts.Abstractions.Shared;
 using Infrastructures.DependencyInjection.Extensions;
+using Contracts.Dtos;
+using Microsoft.AspNetCore.Http;
 using FilteringAndSortingExpression.Extensions;
-using Contracts.Domain.Exceptions;
+using MyBlog.Post.Repository;
+using Contracts.Abstractions.Common;
 
 namespace MyBlog.Post.Service.Implements;
 
-public class PostService : BaseService<IRepositoryManager>, IPostService
+public class PostService : BaseService<IRepositoryManager, PostDbContext>, IPostService
 {
-    private readonly IValidatorFactory _validatorFactory;
-
-    public PostService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory) : base(repoManager, mapper)
+    public PostService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, IUnitOfWork<PostDbContext> unitOfWork) : base(repoManager, mapper, validatorFactory, unitOfWork)
     {
-        _validatorFactory = validatorFactory;
+       
     }
 
-    public async Task<Response<List<PostListResponse>>> GetListAsync(PostListRequest request)
+    public async Task<ResponseListResult<PostListResponse>> GetListAsync(PostListRequest request)
     {
         var posts = await _repoManager.Post.FindAll()
             .Filter(request)
@@ -35,113 +34,155 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
 
         var result = _mapper.Map<List<PostListResponse>>(posts);
 
-        return Response<List<PostListResponse>>.Success(result);
+        return ResponseListResult<PostListResponse>.Success(result);
     }
 
-    public async Task<Response<PostResponse>> GetAsync(int id)
+    public async Task<ResponseResult<PostResponse>> GetAsync(int id)
     {
         var post = await _InternalGetProductAsync(id);
 
-        var result = _mapper.Map<PostResponse>(post);
+        if(!post.IsSuccess)
+        {
+            return _GetFailedResult<PostResponse>(post.Errors, post.StatusCode);
+        }
 
-        return Response<PostResponse>.Success(result);
+        var result = _mapper.Map<PostResponse>(post.Result);
+
+        return ResponseResult<PostResponse>.Success(result);
     }
 
-    public async Task<PagingResponse<PostResponse>> GetPagedListAsync(PagingRequest request)
+
+    public async Task<PagingListResponse<PostResponse>> GetPagedListAsync(PagingPostRequest request)
     {
-        var dataset = await _repoManager.Post.FindAll().ToListAsync();
+        var dataset = _repoManager.Post.FindAll()
+            .Select(x => new PostResponse(x.Id, x.Content))
+            .Filter(request);
 
-        var res = _mapper.Map<List<PostResponse>>(dataset);
-        var result = res.GetMakeList(request);
+        var result = await dataset.GetMakeListAsync(request);
 
-        return PagingResponse<PostResponse>.Success(result);
+        return PagingListResponse<PostResponse>.Success(result);
     }
 
-    public async Task<Response<PostResponse>> CreateAsync(PostCreateRequest request)
+    public async Task<ResponseResult<PostResponse>> CreateAsync(PostCreateRequest request)
     {
         var model = _mapper.Map<Entities.Post>(request);
 
-        await _ValidateProductAsync(model);
+        var validatedResult = await _ValidateProductAsync(model);
+        if(!validatedResult.IsSuccess)
+        {
+            return _GetFailedResult<PostResponse>(validatedResult.Errors, validatedResult.StatusCode);
+        }
 
         _repoManager.Post.Add(model);
-        await _repoManager.SaveAsync();
 
-        return Response<PostResponse>.Success(_mapper.Map<PostResponse>(model));
+        var savedResult = await _SaveAsync();
+        if (!savedResult.IsSuccess)
+        {
+            return _GetFailedResult<PostResponse>(savedResult.Errors, savedResult.StatusCode);
+        }
+
+        return ResponseResult<PostResponse>.Success(_mapper.Map<PostResponse>(model));
     }
 
-    public async Task<Response<PostResponse>> UpdateAsync(int id, PostUpdateRequest request)
+    public async Task<ResponseResult<PostResponse>> UpdateAsync(int id, PostUpdateRequest request)
     {
         var model = await _InternalGetProductAsync(id);
+        if (!model.IsSuccess)
+        {
+            return _GetFailedResult<PostResponse>(model.Errors, model.StatusCode);
+        }
 
-        _mapper.Map<PostUpdateRequest, Entities.Post>(request, model!);
+        _mapper.Map<PostUpdateRequest, Entities.Post>(request, model.Result!);
 
-        await _ValidateProductAsync(model);
+        var validatedResult = await _ValidateProductAsync(model.Result);
+        if (!validatedResult.IsSuccess)
+        {
+            return _GetFailedResult<PostResponse>(validatedResult.Errors, validatedResult.StatusCode);
+        }
 
-        _repoManager.Post.Update(model);
-        await _repoManager.SaveAsync();
+        _repoManager.Post.Update(model.Result);
 
-        return Response<PostResponse>.Success(_mapper.Map<PostResponse>(model));
+        var savedResult = await _SaveAsync();
+        if (!savedResult.IsSuccess)
+        {
+            return _GetFailedResult<PostResponse>(savedResult.Errors, savedResult.StatusCode);
+        }
+
+        return ResponseResult<PostResponse>.Success(_mapper.Map<PostResponse>(model.Result));
     }
 
-    public async Task<Response<PostResponse>> UpdatePartialAsync(int id, [FromBody] JsonPathRequest<PostUpdatePartialRequest> request)
+    public async Task<ResponseResult<PostResponse>> UpdatePartialAsync(int id, [FromBody] JsonPathRequest<PostUpdatePartialRequest> request)
     {
         var model = await _InternalGetProductAsync(id);
+        if (!model.IsSuccess)
+        {
+            return _GetFailedResult<PostResponse>(model.Errors, model.StatusCode);
+        }
 
         request.ApplyTo(model, _mapper);
 
-        await _ValidateProductAsync(model);
+        var validatedResult = await _ValidateProductAsync(model.Result);
+        if (!validatedResult.IsSuccess)
+        {
+            return _GetFailedResult<PostResponse>(validatedResult.Errors, validatedResult.StatusCode);
+        }
+        _repoManager.Post.Update(model.Result);
 
-        _repoManager.Post.Update(model);
-        await _repoManager.SaveAsync();
+        var savedResult = await _SaveAsync();
+        if (!savedResult.IsSuccess)
+        {
+            return _GetFailedResult<PostResponse>(savedResult.Errors, savedResult.StatusCode);
+        }
 
-        return Response<PostResponse>.Success(_mapper.Map<PostResponse>(model));
+        return ResponseResult<PostResponse>.Success(_mapper.Map<PostResponse>(model));
     }
 
-    public async Task<Response> DeleteAsync(int id)
+    public async Task<ResponseResult> DeleteAsync(int id)
     {
         var model = await _InternalGetProductAsync(id);
-
-        _repoManager.Post.Remove(model);
-        await _repoManager.SaveAsync();
-
-        return Response.Success();
-    }
-
-    public async Task SeedDataAsync()
-    {
-        if (!await _repoManager.Post.AnyAsync())
+        if (!model.IsSuccess)
         {
-            var index = 0;
-            var products = new List<Entities.Post>();
-
-            //while (index < 10)
-            //{
-            //    var name = "Product " + (index + 1);
-            //    products.Add(new Entities.Post(name, name));
-            //    index++;
-            //}
-
-            _repoManager.Post.AddRange(products);
-            await _repoManager.SaveAsync();
+            return _GetFailedResult<PostResponse>(model.Errors, model.StatusCode);
         }
+
+        _repoManager.Post.Remove(model.Result);
+        var savedResult = await _SaveAsync();
+        if (!savedResult.IsSuccess)
+        {
+            return _GetFailedResult<PostResponse>(savedResult.Errors, savedResult.StatusCode);
+        }
+
+        return ResponseResult.Success();
     }
 
-    private async Task<Entities.Post> _InternalGetProductAsync(int id)
-        => await _repoManager.Post
+    private async Task<ResponseResult<Entities.Post>> _InternalGetProductAsync(int id)
+    {
+        var post = await _repoManager.Post
            .FindByCondition(x => x.Id == id)
-           .FirstOrDefaultAsync()
-             ?? throw new PostException.NotFound(id);
+           .FirstOrDefaultAsync();
 
-    private async Task _ValidateProductAsync(Entities.Post model)
+        if (post is null)
+        {
+            return ResponseResult<Entities.Post>.Failure(new Error(ErrorCode.NotFound, $"The Post {id} is not found"), StatusCodes.Status404NotFound);
+        }
+
+        return ResponseResult<Entities.Post>.Success(post);
+    }
+
+    private async Task<ResponseResult> _ValidateProductAsync(Entities.Post model)
     {
         var validator = _validatorFactory.GetValidator<Entities.Post>();
         var result = await validator.ValidateAsync(model);
 
         if (!result.IsValid)
         {
-            var errors = result.Errors.Select(x => new ValidationError(x.PropertyName, x.ErrorMessage)).ToList();
+            //var errors = result.Errors.Select(x => new ValidationError(x.PropertyName, x.ErrorMessage)).ToList();
 
-            throw new Exceptions.ValidationException(errors);
+            var errors = result.Errors.Select(x => new Error(x.PropertyName, x.ErrorMessage)).ToList();
+
+            return ResponseResult<Entities.Post>.Failure(errors, StatusCodes.Status400BadRequest);
         }
+
+        return ResponseResult.Success();
     }
 }

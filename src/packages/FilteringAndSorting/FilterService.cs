@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using FilteringAndSortingExpression.Extensions;
 using FilteringAndSortingExpression.Constants;
-using MyBlog.Contracts.Dtos;
+using Contracts.Dtos;
 
 namespace FilteringAndSortingExpression;
 

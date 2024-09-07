@@ -1,4 +1,4 @@
-﻿using Contracts.Abstractions.Shared;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.Post.Service.Abstractions;
 using MyBlog.Shared.Lib;
@@ -25,13 +25,13 @@ public partial class PostsController : ControllerBase
     //}
 
     [HttpGet]
-    public async Task<IActionResult> GetListAsync(PostListRequest request)
+    public async Task<IActionResult> GetListAsync([FromQuery] PostListRequest request)
     {
         return Ok(await _service.GetListAsync(request));
     }
 
     [HttpGet("paging-list")]
-    public async Task<IActionResult> GetPagedListAsync(PagingRequest request)
+    public async Task<IActionResult> GetPagedListAsync([FromQuery] PagingPostRequest request)
     {
         return Ok(await _service.GetPagedListAsync(request));
     }
@@ -64,8 +64,7 @@ public partial class PostsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
-        await _service.DeleteAsync(id);
-        return NoContent();
+        return Ok(await _service.DeleteAsync(id));
     }
 
     [HttpPost("{id}/images")]

@@ -1,4 +1,4 @@
-﻿using MyBlog.Contracts.Dtos;
+﻿using Contracts.Dtos;
 using System.Reflection;
 
 namespace FilteringAndSortingExpression.Extensions;

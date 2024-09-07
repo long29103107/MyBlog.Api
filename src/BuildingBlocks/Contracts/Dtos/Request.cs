@@ -2,7 +2,7 @@
 using MyBlog.Contracts.Dtos.Interfaces;
 using System.Text.Json.Serialization;
 
-namespace MyBlog.Contracts.Dtos;
+namespace Contracts.Dtos;
 
 
 public abstract class Request : IRequest

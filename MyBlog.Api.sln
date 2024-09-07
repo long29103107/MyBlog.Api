@@ -72,7 +72,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilteringAndSortingExpressi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilteringAndSortingExpression.Swagger", "src\packages\FilteringAndSortingExpression.Swagger\FilteringAndSortingExpression.Swagger.csproj", "{35147065-6B7A-4A16-A19C-4AFB987346D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "src\BuildingBlocks\Persistence\Persistence.csproj", "{8109776B-F243-49F8-A5A9-AA376493D2AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\BuildingBlocks\Persistence\Persistence.csproj", "{8109776B-F243-49F8-A5A9-AA376493D2AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

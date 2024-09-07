@@ -1,5 +1,5 @@
 ﻿using FilteringAndSortingExpression.Extensions;
-using MyBlog.Contracts.Dtos;
+using Contracts.Dtos;
 using static Shared.Dtos.Post.PostDtos;
 
 namespace Shared.Dtos.Category;

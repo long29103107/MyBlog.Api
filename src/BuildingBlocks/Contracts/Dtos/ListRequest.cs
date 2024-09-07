@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 
-namespace MyBlog.Contracts.Dtos;
+namespace Contracts.Dtos;
 
 public class ListRequest : Request
 {

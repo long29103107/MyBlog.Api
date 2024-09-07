@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using MyBlog.Shared.Serilog;
 using Serilog.Exceptions;
+using Infrastructures.DependencyInjection.Extensions;
 
 namespace MyBlog.Post.Repository.DependencyInjection.Extensions;
 
@@ -17,6 +18,7 @@ public static class ServiceCollectionExtensions
     {
         services.ConfigureDbContext(configuration);
         services.AddScoped<IRepositoryManager, RepositoryManager>();
+        services.AddServiceInfrastructuresBuildingBlock();
 
         return services;
     }
