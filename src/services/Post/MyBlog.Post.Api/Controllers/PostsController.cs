@@ -1,6 +1,5 @@
 ﻿using Contracts.Abstractions.Shared;
 using Microsoft.AspNetCore.Mvc;
-using MyBlog.Post.Domain.Entities;
 using MyBlog.Post.Service.Abstractions;
 using MyBlog.Shared.Lib;
 using static Shared.Dtos.Post.PostDtos;
@@ -11,15 +10,6 @@ namespace MyBlog.Post.Api.Controllers;
 [ApiController]
 public partial class PostsController : ControllerBase
 {
-    //POST /posts: Tạo một bài viết mới.
-    //GET /posts/{id}: Lấy thông tin chi tiết về một bài viết.
-    //PUT /posts/{id}: Cập nhật thông tin một bài viết.
-    //DELETE /posts/{id}: Xóa một bài viết.
-    //POST /posts/{id}/ images: Thêm hình ảnh vào bài viết.
-    //POST /posts/{id}/ comments: Thêm bình luận vào bài viết.
-    //POST /posts/{id}/ tags: Thêm tag vào bài viết.
-    //DELETE /posts/{id}/ tags /{ tagName}: Xóa một tag khỏi bài viết.
-
     private readonly IPostService _service;
 
     public PostsController(IPostService service)
@@ -27,12 +17,12 @@ public partial class PostsController : ControllerBase
         _service = service;
     }
 
-    [HttpPost("seed")]
-    public async Task<IActionResult> SeedDataAsync()
-    {
-        await _service.SeedDataAsync();
-        return Ok("Seeding data successfully");
-    }
+    //[HttpPost("seed")]
+    //public async Task<IActionResult> SeedDataAsync()
+    //{
+    //    await _service.SeedDataAsync();
+    //    return Ok("Seeding data successfully");
+    //}
 
     [HttpGet]
     public async Task<IActionResult> GetListAsync(PostListRequest request)
@@ -76,5 +66,30 @@ public partial class PostsController : ControllerBase
     {
         await _service.DeleteAsync(id);
         return NoContent();
+    }
+
+    [HttpPost("{id}/images")]
+    public async Task<IActionResult> AddImageToPostAsync([FromRoute] int id)
+    {
+        //await _service.DeleteAsync(id);
+        return Ok();
+    }
+
+    [HttpPost("{id}/comments")]
+    public async Task<IActionResult> AddCommentToPostAsync([FromRoute] int id)
+    {
+        return Ok();
+    }
+
+    [HttpPost("{id}/tags")]
+    public async Task<IActionResult> AddTagToPostAsync([FromRoute] int id)
+    {
+        return Ok();
+    }
+
+    [HttpDelete("{id}/tags")]
+    public async Task<IActionResult> RemoveTagFromPostAsync([FromRoute] int id)
+    {
+        return Ok();
     }
 }

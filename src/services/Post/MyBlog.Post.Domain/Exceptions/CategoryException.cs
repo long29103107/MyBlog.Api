@@ -8,4 +8,9 @@ public static class CategoryException
     {
         public NotFound(int categoryId) : base($"The category with the id {categoryId} was not found.") { }
     }
+
+    public class Conflict : ConflictException
+    {
+        public Conflict(string message) : base(message) { }
+    }
 }

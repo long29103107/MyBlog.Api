@@ -8,10 +8,10 @@ public class CategoryMappingProfile : Profile
 {
 	public CategoryMappingProfile()
 	{
-        CreateMap<Entities.Post, CategoryCreateRequest>().ReverseMap();
-        CreateMap<Entities.Post, CategoryUpdateRequest>().ReverseMap();
-        CreateMap<Entities.Post, CategoryUpdatePartialRequest>().ReverseMap();
-        CreateMap<Entities.Post, CategoryListResponse>().ReverseMap();
-        CreateMap<Entities.Post, CategoryResponse>().ReverseMap();
+        CreateMap<Entities.Category, CategoryCreateRequest>().ReverseMap();
+        CreateMap<Entities.Category, CategoryUpdateRequest>().ReverseMap();
+        CreateMap<Entities.Category, CategoryUpdatePartialRequest>().ReverseMap();
+        CreateMap<Entities.Category, CategoryListResponse>().ReverseMap();
+        CreateMap<Entities.Category, CategoryResponse>().ReverseMap();
     }
 }

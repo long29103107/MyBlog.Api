@@ -45,40 +45,11 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
         return Filter().AsNoTracking().Where(expression);
     }
 
-    public IQueryable<T> FindByCondition(Expression<Func<T, bool>>[] expressions, bool isTracking = false)
-    {
-        var queryable = Filter();
-
-        if (!isTracking)
-        {
-            queryable = queryable.AsNoTracking();
-        }
-
-        if(!expressions.IsNullOrEmpty())
-        {
-            foreach (var expression in expressions)
-            {
-                queryable = queryable.Where(expression);
-            }
-        }
-
-        return queryable;
-    }
-
     public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression, bool isTracking = false)
     {
         return await FindByCondition(expression, isTracking).FirstOrDefaultAsync();
     }
 
-    public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>>[] expressions, bool isTracking = false)
-    {
-        return await FindByCondition(expressions, isTracking).FirstOrDefaultAsync();
-    }
-
-    public T FirstOrDefault(Expression<Func<T, bool>>[] expressions, bool isTracking = false)
-    {
-        return FindByCondition(expressions, isTracking).FirstOrDefault();
-    }
     public T FirstOrDefault(Expression<Func<T, bool>> expression, bool isTracking = false)
     {
         return FindByCondition(expression, isTracking).FirstOrDefault();
@@ -123,6 +94,14 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     public async Task<bool> AnyAsync()
     {
         return await Filter().AnyAsync();
+    }
+    public bool Any(Expression<Func<T, bool>> expression)
+    {
+        return Filter().Where(expression).Any();
+    }
+    public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
+    {
+        return await Filter().Where(expression).AnyAsync();
     }
     #endregion
 }

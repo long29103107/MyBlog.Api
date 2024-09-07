@@ -7,8 +7,8 @@ namespace MyBlog.Post.Service.Abstractions;
 public interface ICategoryService : IBaseService<IRepositoryManager>
 {
     Task<CategoryResponse> CreateAsync(CategoryCreateRequest request);
-    Task<CategoryResponse> GetDetailAsync(int id);
-    Task<IEnumerable<CategoryResponse>> GetCategoriesAsync();
+    Task<CategoryResponse> GetAsync(int id);
+    Task<IEnumerable<CategoryResponse>> GetListAsync(CategoryListRequest request);
     Task<CategoryResponse> UpdateAsync(int id, CategoryUpdateRequest category);
     Task DeleteAsync(int id);
     Task AddPostToCategoryAsync(int categoryId, int postId);

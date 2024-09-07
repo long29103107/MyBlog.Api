@@ -2,6 +2,9 @@
 using MyBlog.Post.Service.Implements;
 using MyBlog.Post.Service.Abstractions;
 using MyBlog.Shared.ExceptionHandler;
+using FilteringAndSortingExpression.Swagger.Extensions;
+using System.Reflection;
+using System.Xml.Linq;
 
 namespace MyBlog.Post.Api.DependencyInjection.Extensions;
 
@@ -13,7 +16,13 @@ public static class ServiceCollectionExtensions
         services.AddRouting(x => x.LowercaseUrls = true);
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwagger(x =>
+        {
+            x.Name = PostApiReference.AssemblyName;
+            x.Version = "v1";
+            x.Title = PostApiReference.AssemblyName;
+        });
+
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
 

@@ -1,7 +1,7 @@
 ﻿using Contracts.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace MyBlog.Contracts.Dtos;
 
@@ -18,6 +18,7 @@ public class ListRequest : Request
     [BindProperty(Name = "fe")]
     public virtual string FilterExp { get; set; } = string.Empty;
 
+    [JsonIgnore]
     public virtual string Sort { get; set; } = string.Empty;
     
     [BindNever]

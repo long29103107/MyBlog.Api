@@ -1,9 +1,25 @@
 ﻿using Contracts.Domain;
+using System.Xml.Linq;
+using System;
 
 namespace MyBlog.Post.Domain.Entities;
 
 public class Post : AggregateRoot<int>
 {
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+            return false;
+
+        Post other = (Post)obj;
+        return other.Id == Id;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id);
+    }
+
     public string Title { get; private set; }
     public string Content { get; private set; }
 

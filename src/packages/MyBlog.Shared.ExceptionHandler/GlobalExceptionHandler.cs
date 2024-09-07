@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
 using Contracts.Domain.Exceptions;
 using Contracts.Domain.Exceptions.Abtractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyBlog.Shared.ExceptionHandler;
 
@@ -48,7 +49,9 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             ValidationException => StatusCodes.Status400BadRequest,
             NotFoundException => StatusCodes.Status404NotFound,
             FormatException => StatusCodes.Status422UnprocessableEntity,
+            ConflictException => StatusCodes.Status409Conflict,
             ServiceUnavailableException => StatusCodes.Status503ServiceUnavailable,
+            ErrorException => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status500InternalServerError
         };
 

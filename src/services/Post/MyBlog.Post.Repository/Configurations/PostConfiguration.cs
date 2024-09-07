@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Entities = MyBlog.Post.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyBlog.Post.Domain.Entities;
-using System.Reflection.Emit;
-
 namespace MyBlog.Post.Repository.Configurations;
 
 public class PostConfiguration : IEntityTypeConfiguration<Entities.Post>

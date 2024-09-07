@@ -4,12 +4,13 @@ using FluentValidation;
 using Infrastructures.Common;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Post.Domain.Exceptions;
-using MyBlog.Post.Repository;
 using MyBlog.Post.Repository.Abstractions;
 using MyBlog.Post.Service.Abstractions;
 using static Shared.Dtos.Category.CategoryDtos;
-using static Shared.Dtos.Post.PostDtos;
 using Entities = MyBlog.Post.Domain.Entities;
+using FilteringAndSortingExpression.Extensions;
+using Contracts.Domain.Exceptions.Abtractions;
+using System.Linq;
 
 namespace MyBlog.Post.Service.Implements;
 
@@ -30,7 +31,7 @@ public class CategoryService : BaseService<IRepositoryManager>, ICategoryService
         return _mapper.Map<CategoryResponse>(category);
     }
 
-    public async Task<CategoryResponse> GetDetailAsync(int id)
+    public async Task<CategoryResponse> GetAsync(int id)
     {
         var category = await _InternalGetCategory(id)
             .ProjectTo<CategoryResponse>(_mapper.ConfigurationProvider)
@@ -40,10 +41,11 @@ public class CategoryService : BaseService<IRepositoryManager>, ICategoryService
         return category;
     }
 
-    public async Task<IEnumerable<CategoryResponse>> GetCategoriesAsync()
+    public async Task<IEnumerable<CategoryResponse>> GetListAsync(CategoryListRequest request)
     {
         var categories = await _repoManager.Category
             .FindAll()
+            .Filter(request)
             .ProjectTo<CategoryResponse>(_mapper.ConfigurationProvider)
             .ToListAsync();
 
@@ -72,6 +74,12 @@ public class CategoryService : BaseService<IRepositoryManager>, ICategoryService
             .FirstOrDefaultAsync(x => x.Id == id)
             ?? throw new CategoryException.NotFound(id);
 
+        var existingChilrenCategory = await _repoManager.Category
+            .AnyAsync(x => x.ParentCategoryId == id);
+
+        if (existingChilrenCategory)
+            throw new ErrorException("Cannot delete a category that is the parent category of another category!");
+
         _repoManager.Category.Remove(category);
         await _repoManager.SaveAsync();
     }
@@ -89,6 +97,7 @@ public class CategoryService : BaseService<IRepositoryManager>, ICategoryService
         if (!category.Posts.Contains(post))
         {
             category.AddPost(post);
+            _repoManager.Category.Update(category);
             await _repoManager.SaveAsync();
         }
     }
