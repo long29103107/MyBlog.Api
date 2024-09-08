@@ -76,7 +76,7 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
 
     private static IReadOnlyCollection<ValidationError> GetErrors(Exception exception)
     {
-        IReadOnlyCollection<ValidationError> errors = null;
+        IReadOnlyCollection<ValidationError> errors = default;
 
         if (exception is ValidationException validationException)
         {

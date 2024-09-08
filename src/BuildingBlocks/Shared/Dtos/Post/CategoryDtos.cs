@@ -1,19 +1,52 @@
 ﻿using FilteringAndSortingExpression.Extensions;
 using Contracts.Dtos;
 using static Shared.Dtos.Post.PostDtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Dtos.Category;
 
 public static class CategoryDtos
 {
     //Request
-    public sealed record CategoryCreateRequest(string Name, string Description, int? ParentCategoryId);
-    public sealed record CategoryUpdatePartialRequest(string Title, string Content);
-    public sealed record CategoryUpdateRequest(int Id, string Name, string Description, int? ParentCategoryId);
+    public sealed class CategoryCreateRequest : Request
+    {
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string Description { get; set; }
+        public int? ParentCategoryId { get; set; }
+    }
+    public sealed class CategoryUpdatePartialRequest : Request
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int? ParentCategoryId { get; set; }
+    }
+    public sealed class CategoryUpdateRequest : Request
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int? ParentCategoryId { get; set; }
+    }
 
     //Response
-    public sealed record CategoryListResponse(int Id, string Title, string Content);
-    public sealed record CategoryResponse(int Id, string Name, string Description, int? ParentCategoryId, List<PostResponse>? Posts);
+    public sealed class CategoryListResponse : Response
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int? ParentCategoryId { get; set; }
+    }
+
+    public sealed class CategoryResponse : Response
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int? ParentCategoryId { get; set; }
+        public List<PostResponse>? Posts { get; set; }
+    }
 
     public sealed class CategoryListRequest : ListRequest
     {

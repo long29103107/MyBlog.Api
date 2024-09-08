@@ -14,7 +14,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddHttpContextAccessor();
         services.AddRouting(x => x.LowercaseUrls = true);
-        services.AddControllers();
+        services.AddControllers()
+            .AddNewtonsoftJson();
         services.AddEndpointsApiExplorer();
         services.AddSwagger(x =>
         {

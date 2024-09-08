@@ -5,10 +5,10 @@ namespace Infrastructures.DependencyInjection.Extensions;
 
 public static class PagingExtensions
 {
-    public static PagingListResponse<T> GetMakeList<T>(this List<T> queryset, PagingListRequest request)
+    public static PagingListResponseResult<T> GetMakeList<T>(this List<T> queryset, PagingListRequest request)
         where T : class
     {
-        var result = new PagingListResponse<T>();
+        var result = new PagingListResponseResult<T>();
         if (!queryset.Any()) return result;
 
         result.Page = request.Page;
@@ -26,13 +26,13 @@ public static class PagingExtensions
             .Take(take)
             .ToList();
 
-        return PagingListResponse<T>.Success(result);
+        return PagingListResponseResult<T>.Success(result);
     }
 
-    public async static Task<PagingListResponse<T>> GetMakeListAsync<T>(this IQueryable<T> queryset, PagingListRequest request)
+    public async static Task<PagingListResponseResult<T>> GetMakeListAsync<T>(this IQueryable<T> queryset, PagingListRequest request)
     where T : class
     {
-        var result = new PagingListResponse<T>();
+        var result = new PagingListResponseResult<T>();
         if (!await queryset.AnyAsync()) return result;
 
         result.Page = request.Page;
@@ -50,6 +50,6 @@ public static class PagingExtensions
             .Take(take)
             .ToListAsync();
 
-        return PagingListResponse<T>.Success(result);
+        return PagingListResponseResult<T>.Success(result);
     }
 }

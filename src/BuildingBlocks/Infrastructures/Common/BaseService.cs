@@ -27,7 +27,7 @@ public abstract class BaseService<TRepoManager, TContext> : IBaseService<TRepoMa
         //_logger = logger;
     }
 
-    protected async Task<ResponseResult> _SaveAsync()
+    protected async Task _SaveAsync()
     {
         try
         {
@@ -35,11 +35,24 @@ public abstract class BaseService<TRepoManager, TContext> : IBaseService<TRepoMa
         }
         catch (Exception ex)
         {
-            return ResponseResult.Failure(new Error(ErrorCode.ServerError, ex.Message), StatusCodes.Status500InternalServerError);
+            //TODO: Add log
+            throw;  
         }
-
-        return ResponseResult.Success();
     }
+
+    //protected async Task<ResponseResult> _SaveAsync()
+    //{
+    //    try
+    //    {
+    //        await _unitOfWork.SaveAsync();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return ResponseResult.Failure(new Error(ErrorCode.ServerError, ex.Message), StatusCodes.Status500InternalServerError);
+    //    }
+
+    //    return ResponseResult.Success();
+    //}
 
     protected ResponseResult<T> _GetFailedResult<T>(List<Error> errors, int statusCode)
     {
