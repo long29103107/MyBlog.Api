@@ -3,7 +3,7 @@ using Contracts.Dtos;
 using static Shared.Dtos.Post.PostDtos;
 using System.ComponentModel.DataAnnotations;
 
-namespace Shared.Dtos.Category;
+namespace Shared.Dtos.Post;
 
 public static class CategoryDtos
 {

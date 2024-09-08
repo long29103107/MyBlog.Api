@@ -68,4 +68,17 @@ public class Category : AuditEntity<int>
             post.RemoveCategory(this);
         }
     }
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+            return false;
+
+        Category other = (Category)obj;
+        return other.Id == Id;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id);
+    }
 }

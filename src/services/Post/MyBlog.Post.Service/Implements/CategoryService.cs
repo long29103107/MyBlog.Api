@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using MyBlog.Post.Domain.Exceptions;
 using MyBlog.Post.Repository.Abstractions;
 using MyBlog.Post.Service.Abstractions;
-using static Shared.Dtos.Category.CategoryDtos;
+using static Shared.Dtos.Post.CategoryDtos;
 using Entities = MyBlog.Post.Domain.Entities;
 using FilteringAndSortingExpression.Extensions;
 using Contracts.Domain.Exceptions.Abtractions;
 using Contracts.Abstractions.Common;
 using MyBlog.Post.Repository;
+using MyBlog.Post.Domain.Entities;
 
 namespace MyBlog.Post.Service.Implements;
 
@@ -34,30 +35,27 @@ public class CategoryService : BaseService<IRepositoryManager, PostDbContext>, I
 
     public async Task<CategoryResponse> GetAsync(int id)
     {
-        var category = await _InternalGetCategory(id)
-            .ProjectTo<CategoryResponse>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync()
-            ?? throw new CategoryException.NotFound(id);
+        var category = await _InternalGetCategoryAsync(id);
+        
+        var result = _mapper.Map<CategoryResponse>(category);
 
-        return category;
+        return result;
     }
 
     public async Task<IEnumerable<CategoryResponse>> GetListAsync(CategoryListRequest request)
     {
-        var categories = await _repoManager.Category
+        var result = await _repoManager.Category
             .FindAll()
             .Filter(request)
             .ProjectTo<CategoryResponse>(_mapper.ConfigurationProvider)
             .ToListAsync();
 
-        return categories;
+        return result;
     }
 
     public async Task<CategoryResponse> UpdateAsync(int id, CategoryUpdateRequest request)
     {
-        var category = await _repoManager.Category
-            .FirstOrDefaultAsync(x => x.Id == id)
-             ?? throw new CategoryException.NotFound(id);
+        var category = await _InternalGetCategoryAsync(id);
 
         category.SetName(request.Name);
         category.SetDescription(request.Description);
@@ -66,14 +64,14 @@ public class CategoryService : BaseService<IRepositoryManager, PostDbContext>, I
         _repoManager.Category.Update(category);
         await _repoManager.SaveAsync();
 
-        return _mapper.Map<CategoryResponse>(category);
+        var result = _mapper.Map<CategoryResponse>(category);
+
+        return result;
     }
 
     public async Task DeleteAsync(int id)
     {
-        var category = await _repoManager.Category
-            .FirstOrDefaultAsync(x => x.Id == id)
-            ?? throw new CategoryException.NotFound(id);
+        var category = await _InternalGetCategoryAsync(id);
 
         var existingChilrenCategory = await _repoManager.Category
             .AnyAsync(x => x.ParentCategoryId == id);
@@ -92,9 +90,7 @@ public class CategoryService : BaseService<IRepositoryManager, PostDbContext>, I
 
     public async Task AddPostToCategoryAsync(int categoryId, int postId)
     {
-        var category = await _InternalGetCategory(categoryId)
-            .FirstOrDefaultAsync()
-             ?? throw new CategoryException.NotFound(categoryId);
+        var category = await _InternalGetCategoryAsync(categoryId);
 
         var post = await _repoManager.Post
             .FirstOrDefaultAsync(x => x.Id == postId)
@@ -110,9 +106,7 @@ public class CategoryService : BaseService<IRepositoryManager, PostDbContext>, I
 
     public async Task RemovePostFromCategoryAsync(int categoryId, int postId)
     {
-        var category = await _InternalGetCategory(categoryId)
-            .FirstOrDefaultAsync()
-             ?? throw new CategoryException.NotFound(categoryId);
+        var category = await _InternalGetCategoryAsync(categoryId);
 
         var post = await _repoManager.Post
                .FirstOrDefaultAsync(x => x.Id == postId)
@@ -126,8 +120,10 @@ public class CategoryService : BaseService<IRepositoryManager, PostDbContext>, I
         }
     }
 
-    private IQueryable<Entities.Category> _InternalGetCategory(int id)
-        => _repoManager.Category
-           .FindByCondition(x => x.Id == id)
-           .Include(c => c.Posts);
+    private async Task<Entities.Category> _InternalGetCategoryAsync(int id)
+        => await _repoManager.Category
+            .FindByCondition(x => x.Id == id)
+            .Include(c => c.Posts)
+            .FirstOrDefaultAsync()
+            ?? throw new CategoryException.NotFound(id);
 }

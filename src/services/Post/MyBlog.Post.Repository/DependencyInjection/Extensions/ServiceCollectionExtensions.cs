@@ -6,9 +6,9 @@ using MyBlog.Post.Repository.Abstractions;
 using Persistence.Interceptors;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Infrastructures.DependencyInjection.Extensions;
 using MyBlog.Shared.Serilog;
 using Serilog.Exceptions;
-using Infrastructures.DependencyInjection.Extensions;
 
 namespace MyBlog.Post.Repository.DependencyInjection.Extensions;
 

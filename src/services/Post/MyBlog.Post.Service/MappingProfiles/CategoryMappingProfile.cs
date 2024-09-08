@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using static Shared.Dtos.Category.CategoryDtos;
+using static Shared.Dtos.Post.CategoryDtos;
 using Entities = MyBlog.Post.Domain.Entities;
 
 namespace MyBlog.Post.Service.MappingProfiles;

@@ -17,7 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Autofac\MyBlog.Shared.Autofac.csproj" />
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.ExceptionHandler\MyBlog.Shared.ExceptionHandler.csproj" />
-    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Serilog\MyBlog.Shared.Serilog.csproj" />
     <ProjectReference Include="..\MyBlog.Post.Repository\MyBlog.Post.Repository.csproj" />
     <ProjectReference Include="..\MyBlog.Post.Service\MyBlog.Post.Service.csproj" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using Contracts.Abstractions.Common;
 using MyBlog.Post.Repository;
 using MyBlog.Post.Repository.Abstractions;
-using static Shared.Dtos.Category.CategoryDtos;
+using static Shared.Dtos.Post.CategoryDtos;
 
 namespace MyBlog.Post.Service.Abstractions;
 

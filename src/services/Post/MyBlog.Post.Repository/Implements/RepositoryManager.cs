@@ -13,6 +13,7 @@ public class RepositoryManager : UnitOfWork<PostDbContext>, IRepositoryManager
 
     private IPostRepository _post;
     private ICategoryRepository _category;
+    private ITagRepository _tag;
 
     public IPostRepository Post
     {
@@ -39,6 +40,19 @@ public class RepositoryManager : UnitOfWork<PostDbContext>, IRepositoryManager
         }
     }
 
+    public ITagRepository Tag
+    {
+        get
+        {
+            if (_tag == null)
+            {
+                _tag = new TagRepository(_context);
+            }
+
+            return _tag;
+        }
+    }
+
     public DbSet<Entities.Post> Posts
     {
         get
@@ -51,6 +65,13 @@ public class RepositoryManager : UnitOfWork<PostDbContext>, IRepositoryManager
         get
         {
             return _context.Categories;
+        }
+    }
+    public DbSet<Entities.Tag> Tags
+    {
+        get
+        {
+            return _context.Tags;
         }
     }
 }

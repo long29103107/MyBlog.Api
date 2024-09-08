@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Post.Service.Abstractions;
 using Shared.APIs;
-using static Shared.Dtos.Category.CategoryDtos;
+using static Shared.Dtos.Post.CategoryDtos;
 
 namespace MyBlog.Post.Api.Controllers;
 
