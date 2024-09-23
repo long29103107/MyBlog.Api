@@ -4,9 +4,9 @@ using Entities = MyBlog.Post.Domain.Entities;
 
 namespace MyBlog.Category.Service.MappingProfiles;
 
-public class ProductMappingProfile : Profile
+public class PostMappingProfile : Profile
 {
-    public ProductMappingProfile()
+    public PostMappingProfile()
     {
         CreateMap<Entities.Post, PostCreateRequest>().ReverseMap();
         CreateMap<Entities.Post, PostUpdateRequest>().ReverseMap();

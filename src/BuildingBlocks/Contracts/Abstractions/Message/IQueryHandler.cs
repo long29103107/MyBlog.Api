@@ -1,8 +1,8 @@
-﻿using Contracts.Abstractions.Shared;
+﻿using Contracts.Dtos;
 using MediatR;
 
 namespace DistributedSystem.Contract.Abstractions.Message;
 
-public interface IQueryHandler<TQuery, TResponse> : IRequestHandler<TQuery, Response<TResponse>>
+public interface IQueryHandler<TQuery, TResponse> : IRequestHandler<TQuery, ResponseResult<TResponse>>
     where TQuery : IQuery<TResponse>
 { }

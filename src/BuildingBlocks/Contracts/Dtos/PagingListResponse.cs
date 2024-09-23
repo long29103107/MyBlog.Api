@@ -1,4 +1,4 @@
-﻿namespace MyBlog.Contracts.Dtos;
+﻿namespace Contracts.Dtos;
 
 public class PagingListResponse<T> : ListResponse<T> where T : class
 {

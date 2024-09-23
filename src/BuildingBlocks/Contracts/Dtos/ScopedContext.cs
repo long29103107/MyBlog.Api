@@ -1,7 +1,7 @@
 ﻿using MyBlog.Contracts.Dtos.Interfaces;
 using System.Collections.Specialized;
 
-namespace MyBlog.Contracts.Dtos;
+namespace Contracts.Dtos;
 
 public class ScopedContext : IScopedContext
 {

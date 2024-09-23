@@ -2,6 +2,7 @@
 using Contracts.Abstractions.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructures.Common;
 
@@ -44,21 +45,14 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
         return Filter().AsNoTracking().Where(expression);
     }
 
-    public IQueryable<T> FindByCondition(Expression<Func<T, bool>>[] expressions, bool isTracking = false)
+    public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression, bool isTracking = false)
     {
-        var queryable = Filter();
+        return await FindByCondition(expression, isTracking).FirstOrDefaultAsync();
+    }
 
-        if (!isTracking)
-        {
-            queryable = queryable.AsNoTracking();
-        }
-
-        foreach (var expression in expressions)
-        {
-            queryable = queryable.Where(expression);
-        }
-
-        return queryable;
+    public T FirstOrDefault(Expression<Func<T, bool>> expression, bool isTracking = false)
+    {
+        return FindByCondition(expression, isTracking).FirstOrDefault();
     }
     #endregion
 
@@ -100,6 +94,14 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     public async Task<bool> AnyAsync()
     {
         return await Filter().AnyAsync();
+    }
+    public bool Any(Expression<Func<T, bool>> expression)
+    {
+        return Filter().Where(expression).Any();
+    }
+    public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
+    {
+        return await Filter().Where(expression).AnyAsync();
     }
     #endregion
 }

@@ -1,6 +1,5 @@
-﻿namespace Contracts.Abstractions.Common;
+﻿using Microsoft.EntityFrameworkCore;
 
-public interface IBaseService<TRepoManager> where TRepoManager : class
-{
+namespace Contracts.Abstractions.Common;
 
-}
+public interface IBaseService<TRepoManager, TContext> where TContext : DbContext { }

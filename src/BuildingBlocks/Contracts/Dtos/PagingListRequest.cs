@@ -1,8 +1,9 @@
-﻿using System.Web;
+﻿using MyBlog.Contracts.Dtos.Interfaces;
+using System.Web;
 
-namespace MyBlog.Contracts.Dtos;
+namespace Contracts.Dtos;
 
-public class PagingListRequest : ListRequest
+public abstract class PagingListRequest : ListRequest
 {
     private int? _page;
     public int Page

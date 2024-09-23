@@ -4,8 +4,12 @@ namespace MyBlog.Post.Domain.Entities;
 
 public class PostMetadata : AuditEntity<int>
 {
-    public int PostId { get; set; }
-    public string Key { get; set; }
-    public string Value { get; set; }
-    public Post Post { get; set; }
+    public string Key { get; private set; }
+    public string Value { get; private set; }
+    public PostMetadata() { }
+    public PostMetadata(string key, string value)
+    {
+        Key = key;
+        Value = value;
+    }
 }

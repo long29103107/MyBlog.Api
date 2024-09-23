@@ -50,3 +50,12 @@ public class Error : IEquatable<Error>
 
     public override string ToString() => Code;
 }
+
+
+public static class ErrorCode
+{
+    public const string NotFound = "notFound";
+    public const string BadRequest = "badRequest";
+    public const string ServerError = "serverError";
+    public const string ServiceUnavailable = "serviceUnavailable";
+}

@@ -1,7 +1,7 @@
-﻿using Contracts.Abstractions.Shared;
+﻿using Contracts.Dtos;
 using MediatR;
 
 namespace DistributedSystem.Contract.Abstractions.Message;
 
-public interface IQuery<TResponse> : IRequest<Response<TResponse>>
+public interface IQuery<TResponse> : IRequest<ResponseResult<TResponse>>
 { }

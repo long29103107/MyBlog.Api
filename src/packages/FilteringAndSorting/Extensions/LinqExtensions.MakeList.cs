@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyBlog.Contracts.Dtos;
+using Contracts.Dtos;
 
 namespace FilteringAndSortingExpression.Extensions;
 

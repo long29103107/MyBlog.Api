@@ -7,27 +7,31 @@ using MyBlog.Shared.Lib.Extensions;
 using Entities = MyBlog.Post.Domain.Entities;
 using FluentValidation;
 using MyBlog.Post.Service.Abstractions;
-using Exceptions = Contracts.Domain.Exceptions;
-using MyBlog.Post.Domain.Exceptions;
 using static Shared.Dtos.Post.PostDtos;
 using Infrastructures.Common;
-using Contracts.Abstractions.Shared;
-using Infrastructures.DependencyInjection.Extensions;
-using Contracts.Domain.Exceptions;
 using FilteringAndSortingExpression.Extensions;
-
+using Contracts.Domain.Exceptions;
+using Exceptions = Contracts.Domain.Exceptions;
+using MyBlog.Post.Domain.Exceptions;
+using MyBlog.Post.Repository;
+using Contracts.Abstractions.Common;
+using System.Data;
 namespace MyBlog.Post.Service.Implements;
 
-public class PostService : BaseService<IRepositoryManager>, IPostService
+public class PostService : BaseService<IRepositoryManager, PostDbContext>, IPostService
 {
-    private readonly IValidatorFactory _validatorFactory;
-
-    public PostService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory) : base(repoManager, mapper)
+    public PostService(
+        IRepositoryManager repoManager
+        , IMapper mapper
+        , IValidatorFactory validatorFactory
+        , IUnitOfWork<PostDbContext> unitOfWork
+        ) 
+        : base(repoManager, mapper, validatorFactory, unitOfWork)
     {
-        _validatorFactory = validatorFactory;
+       
     }
 
-    public async Task<Response<List<PostListResponse>>> GetListAsync(PostListRequest request)
+    public async Task<List<PostListResponse>> GetListAsync(PostListRequest request)
     {
         var posts = await _repoManager.Post.FindAll()
             .Filter(request)
@@ -35,55 +39,62 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
 
         var result = _mapper.Map<List<PostListResponse>>(posts);
 
-        return Response<List<PostListResponse>>.Success(result);
+        return result;
     }
 
-    public async Task<Response<PostResponse>> GetAsync(int id)
+    public async Task<PostResponse> GetAsync(int id)
     {
         var post = await _InternalGetProductAsync(id);
 
         var result = _mapper.Map<PostResponse>(post);
 
-        return Response<PostResponse>.Success(result);
+        return result;
     }
 
-    public async Task<PagingResponse<PostResponse>> GetPagedListAsync(PagingRequest request)
+    public async Task<List<PostListResponse>> GetPagedListAsync(PagingPostRequest request)
     {
-        var dataset = await _repoManager.Post.FindAll().ToListAsync();
+        var dataSet = _repoManager.Post.FindAll()
+            .Select(x => new PostListResponse
+            {
+                Id = x.Id,
+                Content = x.Content
+            })
+            .Filter(request);
 
-        var res = _mapper.Map<List<PostResponse>>(dataset);
-        var result = res.GetMakeList(request);
+        var result = await request.MakeListAsync(dataSet);
 
-        return PagingResponse<PostResponse>.Success(result);
+        return result;
     }
 
-    public async Task<Response<PostResponse>> CreateAsync(PostCreateRequest request)
+    public async Task<PostResponse> CreateAsync(PostCreateRequest request)
     {
         var model = _mapper.Map<Entities.Post>(request);
 
         await _ValidateProductAsync(model);
 
         _repoManager.Post.Add(model);
-        await _repoManager.SaveAsync();
 
-        return Response<PostResponse>.Success(_mapper.Map<PostResponse>(model));
+        await _SaveAsync();
+
+        return _mapper.Map<PostResponse>(model);
     }
 
-    public async Task<Response<PostResponse>> UpdateAsync(int id, PostUpdateRequest request)
+    public async Task<PostResponse> UpdateAsync(int id, PostUpdateRequest request)
     {
         var model = await _InternalGetProductAsync(id);
-
-        _mapper.Map<PostUpdateRequest, Entities.Post>(request, model!);
+        
+        _mapper.Map<PostUpdateRequest, Entities.Post>(request, model);
 
         await _ValidateProductAsync(model);
 
         _repoManager.Post.Update(model);
-        await _repoManager.SaveAsync();
 
-        return Response<PostResponse>.Success(_mapper.Map<PostResponse>(model));
+        await _SaveAsync();
+
+        return _mapper.Map<PostResponse>(model);
     }
 
-    public async Task<Response<PostResponse>> UpdatePartialAsync(int id, [FromBody] JsonPathRequest<PostUpdatePartialRequest> request)
+    public async Task<PostResponse> UpdatePartialAsync(int id, [FromBody] JsonPathRequest<PostUpdatePartialRequest> request)
     {
         var model = await _InternalGetProductAsync(id);
 
@@ -92,49 +103,32 @@ public class PostService : BaseService<IRepositoryManager>, IPostService
         await _ValidateProductAsync(model);
 
         _repoManager.Post.Update(model);
-        await _repoManager.SaveAsync();
 
-        return Response<PostResponse>.Success(_mapper.Map<PostResponse>(model));
+        await _SaveAsync();
+
+        return _mapper.Map<PostResponse>(model);
     }
 
-    public async Task<Response> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
         var model = await _InternalGetProductAsync(id);
 
         _repoManager.Post.Remove(model);
-        await _repoManager.SaveAsync();
 
-        return Response.Success();
-    }
+        await _SaveAsync();
 
-    public async Task SeedDataAsync()
-    {
-        if (!await _repoManager.Post.AnyAsync())
-        {
-            var index = 0;
-            var products = new List<Entities.Post>();
-
-            while (index < 10)
-            {
-                var name = "Product " + (index + 1);
-                products.Add(new Entities.Post()
-                {
-                    Title = name,
-                    Content = name
-                });
-                index++;
-            }
-
-            _repoManager.Post.AddRange(products);
-            await _repoManager.SaveAsync();
-        }
+        return true;
     }
 
     private async Task<Entities.Post> _InternalGetProductAsync(int id)
-        => await _repoManager.Post
+    {
+        var result = await _repoManager.Post
            .FindByCondition(x => x.Id == id)
            .FirstOrDefaultAsync()
-             ?? throw new PostException.NotFound(id);
+           ?? throw new PostException.NotFound(id);
+
+        return result;
+    }
 
     private async Task _ValidateProductAsync(Entities.Post model)
     {

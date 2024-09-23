@@ -1,20 +1,19 @@
 ﻿using Contracts.Abstractions.Common;
-using Contracts.Abstractions.Shared;
-using MyBlog.Post.Repository.Implements;
+using MyBlog.Post.Repository;
+using MyBlog.Post.Repository.Abstractions;
 using MyBlog.Shared.Lib;
 using static Shared.Dtos.Post.PostDtos;
 
 namespace MyBlog.Post.Service.Abstractions;
 
-public interface IPostService : IBaseService<RepositoryManager>
+public interface IPostService : IBaseService<IRepositoryManager, PostDbContext>
 {
-    Task<Response<List<PostListResponse>>> GetListAsync(PostListRequest request);
-    Task<PagingResponse<PostResponse>> GetPagedListAsync(PagingRequest request);
-    Task<Response<PostResponse>> GetAsync(int id);
-    Task<Response<PostResponse>> CreateAsync(PostCreateRequest request);
-    Task<Response<PostResponse>> UpdateAsync(int id, PostUpdateRequest request);
-    Task<Response<PostResponse>> UpdatePartialAsync(int id, JsonPathRequest<PostUpdatePartialRequest> request);
-    Task<Response> DeleteAsync(int id);
-    Task SeedDataAsync();
+    Task<List<PostListResponse>> GetListAsync(PostListRequest request);
+    Task<List<PostListResponse>> GetPagedListAsync(PagingPostRequest request);
+    Task<PostResponse> GetAsync(int id);
+    Task<PostResponse> CreateAsync(PostCreateRequest request);
+    Task<PostResponse> UpdateAsync(int id, PostUpdateRequest request);
+    Task<PostResponse> UpdatePartialAsync(int id, JsonPathRequest<PostUpdatePartialRequest> request);
+    Task<bool> DeleteAsync(int id);
 }
 

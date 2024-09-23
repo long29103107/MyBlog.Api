@@ -1,4 +1,5 @@
 ﻿using Contracts.Abstractions.Shared;
+using Contracts.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +7,7 @@ namespace Shared.APIs;
 
 public abstract class ApiEndpoint
 {
-    protected static IResult HandlerFailure(Response result) =>
+    protected static IResult HandlerFailure(ResponseResult result) =>
         result switch
         {
             { IsSuccess: true } => throw new InvalidOperationException(),

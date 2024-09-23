@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace MyBlog.Contracts.Dtos;
+namespace Contracts.Dtos;
 
 public abstract class BindingPagingBaseRequest
 {
