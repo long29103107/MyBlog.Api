@@ -74,6 +74,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilteringAndSortingExpressi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilteringAndSortingExpression.Swagger", "src\packages\FilteringAndSortingExpression.Swagger\FilteringAndSortingExpression.Swagger.csproj", "{35147065-6B7A-4A16-A19C-4AFB987346D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LonG.CSVLib", "src\packages\LonG.CSVLib\LonG.CSVLib.csproj", "{FA5D4E05-D042-41BB-8FBF-8DA73DA7C698}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +146,10 @@ Global
 		{35147065-6B7A-4A16-A19C-4AFB987346D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35147065-6B7A-4A16-A19C-4AFB987346D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35147065-6B7A-4A16-A19C-4AFB987346D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA5D4E05-D042-41BB-8FBF-8DA73DA7C698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA5D4E05-D042-41BB-8FBF-8DA73DA7C698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA5D4E05-D042-41BB-8FBF-8DA73DA7C698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA5D4E05-D042-41BB-8FBF-8DA73DA7C698}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -176,6 +182,7 @@ Global
 		{8109776B-F243-49F8-A5A9-AA376493D2AA} = {EE6C4D88-F526-4E49-9B3B-52FB6E2E34DC}
 		{DBBFF142-9563-4921-88C6-F86D622615C6} = {94D1F3A1-867F-4DB2-93C1-85FAB28080C8}
 		{35147065-6B7A-4A16-A19C-4AFB987346D7} = {94D1F3A1-867F-4DB2-93C1-85FAB28080C8}
+		{FA5D4E05-D042-41BB-8FBF-8DA73DA7C698} = {94D1F3A1-867F-4DB2-93C1-85FAB28080C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {840449B2-65DC-473A-84C8-CB4E4FEB614B}
