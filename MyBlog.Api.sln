@@ -74,6 +74,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\Building
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Shared.Serilog", "src\packages\MyBlog.Shared.Serilog\MyBlog.Shared.Serilog.csproj", "{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Domain", "src\services\Identity\MyBlog.Identity.Domain\MyBlog.Identity.Domain.csproj", "{1E937774-3BFC-425D-A1D7-AA058A1E1AEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Repository", "src\services\Identity\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj", "{7FC9BFD4-D490-4F9A-B359-95F42B757563}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Service", "src\services\Identity\MyBlog.Identity.Service\MyBlog.Identity.Service.csproj", "{19731D36-CD19-4FC2-9F0E-1E9631DF1A4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Idenity.Api", "src\services\Identity\MyBlog.Idenity.Api\MyBlog.Idenity.Api.csproj", "{CCC13750-8347-47B8-A8F7-F6939BFC1263}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +152,22 @@ Global
 		{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E937774-3BFC-425D-A1D7-AA058A1E1AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E937774-3BFC-425D-A1D7-AA058A1E1AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E937774-3BFC-425D-A1D7-AA058A1E1AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E937774-3BFC-425D-A1D7-AA058A1E1AEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FC9BFD4-D490-4F9A-B359-95F42B757563}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FC9BFD4-D490-4F9A-B359-95F42B757563}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FC9BFD4-D490-4F9A-B359-95F42B757563}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FC9BFD4-D490-4F9A-B359-95F42B757563}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19731D36-CD19-4FC2-9F0E-1E9631DF1A4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19731D36-CD19-4FC2-9F0E-1E9631DF1A4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19731D36-CD19-4FC2-9F0E-1E9631DF1A4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19731D36-CD19-4FC2-9F0E-1E9631DF1A4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCC13750-8347-47B8-A8F7-F6939BFC1263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCC13750-8347-47B8-A8F7-F6939BFC1263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCC13750-8347-47B8-A8F7-F6939BFC1263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCC13750-8347-47B8-A8F7-F6939BFC1263}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -176,6 +200,10 @@ Global
 		{35147065-6B7A-4A16-A19C-4AFB987346D7} = {94D1F3A1-867F-4DB2-93C1-85FAB28080C8}
 		{8109776B-F243-49F8-A5A9-AA376493D2AA} = {EE6C4D88-F526-4E49-9B3B-52FB6E2E34DC}
 		{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09} = {94D1F3A1-867F-4DB2-93C1-85FAB28080C8}
+		{1E937774-3BFC-425D-A1D7-AA058A1E1AEF} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
+		{7FC9BFD4-D490-4F9A-B359-95F42B757563} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
+		{19731D36-CD19-4FC2-9F0E-1E9631DF1A4F} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
+		{CCC13750-8347-47B8-A8F7-F6939BFC1263} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {840449B2-65DC-473A-84C8-CB4E4FEB614B}
