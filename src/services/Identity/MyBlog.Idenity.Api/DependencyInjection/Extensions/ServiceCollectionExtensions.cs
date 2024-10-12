@@ -1,7 +1,4 @@
-﻿//using FluentValidation.AspNetCore;
-//using MyBlog.Identity.Service.Implements;
-//using MyBlog.Identity.Service.Abstractions;
-using MyBlog.Shared.ExceptionHandler;
+﻿using MyBlog.Shared.ExceptionHandler;
 using FilteringAndSortingExpression.Swagger.Extensions;
 using MyBlog.Identity.Api;
 

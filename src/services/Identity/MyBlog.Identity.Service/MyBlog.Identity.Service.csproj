@@ -7,8 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Autofac\MyBlog.Shared.Autofac.csproj" />
     <ProjectReference Include="..\MyBlog.Identity.Domain\MyBlog.Identity.Domain.csproj" />
     <ProjectReference Include="..\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Implements\" />
+    <Folder Include="Abstractions\" />
   </ItemGroup>
 
 </Project>
