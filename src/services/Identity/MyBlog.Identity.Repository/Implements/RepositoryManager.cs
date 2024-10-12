@@ -1,5 +1,4 @@
-﻿using Contracts.Abstractions.Common;
-using Infrastructures.Common;
+﻿using Infrastructures.Common;
 using MyBlog.Identity.Repository.Abstractions;
 
 namespace MyBlog.Identity.Repository.Implements;

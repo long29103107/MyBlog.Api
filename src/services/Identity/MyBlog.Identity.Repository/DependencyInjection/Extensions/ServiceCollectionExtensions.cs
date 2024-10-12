@@ -9,6 +9,8 @@ using Serilog;
 using Infrastructures.DependencyInjection.Extensions;
 using MyBlog.Shared.Serilog;
 using Serilog.Exceptions;
+using MyBlog.Identity.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace MyBlog.Identity.Repository;
 
@@ -19,6 +21,7 @@ public static class ServiceCollectionExtensions
         services.ConfigureDbContext(configuration);
         services.AddScoped<IRepositoryManager, RepositoryManager>();
         services.AddServiceInfrastructuresBuildingBlock();
+        services.AddIdentityService();
 
         return services;
     }
@@ -32,6 +35,15 @@ public static class ServiceCollectionExtensions
            (sp, options) => options.UseNpgsql(connectionString,
            b => b.MigrationsAssembly(IdentityRepositoryReference.AssemblyName))
             .AddInterceptors(sp.GetRequiredService<UpdateAuditableEntitiesInterceptor>()));
+    }
+
+    public static IServiceCollection AddIdentityService(this IServiceCollection services)
+    {
+        services.AddIdentityCore<User>()
+            .AddEntityFrameworkStores<MyIdentityDbContext>()
+            .AddApiEndpoints();
+        
+        return services;
     }
 
     public static IHostBuilder AddHostRepository(this IHostBuilder builder)

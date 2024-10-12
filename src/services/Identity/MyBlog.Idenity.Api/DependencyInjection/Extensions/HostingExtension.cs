@@ -1,8 +1,7 @@
-﻿using MyBlog.Shared.Serilog;
-using Serilog;
-using Serilog.Exceptions;
-//using MyBlog.Identity.Repository.DependencyInjection.Extensions;
-//using MyBlog.Identity.Service.DependencyInjection.Extensions;
+﻿using MyBlog.Identity.Domain.Entities;
+using MyBlog.Identity.Repository;
+using MyBlog.Identity.Service;
+using MyBlog.Post.Api.DependencyInjection.Extensions;
 
 namespace MyBlog.Identity.Api.DependencyInjection.Extensions;
 
@@ -10,17 +9,17 @@ public static class HostingExtension
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
-        ////Add service
-        //builder.Services
-        //    .AddServiceCollectionApi()
-        //    .AddServiceCollectionRepository(builder.Configuration)
-        //    .AddServiceCollectionService();
+        //Add service
+        builder.Services
+            .AddServiceCollectionApi()
+            .AddServiceCollectionRepository(builder.Configuration);
+            //.AddServiceCollectionService();
 
-        ////Add host
-        //builder.Host
-        //    .AddHostApi()
-        //    .AddHostService()
-        //    .AddHostRepository();
+        //Add host
+        builder.Host
+            .AddHostApi()
+            .AddHostRepository(); ;
+            //.AddHostService();
 
         return builder.Build();
     }
@@ -38,6 +37,8 @@ public static class HostingExtension
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+
+        app.MapIdentityApi<User>();
 
         app.MapControllers();
 

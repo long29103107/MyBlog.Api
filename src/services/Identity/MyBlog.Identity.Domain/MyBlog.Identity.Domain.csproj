@@ -16,4 +16,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\1. BE\MyBlog.Api\src\services\Identity\MyBlog.Identity.Domain\Entities\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\1. BE\MyBlog.Api\src\services\Identity\MyBlog.Identity.Domain\Entities\.editorconfig" />
+  </ItemGroup>
+
 </Project>
