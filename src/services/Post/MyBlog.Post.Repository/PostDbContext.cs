@@ -16,7 +16,7 @@ public class PostDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(PostRepositoryReference.Assembly);
         base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(PostRepositoryReference.Assembly);
     }
 }
