@@ -8,7 +8,7 @@ public class DesignTimeDbContextFactory<T> : IDesignTimeDbContextFactory<T> wher
 {
     protected virtual string _dbConnStrKey { get; set; } = "DefaultConnection";
 
-    public T CreateDbContext(string[] args)
+    public virtual T CreateDbContext(string[] args)
     {
         Console.WriteLine(Directory.GetCurrentDirectory() + " " + typeof(T).FullName + " " + _dbConnStrKey);
         IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -18,7 +18,8 @@ public class DesignTimeDbContextFactory<T> : IDesignTimeDbContextFactory<T> wher
         var builder = new DbContextOptionsBuilder<T>();
         var connectionString = configuration.GetSection($"ConnectionStrings:{_dbConnStrKey}").Value;
         Console.WriteLine(connectionString);
-        builder.UseNpgsql(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
+        //builder.UseNpgsql(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
+        builder.UseSqlServer(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
         var dbContext = (T)Activator.CreateInstance(typeof(T), builder.Options);
         return dbContext;
     }

@@ -11,6 +11,9 @@ using MyBlog.Shared.Serilog;
 using Serilog.Exceptions;
 using MyBlog.Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace MyBlog.Identity.Repository;
 
@@ -21,7 +24,7 @@ public static class ServiceCollectionExtensions
         services.ConfigureDbContext(configuration);
         services.AddScoped<IRepositoryManager, RepositoryManager>();
         services.AddServiceInfrastructuresBuildingBlock();
-        services.AddIdentityService();
+        services.AddIdentityService(configuration);
 
         return services;
     }
@@ -32,17 +35,39 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
         services.AddDbContext<MyIdentityDbContext>(
-           (sp, options) => options.UseNpgsql(connectionString,
+           (sp, options) => options.UseSqlServer(connectionString,
            b => b.MigrationsAssembly(IdentityRepositoryReference.AssemblyName))
             .AddInterceptors(sp.GetRequiredService<UpdateAuditableEntitiesInterceptor>()));
     }
 
-    public static IServiceCollection AddIdentityService(this IServiceCollection services)
+    public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentityCore<User>()
+        services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<MyIdentityDbContext>()
             .AddApiEndpoints();
-        
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.SaveToken = true;
+            options.RequireHttpsMetadata = false;
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidAudience = configuration["JWT:ValidAudience"],
+                ValidIssuer = configuration["JWT:ValidIssuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+            };
+        });
+
+
+
+
         return services;
     }
 

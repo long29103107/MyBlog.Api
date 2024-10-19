@@ -11,11 +11,14 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 - Post: http://localhost:5003
 
 ## Migrations
-|  Service  |  Method   |      Migration command                                                      |
-|-----------|-----------|-----------------------------------------------------------------------------|
-|  Post     |  Add      | Add-migration Init -Context PostDbContext -o Post/Migrations	              | 
-|  Post     |  Update   | Update-database -Context PostDbContext                                      | 
-|  Post     |  Script   | Script-Migration -Context PostDbContext                                     | 
+|  Service  |  Method   |      Migration command																 |
+|-----------|-----------|----------------------------------------------------------------------------------------|
+|  Post     |  Add      | Add-migration Init -Context PostDbContext -o Post/Migrations							 | 
+|  Post     |  Update   | Update-database -Context PostDbContext												 | 
+|  Post     |  Script   | Script-Migration -Context PostDbContext												 | 
+|  Identity |  Add      | Add-migration Init -Context MyIdentityDbContext -o Identity/Migrations	             | 
+|  Identity |  Update   | Update-database -Context MyIdentityDbContext										     | 
+|  Identity |  Script   | Script-Migration -Context MyIdentityDbContext											 | 
 
 ## Tech stack
 ```md
