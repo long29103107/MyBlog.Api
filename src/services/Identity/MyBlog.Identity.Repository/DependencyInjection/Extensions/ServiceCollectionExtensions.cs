@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MyBlog.Identity.Repository.Stores;
 
 namespace MyBlog.Identity.Repository;
 
@@ -44,6 +45,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<MyIdentityDbContext>()
+            .AddUserStore<UserStore>()
+            .AddRoleStore<RoleStore>()
             .AddApiEndpoints();
 
         services.AddAuthentication(options =>

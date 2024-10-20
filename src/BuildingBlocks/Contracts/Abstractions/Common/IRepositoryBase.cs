@@ -27,5 +27,7 @@ public interface IRepositoryBase<T, TContext>
     Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
     bool Any();
     Task<bool> AnyAsync();
+    Task<int> SaveAsync();
+    int Save();
     #endregion
 }

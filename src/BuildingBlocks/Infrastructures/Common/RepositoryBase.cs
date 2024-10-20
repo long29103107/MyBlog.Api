@@ -103,5 +103,16 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     {
         return await Filter().Where(expression).AnyAsync();
     }
+
+    public async Task<int> SaveAsync()
+    {
+        return await _context.SaveChangesAsync();
+
+    }
+    public int Save()
+    {
+        return _context.SaveChanges();
+
+    }
     #endregion
 }
