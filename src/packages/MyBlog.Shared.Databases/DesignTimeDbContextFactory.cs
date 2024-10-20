@@ -18,8 +18,17 @@ public class DesignTimeDbContextFactory<T> : IDesignTimeDbContextFactory<T> wher
         var builder = new DbContextOptionsBuilder<T>();
         var connectionString = configuration.GetSection($"ConnectionStrings:{_dbConnStrKey}").Value;
         Console.WriteLine(connectionString);
-        //builder.UseNpgsql(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
-        builder.UseSqlServer(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
+
+        switch(_dbConnStrKey)
+        {
+            case "Post":
+                builder.UseNpgsql(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
+                break;
+            default:
+                builder.UseNpgsql(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
+                break;
+        }
+
         var dbContext = (T)Activator.CreateInstance(typeof(T), builder.Options);
         return dbContext;
     }
