@@ -23,7 +23,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddServiceCollectionRepository(this IServiceCollection services, IConfiguration configuration)
     {
         services.ConfigureDbContext(configuration);
-        services.AddScoped<IRepositoryManager, RepositoryManager>();
         services.AddServiceInfrastructuresBuildingBlock();
         services.AddIdentityService(configuration);
 
@@ -67,9 +66,6 @@ public static class ServiceCollectionExtensions
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
             };
         });
-
-
-
 
         return services;
     }

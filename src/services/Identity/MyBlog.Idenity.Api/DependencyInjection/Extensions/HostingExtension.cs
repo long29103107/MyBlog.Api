@@ -12,14 +12,14 @@ public static class HostingExtension
         //Add service
         builder.Services
             .AddServiceCollectionApi()
-            .AddServiceCollectionRepository(builder.Configuration);
-            //.AddServiceCollectionService();
+            .AddServiceCollectionRepository(builder.Configuration)
+            .AddServiceCollectionService();
 
         //Add host
         builder.Host
             .AddHostApi()
-            .AddHostRepository(); ;
-            //.AddHostService();
+            .AddHostRepository()
+            .AddHostService();
 
         return builder.Build();
     }
@@ -38,7 +38,7 @@ public static class HostingExtension
 
         app.UseAuthorization();
 
-        app.MapIdentityApi<User>();
+        //app.MapIdentityApi<User>();
 
         app.MapControllers();
 
