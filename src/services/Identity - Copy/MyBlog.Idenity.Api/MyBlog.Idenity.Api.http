@@ -1,0 +1,6 @@
+@MyBlog.Idenity.Api_HostAddress = http://localhost:5134
+
+GET {{MyBlog.Idenity.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Post\MyBlog.Post.Domain\MyBlog.Post.Domain.csproj" />
     <ProjectReference Include="..\MyBlog.Identity.Domain\MyBlog.Identity.Domain.csproj" />
-    <ProjectReference Include="..\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj" />
   </ItemGroup>
 
 </Project>

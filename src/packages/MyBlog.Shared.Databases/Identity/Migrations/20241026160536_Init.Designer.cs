@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyBlog.Identity.Repository;
+using MyBlog.Identity.Api.Authentication;
 
 #nullable disable
 
 namespace MyBlog.Shared.Databases.Identity.Migrations
 {
     [DbContext(typeof(MyIdentityDbContext))]
-    [Migration("20241026135036_Init")]
+    [Migration("20241026160536_Init")]
     partial class Init
     {
         /// <inheritdoc />

@@ -1,8 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using JWTAuthentication.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
-namespace MyBlog.Idenity.Api.Controllers
+namespace JWTAuthentication.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -19,7 +26,6 @@ namespace MyBlog.Idenity.Api.Controllers
             _logger = logger;
         }
 
-        [Authorize]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {

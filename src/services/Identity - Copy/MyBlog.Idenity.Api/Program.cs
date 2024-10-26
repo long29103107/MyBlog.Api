@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyBlog.Identity.Domain.Entities;
 using System.Text;
-using MyBlog.Identity.Repository;
 using Serilog;
+using MyBlog.Identity.Api.Authentication;
 
 try
 {

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DependencyInjection\Options\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\packages\FilteringAndSorting\FilteringAndSortingExpression.csproj" />
+    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.ExceptionHandler\MyBlog.Shared.ExceptionHandler.csproj" />
+    <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Serilog\MyBlog.Shared.Serilog.csproj" />
+    <ProjectReference Include="..\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj" />
+    <ProjectReference Include="..\MyBlog.Identity.Service\MyBlog.Identity.Service.csproj" />
+  </ItemGroup>
+
+</Project>
