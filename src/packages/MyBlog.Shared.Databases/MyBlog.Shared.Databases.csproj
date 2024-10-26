@@ -19,6 +19,7 @@
 </ItemGroup>
 
 <ItemGroup>
+  <ProjectReference Include="..\..\services\Identity\MyBlog.Idenity.Api\MyBlog.Idenity.Api.csproj" />
   <ProjectReference Include="..\..\services\Post\MyBlog.Post.Repository\MyBlog.Post.Repository.csproj" />
 </ItemGroup>
 

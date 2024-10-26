@@ -74,6 +74,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\Building
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Shared.Serilog", "src\packages\MyBlog.Shared.Serilog\MyBlog.Shared.Serilog.csproj", "{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Idenity.Api", "src\services\Identity\MyBlog.Idenity.Api\MyBlog.Idenity.Api.csproj", "{7839CE77-CE63-48AC-A90B-E28E377169FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +146,10 @@ Global
 		{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7839CE77-CE63-48AC-A90B-E28E377169FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7839CE77-CE63-48AC-A90B-E28E377169FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7839CE77-CE63-48AC-A90B-E28E377169FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7839CE77-CE63-48AC-A90B-E28E377169FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -176,6 +182,7 @@ Global
 		{35147065-6B7A-4A16-A19C-4AFB987346D7} = {94D1F3A1-867F-4DB2-93C1-85FAB28080C8}
 		{8109776B-F243-49F8-A5A9-AA376493D2AA} = {EE6C4D88-F526-4E49-9B3B-52FB6E2E34DC}
 		{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09} = {94D1F3A1-867F-4DB2-93C1-85FAB28080C8}
+		{7839CE77-CE63-48AC-A90B-E28E377169FC} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {840449B2-65DC-473A-84C8-CB4E4FEB614B}

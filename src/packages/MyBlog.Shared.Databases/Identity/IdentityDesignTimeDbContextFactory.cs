@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using MyBlog.Identity.Repository;
+using MyBlog.Idenity.Api.Authentication;
 using MyBlog.Post.Repository;
 
 namespace MyBlog.Shared.Databases.Product;

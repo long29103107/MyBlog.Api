@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyBlog.Identity.Repository;
+using MyBlog.Idenity.Api.Authentication;
 
 #nullable disable
 
 namespace MyBlog.Shared.Databases.Identity.Migrations
 {
     [DbContext(typeof(MyIdentityDbContext))]
-    [Migration("20241026123639_Init")]
+    [Migration("20241026124900_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -158,7 +158,7 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MyBlog.Identity.Repository.ApplicationUser", b =>
+            modelBuilder.Entity("MyBlog.Idenity.Api.Authentication.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -234,7 +234,7 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MyBlog.Identity.Repository.ApplicationUser", null)
+                    b.HasOne("MyBlog.Idenity.Api.Authentication.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -243,7 +243,7 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MyBlog.Identity.Repository.ApplicationUser", null)
+                    b.HasOne("MyBlog.Idenity.Api.Authentication.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -258,7 +258,7 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyBlog.Identity.Repository.ApplicationUser", null)
+                    b.HasOne("MyBlog.Idenity.Api.Authentication.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -267,7 +267,7 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MyBlog.Identity.Repository.ApplicationUser", null)
+                    b.HasOne("MyBlog.Idenity.Api.Authentication.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
