@@ -1,4 +1,5 @@
 ﻿using Infrastructures.Common;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Identity.Domain.Entities;
 using MyBlog.Identity.Repository.Abstractions;
@@ -11,6 +12,7 @@ public class RepositoryManager : UnitOfWork<MyIdentityDbContext>, IRepositoryMan
     }
 
     private IUserRepository _user;
+    private IUserRoleRepository _userRole;
     private IRoleRepository _role;
     private IPermissionRepository _permission;
 
@@ -24,6 +26,19 @@ public class RepositoryManager : UnitOfWork<MyIdentityDbContext>, IRepositoryMan
             }
 
             return _user;
+        }
+    }
+
+    public IUserRoleRepository UserRole
+    {
+        get
+        {
+            if (_userRole == null)
+            {
+                _userRole = new UserRoleRepository(_context);
+            }
+
+            return _userRole;
         }
     }
 
@@ -53,7 +68,8 @@ public class RepositoryManager : UnitOfWork<MyIdentityDbContext>, IRepositoryMan
         }
     }
 
-    public DbSet<User> Users { get { return _context.Users; } }
-    public DbSet<Role> Roles { get { return _context.Roles; } }
-    public DbSet<Permission> Permissions { get { return _context.Permissions; } }
+    //public DbSet<User> Users { get { return _context.Users; } }
+    //public DbSet<Role> Roles { get { return _context.Roles; } }
+    //public DbSet<UserRole> UserRoles { get { return _context.UserRoles; } }
+    //public DbSet<Permission> Permissions { get { return _context.Permissions; } }
 }

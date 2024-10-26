@@ -13,5 +13,7 @@ public static class IdentitySchemaConstants
         public const string UserRoles = "UserRoles";
         public const string UserLogins = "UserLogins";
         public const string UserTokens = "UserTokens";
+        public const string UserClaims = "UserClaims";
+        public const string RoleClaims = "RoleClaims";
     }
 }

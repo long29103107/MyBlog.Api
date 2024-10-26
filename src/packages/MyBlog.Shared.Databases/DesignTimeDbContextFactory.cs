@@ -25,7 +25,7 @@ public class DesignTimeDbContextFactory<T> : IDesignTimeDbContextFactory<T> wher
                 builder.UseNpgsql(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
                 break;
             default:
-                builder.UseNpgsql(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
+                builder.UseSqlServer(connectionString, b => b.MigrationsAssembly(SharedDatabaseReference.AssemblyName));
                 break;
         }
 

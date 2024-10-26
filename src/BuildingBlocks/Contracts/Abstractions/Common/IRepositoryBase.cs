@@ -11,6 +11,8 @@ public interface IRepositoryBase<T, TContext>
     IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool isTracking = false);
     Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression, bool isTracking = false);
     T FirstOrDefault(Expression<Func<T, bool>> expression, bool isTracking = false);
+    IQueryable<T> Include(Expression<Func<T, bool>> expression);
+    IQueryable<T> Includes(Expression<Func<T, bool>>[] expressions);
     #endregion
 
     #region Action
@@ -29,5 +31,6 @@ public interface IRepositoryBase<T, TContext>
     Task<bool> AnyAsync();
     Task<int> SaveAsync();
     int Save();
+    void Dispose();
     #endregion
 }

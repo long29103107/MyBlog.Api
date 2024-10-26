@@ -12,4 +12,5 @@ public class Role : IdentityRole<int>, IDateTracking, IUserTracking
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

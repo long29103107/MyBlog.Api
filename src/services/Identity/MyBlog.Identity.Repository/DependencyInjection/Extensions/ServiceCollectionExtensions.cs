@@ -11,20 +11,15 @@ using MyBlog.Shared.Serilog;
 using Serilog.Exceptions;
 using MyBlog.Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using MyBlog.Identity.Repository.Stores;
 
 namespace MyBlog.Identity.Repository;
 
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddServiceCollectionRepository(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.ConfigureDbContext(configuration);
+    {        
         services.AddServiceInfrastructuresBuildingBlock();
-        services.AddIdentityService(configuration);
+        services.ConfigureDbContext(configuration);
 
         return services;
     }
@@ -42,30 +37,12 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<User, Role>()
+        //services.AddScoped<IUserRoleStore<User>, UserRoleStore>();
+        services.AddIdentity<User, Domain.Entities.Role>()
             .AddEntityFrameworkStores<MyIdentityDbContext>()
-            .AddUserStore<UserStore>()
-            .AddRoleStore<RoleStore>()
-            .AddApiEndpoints();
-
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            options.SaveToken = true;
-            options.RequireHttpsMetadata = false;
-            options.TokenValidationParameters = new TokenValidationParameters()
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidAudience = configuration["JWT:ValidAudience"],
-                ValidIssuer = configuration["JWT:ValidIssuer"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
-            };
-        });
+            //.AddUserStore<UserStore>()
+            //.AddRoleStore<RoleStore>()
+            .AddDefaultTokenProviders();
 
         return services;
     }

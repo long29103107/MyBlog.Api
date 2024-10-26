@@ -1,12 +1,16 @@
 ﻿using MyBlog.Shared.ExceptionHandler;
 using FilteringAndSortingExpression.Swagger.Extensions;
 using MyBlog.Identity.Api;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using MyBlog.Identity.Repository;
 
 namespace MyBlog.Post.Api.DependencyInjection.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddServiceCollectionApi(this IServiceCollection services)
+    public static IServiceCollection AddServiceCollectionApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpContextAccessor();
         services.AddRouting(x => x.LowercaseUrls = true);
@@ -19,7 +23,6 @@ public static class ServiceCollectionExtensions
             x.Version = "v1";
             x.Title = IdentityApiReference.AssemblyName;
         });
-
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
 

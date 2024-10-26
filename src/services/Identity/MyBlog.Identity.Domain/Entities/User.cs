@@ -9,4 +9,5 @@ public class User : IdentityUser<int>, IDateTracking, IUserTracking
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public bool IsActive { get; set; } = true;
+    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

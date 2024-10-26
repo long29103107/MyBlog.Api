@@ -54,6 +54,24 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     {
         return FindByCondition(expression, isTracking).FirstOrDefault();
     }
+
+    public IQueryable<T> Include(Expression<Func<T, bool>> expression)
+    {
+        return _context.Set<T>().Include(expression);
+    }
+    public IQueryable<T> Includes(Expression<Func<T, bool>>[] expressions)
+    {
+        if(expressions.IsNullOrEmpty())
+            return _context.Set<T>();
+
+        foreach(var expression in expressions)
+        {
+            _context.Set<T>().Include(expression);
+        }            
+
+        return _context.Set<T>();
+    }
+
     #endregion
 
     #region Action
@@ -112,6 +130,12 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     public int Save()
     {
         return _context.SaveChanges();
+
+    }
+
+    public void Dispose()
+    {
+        _context.Dispose();
 
     }
     #endregion

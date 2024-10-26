@@ -1,4 +1,9 @@
 {
+  "JWT": {
+    "ValidAudience": "http://localhost:5001",
+    "ValidIssuer": "http://localhost:5001",
+    "Secret": "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM"
+  },
   "Serilog": {
     "Using": [ "Serilog.Sinks.File", "Serilog.Sinks.Console" ],
     "MinimumLevel": {
