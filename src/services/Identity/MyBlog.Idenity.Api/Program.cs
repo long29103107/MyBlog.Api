@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using MyBlog.Idenity.Api.Authentication;
+using MyBlog.Identity.Domain.Entities;
+using MyBlog.Identity.Repository;
 using System.Text;
 
 namespace MyBlog.Idenity.Api;
@@ -22,10 +23,13 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         // For Entity Framework
-        builder.Services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+             b => b.MigrationsAssembly(IdentityRepositoryReference.AssemblyName)));
+
+        //builder.Services.AddServiceCollectionRepository(builder.Configuration);
 
         // For Identity
-        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+        builder.Services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<MyIdentityDbContext>()
             .AddDefaultTokenProviders();
 
