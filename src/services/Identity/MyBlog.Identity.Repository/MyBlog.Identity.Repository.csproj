@@ -18,8 +18,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructures\Infrastructures.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\Persistence\Persistence.csproj" />
+    <!--<ProjectReference Include="..\..\..\BuildingBlocks\Infrastructures\Infrastructures.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Persistence\Persistence.csproj" />-->
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Serilog\MyBlog.Shared.Serilog.csproj" />
     <ProjectReference Include="..\MyBlog.Identity.Domain\MyBlog.Identity.Domain.csproj" />
   </ItemGroup>

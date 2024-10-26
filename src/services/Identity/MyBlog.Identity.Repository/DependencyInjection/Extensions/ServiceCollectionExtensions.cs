@@ -3,10 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 //using MyBlog.Identity.Repository.Implements;
 //using MyBlog.Identity.Repository.Abstractions;
-using Persistence.Interceptors;
+//using Persistence.Interceptors;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Infrastructures.DependencyInjection.Extensions;
+//using Infrastructures.DependencyInjection.Extensions;
 using MyBlog.Shared.Serilog;
 using Serilog.Exceptions;
 using MyBlog.Identity.Domain.Entities;
@@ -46,20 +46,20 @@ public static class ServiceCollectionExtensions
     //        return services;
     //    }
 
-    //    public static IHostBuilder AddHostRepository(this IHostBuilder builder)
-    //    {
-    //        Log.Logger = new LoggerConfiguration()
-    //            .MinimumLevel.Information()
-    //            .Enrich.FromLogContext()
-    //            .Enrich.WithExceptionDetails()
-    //            .Enrich.WithMachineName()
-    //            .WriteTo.Console()
-    //            .CreateLogger();
+        public static IHostBuilder AddHostRepository(this IHostBuilder builder)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails()
+                .Enrich.WithMachineName()
+                .WriteTo.Console()
+                .CreateLogger();
 
-    //        builder.UseSerilog((context, loggerConfig)
-    //            => loggerConfig.ReadFrom.Configuration(context.Configuration));
-    //        builder.ConfigureLogging(HostBuilderExtensions.ConfigureLogging);
+            builder.UseSerilog((context, loggerConfig)
+                => loggerConfig.ReadFrom.Configuration(context.Configuration));
+            builder.ConfigureLogging(HostBuilderExtensions.ConfigureLogging);
 
-    //        return builder;
-    //    }
+            return builder;
+        }
 }

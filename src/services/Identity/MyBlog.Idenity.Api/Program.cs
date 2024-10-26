@@ -22,7 +22,7 @@ try
     var configuration = builder.Configuration;
 
     // For Entity Framework
-    services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+    services.AddServiceCollectionRepository(configuration);
 
     // For Identity
     services.AddIdentity<User, Role>()
