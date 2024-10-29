@@ -1,10 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using MyBlog.Identity.Domain.Entities;
-using System.Text;
-using MyBlog.Identity.Repository;
 using Serilog;
 using MyBlog.Identity.Api.DependencyInjection.Extensions;
 
@@ -12,26 +7,8 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    var app = builder.ConfigureServices();
-
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
-
-    //app.UseHttpsRedirection();
-
-    app.UseRouting();
-
-    app.UseAuthentication();
-    app.UseAuthorization();
-
-    app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapControllers();
-    });
+    var app = builder.ConfigureServices()
+        .ConfigurePipeline();
 
     await app.RunAsync();
 }
