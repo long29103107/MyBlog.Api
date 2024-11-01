@@ -6,17 +6,10 @@ public static class ServiceCollectionExtensions
     {
         services.AddHttpContextAccessor();
         services.AddControllers().AddNewtonsoftJson();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddRouting(x => x.LowercaseUrls = true);
             
-        //services.AddSwagger(x =>
-        //{
-        //    x.Name = IdentityApiReference.AssemblyName;
-        //    x.Version = "v1";
-        //    x.Title = IdentityApiReference.AssemblyName;
-        //});
         //services.AddExceptionHandler<GlobalExceptionHandler>();
         //services.AddProblemDetails();
 
