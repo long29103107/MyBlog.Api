@@ -9,6 +9,8 @@ using Serilog;
 //using Infrastructures.DependencyInjection.Extensions;
 using MyBlog.Shared.Serilog;
 using Serilog.Exceptions;
+using MyBlog.Identity.Repository.Abstractions;
+using MyBlog.Identity.Repository.Implements;
 
 namespace MyBlog.Identity.Repository;
 
@@ -18,6 +20,7 @@ public static class ServiceCollectionExtensions
     {
         //services.AddServiceInfrastructuresBuildingBlock();
         services.ConfigureDbContext(configuration);
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
 
         return services;
     }
