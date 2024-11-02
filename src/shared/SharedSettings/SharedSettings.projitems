@@ -9,5 +9,10 @@
     <Import_RootNamespace>SharedSettings</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)global.json" />
+    <Content Include="$(MSBuildThisFileDirectory)sharedSettings.Development.json" />
+    <Content Include="$(MSBuildThisFileDirectory)sharedSettings.json" />
+    <Content Include="$(MSBuildThisFileDirectory)sharedSettings.Local.json" />
+    <Content Include="$(MSBuildThisFileDirectory)sharedSettings.Production.json" />
   </ItemGroup>
 </Project>

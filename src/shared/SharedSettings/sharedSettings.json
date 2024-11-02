@@ -4,13 +4,20 @@
     "ValidIssuer": "http://localhost:5001",
     "Secret": "ByYM000OLlMQG6VVVp1OH7Xzyr7gHuw1qvUC5dcGt3SNM"
   },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
   "Serilog": {
     "Using": [ "Serilog.Sinks.File", "Serilog.Sinks.Console" ],
     "MinimumLevel": {
       "Default": "Information",
       "Override": {
-        "Microsoft": "Warning",
-        "System": "Warning"
+        "Microsoft": "Information",
+        "Microsoft.EntityFrameworkCore.Database.Command": "Information"
       }
     },
     "WriteTo": [
@@ -35,11 +42,5 @@
       }
     ],
     "Enrich": [ "FromLogContext", "WithThreadId", "WithMachineName" ]
-  },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
   }
 }
