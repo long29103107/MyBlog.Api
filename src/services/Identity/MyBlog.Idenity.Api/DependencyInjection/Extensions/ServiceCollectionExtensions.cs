@@ -17,7 +17,10 @@ public static class ServiceCollectionExtensions
     }
 
     public static IHostBuilder AddHostApi(this IHostBuilder builder)
-    {
+    { 
+
+        var path = Directory.GetParent(AppContext.BaseDirectory).FullName;
+
         builder.ConfigureAppConfiguration((context, config) =>
         {
             var env = context.HostingEnvironment;

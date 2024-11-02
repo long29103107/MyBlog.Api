@@ -17,6 +17,13 @@
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
   </ItemGroup>
 
+	<Target Name="CopyAppSettings" BeforeTargets="BeforeBuild" Returns="@(BuiltProjectOutputGroupOutput)">
+		<Copy SourceFiles="../../../shared/SharedSettings/sharedSettings.Development.json" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="../../../shared/SharedSettings/sharedSettings.json" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="../../../shared/SharedSettings/sharedSettings.Local.json" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="../../../shared/SharedSettings/sharedSettings.Production.json" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+	</Target>
+
   <ItemGroup>
     <ProjectReference Include="..\MyBlog.Identity.Domain\MyBlog.Identity.Domain.csproj" />
     <ProjectReference Include="..\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj" />
