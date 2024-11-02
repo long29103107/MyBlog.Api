@@ -80,6 +80,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Repository"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedSettings", "src\shared\SharedSettings\SharedSettings.shproj", "{C6995D1D-B1D1-4762-B031-5003E5C2C1D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Service", "src\services\Identity\MyBlog.Identity.Service\MyBlog.Identity.Service.csproj", "{B1D981A5-7DA6-4EB8-AC3F-F38ACF02F112}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +164,10 @@ Global
 		{4B58DC70-F011-4B16-B2EF-19B2C233AD29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B58DC70-F011-4B16-B2EF-19B2C233AD29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B58DC70-F011-4B16-B2EF-19B2C233AD29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1D981A5-7DA6-4EB8-AC3F-F38ACF02F112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1D981A5-7DA6-4EB8-AC3F-F38ACF02F112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1D981A5-7DA6-4EB8-AC3F-F38ACF02F112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1D981A5-7DA6-4EB8-AC3F-F38ACF02F112}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,6 +203,7 @@ Global
 		{59BF2397-8961-4711-932F-E0ABC264326D} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
 		{4B58DC70-F011-4B16-B2EF-19B2C233AD29} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
 		{C6995D1D-B1D1-4762-B031-5003E5C2C1D4} = {EFD4F465-362A-4C73-A48C-149E52ABF75D}
+		{B1D981A5-7DA6-4EB8-AC3F-F38ACF02F112} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {840449B2-65DC-473A-84C8-CB4E4FEB614B}

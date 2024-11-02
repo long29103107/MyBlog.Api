@@ -23,8 +23,8 @@ public static class HostingExtension
         services.AddServiceCollectionApi(configuration)
             .AddServiceCollectionRepository(configuration);
 
-        //services.AddScoped(typeof(IRepositoryIdentityBase<,,,,>), typeof(RepositoryIdentityBase<,,,,>));
         services.AddScoped<IPermissionRepository, PermissionRepository>();
+        services.AddScoped<IOperationRepository, OperationRepository>();
 
         // For Identity
         services.AddIdentity<User, Role>()

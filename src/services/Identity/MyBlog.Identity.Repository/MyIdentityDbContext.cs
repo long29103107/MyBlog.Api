@@ -11,6 +11,8 @@ public class MyIdentityDbContext : IdentityDbContext<User, Role, int, IdentityUs
     {
 
     }
+    public virtual DbSet<Permission> Permissions { get; set; }
+    public virtual DbSet<Operation> Operations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

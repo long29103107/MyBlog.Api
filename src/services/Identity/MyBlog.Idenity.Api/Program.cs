@@ -7,7 +7,8 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    var app = builder.ConfigureServices()
+    var app = builder
+        .ConfigureServices()
         .ConfigurePipeline();
 
     await app.RunAsync();

@@ -1,8 +1,8 @@
-﻿using Shared.Dtos.Identity.Token;
+﻿//using Shared.Dtos.Identity.Token;
 
-namespace MyBlog.Identity.Service.Abstractions;
+//namespace MyBlog.Identity.Service.Abstractions;
 
-public interface ITokenService
-{
-    TokenResponse GetToken(TokenRequest request);     
-}
+//public interface ITokenService
+//{
+//    TokenResponse GetToken(TokenRequest request);     
+//}
