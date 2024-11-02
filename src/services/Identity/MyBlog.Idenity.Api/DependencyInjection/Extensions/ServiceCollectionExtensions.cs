@@ -1,4 +1,6 @@
-﻿namespace MyBlog.Identity.Api.DependencyInjection.Extensions;
+﻿using MyBlog.Shared.ExceptionHandler;
+
+namespace MyBlog.Identity.Api.DependencyInjection.Extensions;
 
 public static class ServiceCollectionExtensions
 {
@@ -9,18 +11,15 @@ public static class ServiceCollectionExtensions
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddRouting(x => x.LowercaseUrls = true);
-            
-        //services.AddExceptionHandler<GlobalExceptionHandler>();
-        //services.AddProblemDetails();
+
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
 
         return services;
     }
 
     public static IHostBuilder AddHostApi(this IHostBuilder builder)
-    { 
-
-        var path = Directory.GetParent(AppContext.BaseDirectory).FullName;
-
+    {
         builder.ConfigureAppConfiguration((context, config) =>
         {
             var env = context.HostingEnvironment;

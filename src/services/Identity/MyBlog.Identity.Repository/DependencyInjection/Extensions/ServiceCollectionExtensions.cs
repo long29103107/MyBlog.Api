@@ -33,20 +33,20 @@ public static class ServiceCollectionExtensions
         //.AddInterceptors(sp.GetRequiredService<UpdateAuditableEntitiesInterceptor>()));
     }
 
-        public static IHostBuilder AddHostRepository(this IHostBuilder builder)
-        {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .Enrich.FromLogContext()
-                .Enrich.WithExceptionDetails()
-                .Enrich.WithMachineName()
-                .WriteTo.Console()
-                .CreateLogger();
+    public static IHostBuilder AddHostRepository(this IHostBuilder builder)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .Enrich.FromLogContext()
+            .Enrich.WithExceptionDetails()
+            .Enrich.WithMachineName()
+            .WriteTo.Console()
+            .CreateLogger();
 
-            builder.UseSerilog((context, loggerConfig)
-                => loggerConfig.ReadFrom.Configuration(context.Configuration));
-            builder.ConfigureLogging(HostBuilderExtensions.ConfigureLogging);
+        builder.UseSerilog((context, loggerConfig)
+            => loggerConfig.ReadFrom.Configuration(context.Configuration));
+        builder.ConfigureLogging(HostBuilderExtensions.ConfigureLogging);
 
-            return builder;
-        }
+        return builder;
+    }
 }

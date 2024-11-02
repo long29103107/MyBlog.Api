@@ -14,7 +14,8 @@ public static class HostingExtension
         var services = builder.Services;
         var configuration = builder.Configuration;
 
-        builder.Host.AddHostApi().AddHostRepository();
+        builder.Host.AddHostApi()
+            .AddHostRepository();
 
         // For Entity Framework
         services.AddServiceCollectionApi(configuration)
@@ -53,7 +54,7 @@ public static class HostingExtension
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
-        //app.UseExceptionHandler();
+        app.UseExceptionHandler();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
