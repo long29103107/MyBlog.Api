@@ -16,19 +16,19 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-//    public static IHostBuilder AddHostApi(this IHostBuilder builder)
-//    {
-//        builder.ConfigureAppConfiguration((context, config) =>
-//        {
-//            var env = context.HostingEnvironment;
-//            config.SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-//                .AddJsonFile("sharedSettings.json", true, true)
-//                .AddJsonFile($"sharedSettings.{env.EnvironmentName}.json", true, true)
-//                .AddJsonFile("appsettings.json", false, true)
-//                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
-//                .AddEnvironmentVariables();
-//        });
+    public static IHostBuilder AddHostApi(this IHostBuilder builder)
+    {
+        builder.ConfigureAppConfiguration((context, config) =>
+        {
+            var env = context.HostingEnvironment;
+            config.SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .AddJsonFile("sharedSettings.json", true, true)
+                .AddJsonFile($"sharedSettings.{env.EnvironmentName}.json", true, true)
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+                .AddEnvironmentVariables();
+        });
 
-//        return builder;
-//    }
+        return builder;
+    }
 }

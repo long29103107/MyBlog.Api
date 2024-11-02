@@ -9,7 +9,6 @@ using Serilog;
 //using Infrastructures.DependencyInjection.Extensions;
 using MyBlog.Shared.Serilog;
 using Serilog.Exceptions;
-using MyBlog.Identity.Domain.Entities;
 
 namespace MyBlog.Identity.Repository;
 
@@ -33,18 +32,6 @@ public static class ServiceCollectionExtensions
            b => b.MigrationsAssembly(IdentityRepositoryReference.AssemblyName)));
         //.AddInterceptors(sp.GetRequiredService<UpdateAuditableEntitiesInterceptor>()));
     }
-
-    //    public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration configuration)
-    //    {
-    //        //services.AddScoped<IUserRoleStore<User>, UserRoleStore>();
-    //        services.AddIdentity<User, Domain.Entities.Role>()
-    //            .AddEntityFrameworkStores<MyIdentityDbContext>()
-    //            //.AddUserStore<UserStore>()
-    //            //.AddRoleStore<RoleStore>()
-    //            .AddDefaultTokenProviders();
-
-    //        return services;
-    //    }
 
         public static IHostBuilder AddHostRepository(this IHostBuilder builder)
         {

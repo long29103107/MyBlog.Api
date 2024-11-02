@@ -14,6 +14,8 @@ public static class HostingExtension
         var services = builder.Services;
         var configuration = builder.Configuration;
 
+        builder.Host.AddHostApi().AddHostRepository();
+
         // For Entity Framework
         services.AddServiceCollectionApi(configuration)
             .AddServiceCollectionRepository(configuration);
