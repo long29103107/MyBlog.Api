@@ -1,16 +1,23 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyBlog.Identity.Service.Abstractions;
 
 namespace MyBlog.Identity.Api.Controllers;
-[Route("api/[controller]")]
-[ApiController]
-public class TestController : ControllerBase
+
+public class TestController : CustomIdentityControllerBase
 {
+    private readonly IUserService _userService;
+
+    public TestController(IUserService userService)
+    {
+        _userService = userService;
+    }
+
     [HttpGet]
     [Authorize]
-    public IActionResult Get()
+    public async Task<IActionResult> GetAsync()
     {
-        return Ok("String ne");
+        var result = await _userService.GetUserIdsAsync();
+        return Ok(result);
     }
 }

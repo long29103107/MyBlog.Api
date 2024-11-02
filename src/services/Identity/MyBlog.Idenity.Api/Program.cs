@@ -5,6 +5,7 @@ using MyBlog.Identity.Api.DependencyInjection.Extensions;
 
 try
 {
+    Log.Information("Starting application");
     var builder = WebApplication.CreateBuilder(args);
 
     var app = builder

@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Contracts.Dtos.Interfaces;
 
-namespace Shared.APIs;
+namespace MyBlog.Identity.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-
-public abstract class CustomControllerBase : ControllerBase
+public abstract class CustomIdentityControllerBase : ControllerBase
 {
     //protected IScopedCache _scopedCache;
 

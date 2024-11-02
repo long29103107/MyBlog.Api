@@ -1,22 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MyBlog.Idenity.Api.Authentication;
+using MyBlog.Identity.Api.Controllers;
 using MyBlog.Identity.Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-
 namespace MyBlog.Idenity.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class AuthenticateController : ControllerBase
+public class AuthenticateController : CustomIdentityControllerBase
 {
     private readonly UserManager<User> userManager;
     private readonly RoleManager<Role> roleManager;

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
 using Contracts.Domain.Exceptions;
 using Contracts.Domain.Exceptions.Abtractions;
-using Microsoft.EntityFrameworkCore;
 
 namespace MyBlog.Shared.ExceptionHandler;
 

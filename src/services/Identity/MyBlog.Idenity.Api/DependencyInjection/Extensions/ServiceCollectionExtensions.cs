@@ -1,4 +1,5 @@
 ﻿using MyBlog.Shared.ExceptionHandler;
+using MyBlog.Shared.Serilog;
 
 namespace MyBlog.Identity.Api.DependencyInjection.Extensions;
 
@@ -11,19 +12,21 @@ public static class ServiceCollectionExtensions
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddRouting(x => x.LowercaseUrls = true);
-
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
+        services.AddSerilogMiddleware();
 
         return services;
     }
 
     public static IHostBuilder AddHostApi(this IHostBuilder builder)
     {
+        var path = Directory.GetParent(AppContext.BaseDirectory).FullName;
+
         builder.ConfigureAppConfiguration((context, config) =>
         {
             var env = context.HostingEnvironment;
-            config.SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+            config.SetBasePath(path)
                 .AddJsonFile("sharedSettings.json", true, true)
                 .AddJsonFile($"sharedSettings.{env.EnvironmentName}.json", true, true)
                 .AddJsonFile("appsettings.json", false, true)

@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using MyBlog.Identity.Domain.Entities;
 using MyBlog.Identity.Repository;
-using MyBlog.Identity.Repository.Abstractions;
-using MyBlog.Identity.Repository.Implements;
+using MyBlog.Identity.Service;
+using MyBlog.Shared.Serilog;
+using Serilog;
 using System.Text;
 
 namespace MyBlog.Identity.Api.DependencyInjection.Extensions;
@@ -17,14 +18,13 @@ public static class HostingExtension
         var configuration = builder.Configuration;
 
         builder.Host.AddHostApi()
-            .AddHostRepository();
+            .AddHostRepository()
+            .AddHostService();
 
         // For Entity Framework
         services.AddServiceCollectionApi(configuration)
-            .AddServiceCollectionRepository(configuration);
-
-        services.AddScoped<IPermissionRepository, PermissionRepository>();
-        services.AddScoped<IOperationRepository, OperationRepository>();
+            .AddServiceCollectionRepository(configuration)
+            .AddServiceCollectionService(configuration);
 
         // For Identity
         services.AddIdentity<User, Role>()
@@ -60,6 +60,7 @@ public static class HostingExtension
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
         app.UseExceptionHandler();
+        app.UseSerilogMiddleware();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -67,11 +68,8 @@ public static class HostingExtension
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-        //app.UseHttpsRedirection();
-
+        app.UseSerilogRequestLogging();
         app.UseRouting();
-
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();

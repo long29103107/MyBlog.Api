@@ -15,6 +15,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
+	<PackageReference Include="Serilog.Enrichers.Environment" />
+	<PackageReference Include="Serilog.Exceptions" />
+	<PackageReference Include="Serilog.Extensions.Logging" />
+	<PackageReference Include="Serilog.Settings.Configuration" />
+	<PackageReference Include="Serilog.Sinks.Console" />
+	<PackageReference Include="Serilog.Sinks.File" />
+	<PackageReference Include="Serilog.Sinks.Seq" />
   </ItemGroup>
 
 	<Target Name="CopyAppSettings" BeforeTargets="BeforeBuild" Returns="@(BuiltProjectOutputGroupOutput)">
@@ -26,8 +33,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.ExceptionHandler\MyBlog.Shared.ExceptionHandler.csproj" />
-    <ProjectReference Include="..\MyBlog.Identity.Domain\MyBlog.Identity.Domain.csproj" />
     <ProjectReference Include="..\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj" />
+    <ProjectReference Include="..\MyBlog.Identity.Service\MyBlog.Identity.Service.csproj" />
   </ItemGroup>
 
 </Project>

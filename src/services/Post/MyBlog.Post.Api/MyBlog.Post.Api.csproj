@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.ExceptionHandler\MyBlog.Shared.ExceptionHandler.csproj" />
     <ProjectReference Include="..\MyBlog.Post.Repository\MyBlog.Post.Repository.csproj" />
     <ProjectReference Include="..\MyBlog.Post.Service\MyBlog.Post.Service.csproj" />
+    <!--<ProjectReference Include="..\MyBlog.Post.Service\MyBlog.Post.Service.csproj" />-->
   </ItemGroup>
 	<Target Name="CopyAppSettings" BeforeTargets="BeforeBuild" Returns="@(BuiltProjectOutputGroupOutput)">
 		<Copy SourceFiles="../../../shared/SharedSettings/sharedSettings.Development.json" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />

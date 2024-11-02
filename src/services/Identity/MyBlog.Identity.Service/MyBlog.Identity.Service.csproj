@@ -7,12 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="AutoMapper" />
+	  <PackageReference Include="FluentValidation.AspNetCore" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Autofac\MyBlog.Shared.Autofac.csproj" />
-    <ProjectReference Include="..\..\Post\MyBlog.Post.Repository\MyBlog.Post.Repository.csproj" />
     <ProjectReference Include="..\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj" />
   </ItemGroup>
 
