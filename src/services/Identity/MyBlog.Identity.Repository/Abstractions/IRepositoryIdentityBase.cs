@@ -1,11 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace Contracts.Abstractions.Common;
-
-public interface IRepositoryBase<T, TContext>
+namespace MyBlog.Identity.Repository.Abstractions;
+public interface IRepositoryIdentityBase<T, TContext>
     where T : class
-    where TContext : DbContext
+    where TContext : MyIdentityDbContext
 {
     #region Query
     IQueryable<T> FindAll(bool isTracking = false);

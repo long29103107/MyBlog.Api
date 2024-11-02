@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using MyBlog.Identity.Domain.Entities;
 using MyBlog.Identity.Repository;
+using MyBlog.Identity.Repository.Abstractions;
+using MyBlog.Identity.Repository.Implements;
 using System.Text;
 
 namespace MyBlog.Identity.Api.DependencyInjection.Extensions;
@@ -20,6 +22,9 @@ public static class HostingExtension
         // For Entity Framework
         services.AddServiceCollectionApi(configuration)
             .AddServiceCollectionRepository(configuration);
+
+        //services.AddScoped(typeof(IRepositoryIdentityBase<,,,,>), typeof(RepositoryIdentityBase<,,,,>));
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
 
         // For Identity
         services.AddIdentity<User, Role>()

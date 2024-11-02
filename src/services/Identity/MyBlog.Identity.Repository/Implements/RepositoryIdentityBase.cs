@@ -1,17 +1,18 @@
-﻿using System.Linq.Expressions;
-using Contracts.Abstractions.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MyBlog.Identity.Repository.Abstractions;
+using System.Linq.Expressions;
 
-namespace Infrastructures.Common;
+namespace MyBlog.Identity.Repository.Implements;
 
-public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
+public abstract class RepositoryIdentityBase<T, TContext> 
+    : IRepositoryIdentityBase<T, TContext>
     where T : class
-    where TContext : DbContext
+    where TContext : MyIdentityDbContext
 {
     protected readonly TContext _context;
 
-    public RepositoryBase(TContext context)
+    public RepositoryIdentityBase(TContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(_context));
     }
@@ -60,13 +61,13 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     }
     public IQueryable<T> Includes(Expression<Func<T, bool>>[] expressions)
     {
-        if(expressions.IsNullOrEmpty())
+        if (expressions.IsNullOrEmpty())
             return _context.Set<T>();
 
-        foreach(var expression in expressions)
+        foreach (var expression in expressions)
         {
             _context.Set<T>().Include(expression);
-        }            
+        }
 
         return _context.Set<T>();
     }
@@ -139,4 +140,3 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     }
     #endregion
 }
-
