@@ -5,6 +5,8 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using MyBlog.Shared.Serilog;
 using Serilog.Exceptions;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace MyBlog.Identity.Repository;
 
@@ -12,6 +14,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddServiceCollectionRepository(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.AddSerilog();
+        });
         services.ConfigureDbContext(configuration);
 
         return services;
@@ -21,10 +27,18 @@ public static class ServiceCollectionExtensions
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
+
         //services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
         services.AddDbContext<MyIdentityDbContext>(
-           (sp, options) => options.UseSqlServer(connectionString,
-           b => b.MigrationsAssembly(IdentityRepositoryReference.AssemblyName)));
+        (sp, options) =>
+        {
+               var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
+               options.UseSqlServer(connectionString,
+                   b => b.MigrationsAssembly(IdentityRepositoryReference.AssemblyName))
+                    .UseLoggerFactory(loggerFactory)
+                    .EnableSensitiveDataLogging();
+
+           });
         //.AddInterceptors(sp.GetRequiredService<UpdateAuditableEntitiesInterceptor>()));
     }
 
