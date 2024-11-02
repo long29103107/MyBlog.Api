@@ -12,6 +12,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{94D1F3A1-867F-4DB2-93C1-85FAB28080C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{EFD4F465-362A-4C73-A48C-149E52ABF75D}"
+	ProjectSection(SolutionItems) = preProject
+		src\shared\SharedSettings\global.json = src\shared\SharedSettings\global.json
+		src\shared\SharedSettings\sharedSettings.Development.json = src\shared\SharedSettings\sharedSettings.Development.json
+		src\shared\SharedSettings\sharedSettings.json = src\shared\SharedSettings\sharedSettings.json
+		src\shared\SharedSettings\sharedSettings.Local.json = src\shared\SharedSettings\sharedSettings.Local.json
+		src\shared\SharedSettings\sharedSettings.Production.json = src\shared\SharedSettings\sharedSettings.Production.json
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02C2EA1B-8774-4AFB-B782-47DBBB8676ED}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,15 +29,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5C46DA4C-E63F-4CA2-8039-86AA3B1A83C2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedSettings", "SharedSettings", "{E3E07D9E-71AA-419D-BD5D-A79C10BBF8B2}"
-	ProjectSection(SolutionItems) = preProject
-		src\shared\SharedSettings\global.json = src\shared\SharedSettings\global.json
-		src\shared\SharedSettings\sharedSettings.Development.json = src\shared\SharedSettings\sharedSettings.Development.json
-		src\shared\SharedSettings\sharedSettings.json = src\shared\SharedSettings\sharedSettings.json
-		src\shared\SharedSettings\sharedSettings.Local.json = src\shared\SharedSettings\sharedSettings.Local.json
-		src\shared\SharedSettings\sharedSettings.Production.json = src\shared\SharedSettings\sharedSettings.Production.json
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2B37D1A3-898F-4658-8477-584E631A2B07}"
 EndProject
@@ -79,6 +77,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Domain", "src\services\Identity\MyBlog.Identity.Domain\MyBlog.Identity.Domain.csproj", "{59BF2397-8961-4711-932F-E0ABC264326D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Repository", "src\services\Identity\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj", "{4B58DC70-F011-4B16-B2EF-19B2C233AD29}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedSettings", "src\shared\SharedSettings\SharedSettings.shproj", "{C6995D1D-B1D1-4762-B031-5003E5C2C1D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,7 +173,6 @@ Global
 		{94D1F3A1-867F-4DB2-93C1-85FAB28080C8} = {2B37D1A3-898F-4658-8477-584E631A2B07}
 		{EFD4F465-362A-4C73-A48C-149E52ABF75D} = {2B37D1A3-898F-4658-8477-584E631A2B07}
 		{5C46DA4C-E63F-4CA2-8039-86AA3B1A83C2} = {2B37D1A3-898F-4658-8477-584E631A2B07}
-		{E3E07D9E-71AA-419D-BD5D-A79C10BBF8B2} = {EFD4F465-362A-4C73-A48C-149E52ABF75D}
 		{C8EF8B3C-98F9-49AF-B0FB-AF32F19D59F9} = {94D1F3A1-867F-4DB2-93C1-85FAB28080C8}
 		{33E2CD16-3183-4944-8E95-725E08051881} = {94D1F3A1-867F-4DB2-93C1-85FAB28080C8}
 		{B11B1AEC-041A-40C6-8C9A-7A94507FBC19} = {94D1F3A1-867F-4DB2-93C1-85FAB28080C8}
@@ -197,8 +196,12 @@ Global
 		{7839CE77-CE63-48AC-A90B-E28E377169FC} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
 		{59BF2397-8961-4711-932F-E0ABC264326D} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
 		{4B58DC70-F011-4B16-B2EF-19B2C233AD29} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
+		{C6995D1D-B1D1-4762-B031-5003E5C2C1D4} = {EFD4F465-362A-4C73-A48C-149E52ABF75D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {840449B2-65DC-473A-84C8-CB4E4FEB614B}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\shared\SharedSettings\SharedSettings.projitems*{c6995d1d-b1d1-4762-b031-5003e5c2c1d4}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
