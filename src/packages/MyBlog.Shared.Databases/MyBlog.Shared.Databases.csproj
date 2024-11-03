@@ -19,7 +19,6 @@
 </ItemGroup>
 
 <ItemGroup>
-  <ProjectReference Include="..\..\services\Identity\MyBlog.Idenity.Api\MyBlog.Identity.Api.csproj" />
   <ProjectReference Include="..\..\services\Identity\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj" />
   <ProjectReference Include="..\..\services\Post\MyBlog.Post.Repository\MyBlog.Post.Repository.csproj" />
 </ItemGroup>

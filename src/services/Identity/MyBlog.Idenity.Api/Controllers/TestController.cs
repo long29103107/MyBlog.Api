@@ -17,7 +17,6 @@ public class TestController : CustomIdentityControllerBase
     [LonGAuth()]
     public async Task<IActionResult> GetAsync()
     {
-        var result = await _userService.GetUserIdsAsync();
-        return Ok(result);
+        return GetResponse(await _userService.GetUserIdsAsync());
     }
 }

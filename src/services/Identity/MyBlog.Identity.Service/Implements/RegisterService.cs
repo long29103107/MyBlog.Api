@@ -27,7 +27,7 @@ public class RegisterService : IRegisterService
         {
             Email = request.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = request.Username
+            UserName = request.Email
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);

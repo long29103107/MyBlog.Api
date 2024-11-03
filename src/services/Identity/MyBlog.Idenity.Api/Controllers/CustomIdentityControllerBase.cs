@@ -19,6 +19,11 @@ public abstract class CustomIdentityControllerBase : ControllerBase
         return _GetResponse(statusCode ?? StatusCodes.Status200OK, null);
     }
 
+    protected IActionResult GetResponse(object res)
+    {
+        return _GetResponse(StatusCodes.Status200OK, res);
+    }
+
     protected IActionResult GetResponse(int statusCode, object res)
     {
         return _GetResponse(statusCode, res);

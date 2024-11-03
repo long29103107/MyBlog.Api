@@ -1,10 +1,13 @@
-﻿using Azure.Core;
+﻿using Authorization.Constants;
+using Azure.Core;
 using Contracts.Domain.Exceptions.Abtractions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using MyBlog.Identity.Domain.Entities;
 using MyBlog.Identity.Service.Abstractions;
+using Newtonsoft.Json;
 using Shared.Dtos.Identity.Authenticate;
 using Shared.Dtos.Identity.Token;
 using System.Security.Claims;
@@ -15,26 +18,33 @@ namespace MyBlog.Identity.Service.Implements;
 public class AuthenticateService : IAuthenticateService
 {
     private readonly ITokenService _tokenService;
-    private readonly UserManager<User> userManager;
+    private readonly UserManager<User> _userManager;
+    private readonly RoleManager<Role> _roleManager;
 
-    public AuthenticateService(UserManager<User> userManager, ITokenService tokenService)
+    public AuthenticateService(UserManager<User> userManager, ITokenService tokenService, RoleManager<Role> roleManager)
     {
-        this.userManager = userManager;
+        _userManager = userManager;
         _tokenService = tokenService;
+        _roleManager = roleManager;
     }
 
     public async Task<LoginResponse> LoginAsync(LoginRequest request)
     {
-        var user = await userManager.FindByEmailAsync(request.Email);
+        var user = await _userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
         {
             throw new NotFoundUserEmail(request.Email);
         }
 
-        if(!await userManager.CheckPasswordAsync(user, request.Password))
+        if(!await _userManager.CheckPasswordAsync(user, request.Password))
         {
             throw new BadRequestException("Login failed !");
+        }
+
+        if (!user.EmailConfirmed)
+        {
+            throw new BadRequestException("Please check your email and activate this account!");
         }
 
         var authClaims = await _GetClaimsAsync(user);
@@ -53,20 +63,21 @@ public class AuthenticateService : IAuthenticateService
 
     private async Task<List<Claim>> _GetClaimsAsync(User user)
     {
-        var userRoles = await userManager.GetRolesAsync(user);
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        var rolesIds = await _roleManager.Roles
+            .Where(x => userRoles.Contains(x.Name))
+            .Select(x => x.Id)
+            .Distinct()
+            .ToListAsync();
 
         var result = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimConstants.RoleIds, JsonConvert.SerializeObject(rolesIds)),
+            new Claim(ClaimConstants.UserId, user.Id.ToString()),
+            new Claim(ClaimConstants.Email, user.Email),
         };
-
-        foreach (var userRole in userRoles)
-        {
-            result.Add(new Claim(ClaimTypes.Role, userRole));
-        }
 
         return result;
     }
 }
-
