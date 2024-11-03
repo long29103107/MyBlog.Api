@@ -9,7 +9,7 @@ using MyBlog.Shared.Autofac.Modules;
 using MyBlog.Identity.Repository;
 using MyBlog.Identity.Service.DependencyInjection.Options;
 using Microsoft.Extensions.Configuration;
-//using Infrastructures.DependencyInjection.Extensions;
+using MyBlog.Identity.Service.DependencyInjection.Extensions;
 
 namespace MyBlog.Identity.Service;
 
@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddServiceCollectionService(this IServiceCollection services, IConfiguration configuration)
     {
-        //services.AddSingletonOptions<JWT>(configuration, nameof(JWT));
+        services.AddSingletonOptions<JWT>(configuration, nameof(JWT));
         services.AddAutoMapper(IdentityServiceReference.Assembly);
         services.AddFluentValidation(v =>
         {

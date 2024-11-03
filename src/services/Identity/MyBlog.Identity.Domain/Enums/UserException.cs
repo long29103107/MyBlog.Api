@@ -1,0 +1,16 @@
+﻿using Contracts.Domain.Exceptions.Abtractions;
+
+namespace MyBlog.Identity.Domain.Exceptions;
+
+public static class UserException
+{
+    public class NotFoundUserEmail : NotFoundException
+    {
+        public NotFoundUserEmail(string email) : base($"The user `{email}` was not found.") { }
+    }
+
+    public class Conflict : ConflictException
+    {
+        public Conflict(string message) : base(message) { }
+    }
+}

@@ -1,8 +1,8 @@
 ﻿namespace Contracts.Domain.Exceptions.Abtractions;
 
-public abstract class BadRequestException : DomainException
+public class BadRequestException : DomainException
 {
-    protected BadRequestException(string message)
+    public BadRequestException(string message)
         : base("Bad Request", message)
     {
     }
