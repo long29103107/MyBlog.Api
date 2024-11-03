@@ -1,7 +1,7 @@
 ﻿using Contracts.Dtos;
 using System.ComponentModel.DataAnnotations;
 
-namespace Shared.Dtos.Identity.Authenticate;
+namespace Shared.Dtos.Identity.Register;
 
 public sealed class RegisterRequest : Request
 {

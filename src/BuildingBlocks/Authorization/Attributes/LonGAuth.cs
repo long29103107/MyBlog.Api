@@ -4,17 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 namespace Authorization.Attributes;
 
-public class ClaimRequirementFilter : Attribute, IAsyncAuthorizationFilter
+public class LonGAuth : Attribute, IAsyncAuthorizationFilter
 {
     private readonly string condition = string.Empty; 
 
-    public ClaimRequirementFilter()
+    public LonGAuth()
     {
 
     }
 
 
-    public ClaimRequirementFilter(string condition)
+    public LonGAuth(string condition)
     {
         this.condition = condition;
     }

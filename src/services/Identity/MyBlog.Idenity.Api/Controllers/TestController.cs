@@ -14,7 +14,7 @@ public class TestController : CustomIdentityControllerBase
     }
 
     [HttpGet]
-    [ClaimRequirementFilter()]
+    [LonGAuth()]
     public async Task<IActionResult> GetAsync()
     {
         var result = await _userService.GetUserIdsAsync();
