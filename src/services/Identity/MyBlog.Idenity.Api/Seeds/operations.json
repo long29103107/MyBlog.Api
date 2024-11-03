@@ -14,5 +14,13 @@
   {
     "code": "delete",
     "name": "Delete"
+  },
+  {
+    "code": "upload",
+    "name": "Upload"
+  },
+  {
+    "code": "export",
+    "name": "Export"
   }
 ]
