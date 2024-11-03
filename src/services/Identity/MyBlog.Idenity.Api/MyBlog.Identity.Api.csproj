@@ -24,6 +24,7 @@
 	</Target>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Authorization\Authorization.csproj" />
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.ExceptionHandler\MyBlog.Shared.ExceptionHandler.csproj" />
     <ProjectReference Include="..\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj" />
     <ProjectReference Include="..\MyBlog.Identity.Service\MyBlog.Identity.Service.csproj" />

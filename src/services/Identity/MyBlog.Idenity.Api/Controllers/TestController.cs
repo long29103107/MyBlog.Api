@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Authorization.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Service.Abstractions;
 
@@ -14,7 +14,7 @@ public class TestController : CustomIdentityControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    [ClaimRequirementFilter()]
     public async Task<IActionResult> GetAsync()
     {
         var result = await _userService.GetUserIdsAsync();

@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Authorization.Attributes;
+using Authorization.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MyBlog.Identity.Domain.Entities;
 using MyBlog.Identity.Repository;
 using MyBlog.Identity.Service;
 using MyBlog.Shared.Serilog;
 using Serilog;
+using System.Security.Claims;
 using System.Text;
 
 namespace MyBlog.Identity.Api.DependencyInjection.Extensions;
@@ -16,6 +20,8 @@ public static class HostingExtension
     {
         var services = builder.Services;
         var configuration = builder.Configuration;
+
+        services.AddScoped<ICustomAuthService, CustomAuthService>();
 
         builder.Host.AddHostApi()
             .AddHostRepository()
