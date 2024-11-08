@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyBlog.Identity.Repository;
 
@@ -11,9 +12,11 @@ using MyBlog.Identity.Repository;
 namespace MyBlog.Shared.Databases.Identity.Migrations
 {
     [DbContext(typeof(MyIdentityDbContext))]
-    partial class MyIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241108131744_UpdatePermission")]
+    partial class UpdatePermission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,24 +194,6 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                         .IsUnique();
 
                     b.ToTable("Operations");
-                });
-
-            modelBuilder.Entity("MyBlog.Identity.Domain.Entities.OperationPermission", b =>
-                {
-                    b.Property<int>("OperationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("OperationId", "PermissionId");
-
-                    b.HasIndex("PermissionId");
-
-                    b.ToTable("OperationPermission");
                 });
 
             modelBuilder.Entity("MyBlog.Identity.Domain.Entities.Permission", b =>
@@ -420,6 +405,21 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("OperationPermission", b =>
+                {
+                    b.Property<int>("OperationsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OperationsId", "PermissionsId");
+
+                    b.HasIndex("PermissionsId");
+
+                    b.ToTable("OperationPermission");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("MyBlog.Identity.Domain.Entities.Role", null)
@@ -477,25 +477,6 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("MyBlog.Identity.Domain.Entities.OperationPermission", b =>
-                {
-                    b.HasOne("MyBlog.Identity.Domain.Entities.Operation", "Operation")
-                        .WithMany("OperationPermissions")
-                        .HasForeignKey("OperationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyBlog.Identity.Domain.Entities.Permission", "Permission")
-                        .WithMany("OperationPermissions")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Operation");
-
-                    b.Navigation("Permission");
-                });
-
             modelBuilder.Entity("MyBlog.Identity.Domain.Entities.Permission", b =>
                 {
                     b.HasOne("MyBlog.Identity.Domain.Entities.Role", "Role")
@@ -524,14 +505,19 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MyBlog.Identity.Domain.Entities.Operation", b =>
+            modelBuilder.Entity("OperationPermission", b =>
                 {
-                    b.Navigation("OperationPermissions");
-                });
+                    b.HasOne("MyBlog.Identity.Domain.Entities.Operation", null)
+                        .WithMany()
+                        .HasForeignKey("OperationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("MyBlog.Identity.Domain.Entities.Permission", b =>
-                {
-                    b.Navigation("OperationPermissions");
+                    b.HasOne("MyBlog.Identity.Domain.Entities.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MyBlog.Identity.Domain.Entities.Role", b =>

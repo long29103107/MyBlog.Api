@@ -12,5 +12,7 @@ public class Permission : AuditEntity<int>
     [ForeignKey("Role")]
     public int? RoleId { get; set; }
     public Role Role { get; set; }
+    public ICollection<OperationPermission> OperationPermissions { get; set; }
+    public ICollection<RolePermission> RolePermissions { get; set; }
 }
 

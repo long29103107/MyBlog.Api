@@ -11,10 +11,14 @@ public interface IRepositoryManager
     public IPermissionRepository Permission { get; }
     public IOperationRepository Operation { get; }
     public IAccessRuleRepository AccessRule { get; }
+    public IOperationPermissionRepository OperationPermission { get; }
+    public IRolePermissionRepository RolePermission { get; }
 
     DbSet<Permission> Permissions { get; }
     DbSet<Operation> Operations { get; }
     DbSet<AccessRule> AccessRules { get; }
+    DbSet<OperationPermission> OperationPermissions { get; }
+    DbSet<RolePermission> RolePermissions { get; }
 
     #region Transaction
     Task SaveAsync();

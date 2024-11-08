@@ -21,6 +21,8 @@ public class SeedService : BaseIdentityService, ISeedService
         var roles = await _ReadSeedJsonFileAsync<Role>("roles");
         var permissions = await _ReadSeedJsonFileAsync<Permission>("permissions");
         var operations = await _ReadSeedJsonFileAsync<Operation>("operations");
+
+
     }
 
     private async Task<IList<T>> _ReadSeedJsonFileAsync<T>(string fileName)

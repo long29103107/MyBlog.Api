@@ -43,6 +43,8 @@ public class RepositoryManager : IRepositoryManager
     private IPermissionRepository _permission;
     private IOperationRepository _operation;
     private IAccessRuleRepository _accessRule;
+    private IOperationPermissionRepository _operationPermission;
+    private IRolePermissionRepository _rolePermission;
 
     public IPermissionRepository Permission
     {
@@ -82,7 +84,35 @@ public class RepositoryManager : IRepositoryManager
         }
     }
 
+    public IOperationPermissionRepository OperationPermission
+    {
+        get
+        {
+            if (_operationPermission == null)
+            {
+                _operationPermission = new OperationPermissionRepository(_context);
+            }
+
+            return _operationPermission;
+        }
+    }
+
+    public IRolePermissionRepository RolePermission
+    {
+        get
+        {
+            if (_rolePermission == null)
+            {
+                _rolePermission = new RolePermissionRepository(_context);
+            }
+
+            return _rolePermission;
+        }
+    }
+
     public DbSet<Operation> Operations { get { return _context.Operations; } }
     public DbSet<Permission> Permissions { get { return _context.Permissions; } }
     public DbSet<AccessRule> AccessRules { get { return _context.AccessRules; } }
+    public DbSet<RolePermission> RolePermissions { get { return _context.RolePermissions; } }
+    public DbSet<OperationPermission> OperationPermissions { get { return _context.OperationPermissions; } }
 }

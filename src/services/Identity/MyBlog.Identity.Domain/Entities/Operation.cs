@@ -9,10 +9,7 @@ public class Operation : AuditEntity<int>
     public string Code { get; set; }
     public string Name { get; set; }
     public bool IsLocked { get; set; }
-    [ForeignKey("Permission")]
-    public int? PermissionId { get; set; }
-    public Permission Permission { get; set; }
-
+    public ICollection<OperationPermission> OperationPermissions { get; set; }
 }
 
     
