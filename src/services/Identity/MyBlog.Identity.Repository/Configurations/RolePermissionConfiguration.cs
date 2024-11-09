@@ -8,7 +8,7 @@ public class RolePermissionConfiguration : IEntityTypeConfiguration<RolePermissi
 {
     public void Configure(EntityTypeBuilder<RolePermission> builder)
     {
-        builder.HasKey(op => new { op.RoleId, op.PermissionId });
+        builder.HasIndex(op => new { op.RoleId, op.PermissionId }).IsUnique();
 
         builder.HasOne(op => op.Role)
             .WithMany(o => o.RolePermissions)

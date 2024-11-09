@@ -1,6 +1,13 @@
 ﻿[
   {
     "code": "post",
-    "name": "Post"
+    "name": "Post",
+    "children": [
+      "read",
+      "edit",
+      "create",
+      "delete",
+      "upload"
+    ]
   }
 ]

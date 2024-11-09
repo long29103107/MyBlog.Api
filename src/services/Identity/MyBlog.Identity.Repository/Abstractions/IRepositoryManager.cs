@@ -12,11 +12,13 @@ public interface IRepositoryManager
     public IOperationRepository Operation { get; }
     public IAccessRuleRepository AccessRule { get; }
     public IOperationPermissionRepository OperationPermission { get; }
+    public IRoleRepository Role { get; }
     public IRolePermissionRepository RolePermission { get; }
 
     DbSet<Permission> Permissions { get; }
     DbSet<Operation> Operations { get; }
     DbSet<AccessRule> AccessRules { get; }
+    DbSet<Role> Roles { get; }
     DbSet<OperationPermission> OperationPermissions { get; }
     DbSet<RolePermission> RolePermissions { get; }
 
@@ -25,5 +27,6 @@ public interface IRepositoryManager
     Task<IDbContextTransaction> BeginTransactionAsync();
     Task EndTransactionAsync();
     Task RollbackTransactionAsync();
+    Task TruncateAsync(string tableName);
     #endregion
 }

@@ -23,4 +23,8 @@
     <ProjectReference Include="..\MyBlog.Identity.Domain\MyBlog.Identity.Domain.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="MappingProfiles\" />
+	</ItemGroup>
+
 </Project>

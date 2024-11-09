@@ -195,20 +195,26 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
 
             modelBuilder.Entity("MyBlog.Identity.Domain.Entities.OperationPermission", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("OperationId")
                         .HasColumnType("int");
 
                     b.Property<int>("PermissionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("OperationId", "PermissionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("OperationPermission");
+                    b.HasIndex("OperationId", "PermissionId")
+                        .IsUnique();
+
+                    b.ToTable("OperationPermissions");
                 });
 
             modelBuilder.Entity("MyBlog.Identity.Domain.Entities.Permission", b =>
@@ -315,6 +321,30 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("Roles", (string)null);
+                });
+
+            modelBuilder.Entity("MyBlog.Identity.Domain.Entities.RolePermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("RoleId", "PermissionId")
+                        .IsUnique();
+
+                    b.ToTable("RolePermissions");
                 });
 
             modelBuilder.Entity("MyBlog.Identity.Domain.Entities.User", b =>
@@ -460,15 +490,18 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                 {
                     b.HasOne("MyBlog.Identity.Domain.Entities.Operation", "Operation")
                         .WithMany()
-                        .HasForeignKey("OperationId");
+                        .HasForeignKey("OperationId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MyBlog.Identity.Domain.Entities.Permission", "Permission")
                         .WithMany()
-                        .HasForeignKey("PermissionId");
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MyBlog.Identity.Domain.Entities.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Operation");
 
@@ -505,6 +538,25 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("MyBlog.Identity.Domain.Entities.RolePermission", b =>
+                {
+                    b.HasOne("MyBlog.Identity.Domain.Entities.Permission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyBlog.Identity.Domain.Entities.Role", "Role")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("MyBlog.Identity.Domain.Entities.UserRole", b =>
                 {
                     b.HasOne("MyBlog.Identity.Domain.Entities.Role", "Role")
@@ -532,10 +584,14 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
             modelBuilder.Entity("MyBlog.Identity.Domain.Entities.Permission", b =>
                 {
                     b.Navigation("OperationPermissions");
+
+                    b.Navigation("RolePermissions");
                 });
 
             modelBuilder.Entity("MyBlog.Identity.Domain.Entities.Role", b =>
                 {
+                    b.Navigation("RolePermissions");
+
                     b.Navigation("UserRoles");
                 });
 

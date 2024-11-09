@@ -8,7 +8,7 @@ public class OperationPermissionConfiguration : IEntityTypeConfiguration<Operati
 {
     public void Configure(EntityTypeBuilder<OperationPermission> builder)
     {
-        builder.HasKey(op => new { op.OperationId, op.PermissionId });
+        builder.HasIndex(op => new { op.OperationId, op.PermissionId }).IsUnique();
 
         builder.HasOne(op => op.Operation)
             .WithMany(o => o.OperationPermissions)

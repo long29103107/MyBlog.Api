@@ -3,13 +3,14 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Identity.Repository.Abstractions;
 using MyBlog.Identity.Service.Abstractions;
+using Serilog;
 
 namespace MyBlog.Identity.Service.Implements;
 
 public class UserService : BaseIdentityService, IUserService
 {
-    public UserService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory)
-        : base(repoManager, mapper, validatorFactory)
+    public UserService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger )
+        : base(repoManager, mapper, validatorFactory, logger)
     {
     }
 

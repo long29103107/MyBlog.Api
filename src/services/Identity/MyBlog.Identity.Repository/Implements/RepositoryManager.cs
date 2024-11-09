@@ -38,6 +38,10 @@ public class RepositoryManager : IRepositoryManager
     {
         await _context.Database.RollbackTransactionAsync();
     }
+    public async Task TruncateAsync(string tableName)
+    {
+        await _context.Database.ExecuteSqlRawAsync($"DELETE FROM {tableName}");
+    }
     #endregion
 
     private IPermissionRepository _permission;
@@ -45,6 +49,7 @@ public class RepositoryManager : IRepositoryManager
     private IAccessRuleRepository _accessRule;
     private IOperationPermissionRepository _operationPermission;
     private IRolePermissionRepository _rolePermission;
+    private IRoleRepository _role;
 
     public IPermissionRepository Permission
     {
@@ -110,9 +115,23 @@ public class RepositoryManager : IRepositoryManager
         }
     }
 
+    public IRoleRepository Role
+    {
+        get
+        {
+            if (_role == null)
+            {
+                _role = new RoleRepository(_context);
+            }
+
+            return _role;
+        }
+    }
+
     public DbSet<Operation> Operations { get { return _context.Operations; } }
     public DbSet<Permission> Permissions { get { return _context.Permissions; } }
     public DbSet<AccessRule> AccessRules { get { return _context.AccessRules; } }
     public DbSet<RolePermission> RolePermissions { get { return _context.RolePermissions; } }
     public DbSet<OperationPermission> OperationPermissions { get { return _context.OperationPermissions; } }
+    public DbSet<Role> Roles { get { return _context.Roles; } }
 }
