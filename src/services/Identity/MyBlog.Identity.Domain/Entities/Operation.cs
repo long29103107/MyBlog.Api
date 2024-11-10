@@ -9,6 +9,7 @@ public class Operation : AuditEntity<int>
     public string Code { get; set; }
     public string Name { get; set; }
     public bool IsLocked { get; set; }
+    public bool Mode { get; set; } = false;
     public ICollection<OperationPermission> OperationPermissions { get; set; }
 }
 
