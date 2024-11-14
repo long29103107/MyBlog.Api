@@ -1,14 +1,17 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MyBlog.Identity.Domain.Entities;
 using MyBlog.Identity.Repository;
 using MyBlog.Identity.Repository.Abstractions;
 using MyBlog.Identity.Service.Abstractions;
+using MyBlog.Identity.Service.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Serilog;
 using Shared.Dtos.Identity.Seed;
 using System.Data;
+using System.Linq;
 using System.Reflection;
 
 namespace MyBlog.Identity.Service.Implements;
@@ -37,30 +40,87 @@ public class SeedService : BaseIdentityService, ISeedService
 
         if(request.IsSeed)
         {
-            var operationRequests = await _ReadSeedJsonFileAsync<OperationRequest>("operations");   
-            var permissionRequests = await _ReadSeedJsonFileAsync<PermissionRequest>("permissions");
-            var roleRequests = await _ReadSeedJsonFileAsync<RoleRequest>("roles");
-
-            var operations = await _CreateOrUpdateOperationAsync(operationRequests);
-            var permissions = await _CreateOrUpdatePermissionAsync(permissionRequests);
-            var roles = await _CreateOrUpdateRoleAsync(roleRequests);
-            await _repoManager.SaveAsync();
-
-            await _AddNewRolePermissionAsync(roles, permissions);
-            await _AddNewOperationPermissionAsync(operations,  permissions, permissionRequests);
-
-            try
-            {
-                await _repoManager.SaveAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, ex.Message);
-                throw;
-            }
+            await _ReSeedSecurityAsync();
         }
     }
 
+    private async Task _ReSeedSecurityAsync()
+    {
+        var logFormat = new List<string>();
+        var operationRequests = await _ReadSeedJsonFileAsync<OperationRequest>("operations");
+        var permissionRequests = await _ReadSeedJsonFileAsync<PermissionRequest>("permissions");
+        var roleRequests = await _ReadSeedJsonFileAsync<RoleRequest>("roles");
+
+        logFormat.Add("=====================Add Operation=====================");
+        var operations = await _CreateOrUpdateOperationAsync(operationRequests);
+        operations.ForEach(x => logFormat.Add($"Operation {x}"));
+
+        logFormat.Add("=====================Add Permission=====================");
+        var permissions = await _CreateOrUpdatePermissionAsync(permissionRequests);
+        permissions.ForEach(x => logFormat.Add($"Operation {x}"));
+
+        logFormat.Add("=====================Add Role=====================");
+        var roles = await _CreateOrUpdateRoleAsync(roleRequests);
+        roles.ForEach(x => logFormat.Add($"Operation {x}"));
+        await _repoManager.SaveAsync();
+
+        await _AddNewRolePermissionAsync(roles, permissions);
+        await _AddNewOperationPermissionAsync(operations, permissions, permissionRequests);
+
+        var accessRules = (from o in operations
+                           from p in permissions
+                           from r in roles
+
+                           select new AccessRule
+                           {
+                               OperationId = o.Id,
+                               PermissionId = p.Id,
+                               RoleId = r.Id,
+                           });
+
+        var existingAccessRules = await _repoManager.AccessRule.FindAll().ToListAsync();
+
+        existingAccessRules = existingAccessRules.Where(x =>
+            accessRules.Any(y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId && x.OperationId == y.OperationId))
+            .ToList();
+
+        if (!existingAccessRules.IsNullOrEmpty())
+        {
+            var accRulesNeedToUpdate = accessRules.Where(x => existingAccessRules.Any(
+                y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId && x.OperationId == y.OperationId))
+                .ToList();
+
+            foreach(var existingAccessRule in existingAccessRules)
+            {
+                var accRuleNeedToUpdate = accRulesNeedToUpdate.FirstOrDefault(x =>
+                    x.RoleId == existingAccessRule.RoleId &&
+                    x.PermissionId == existingAccessRule.PermissionId &&
+                    x.OperationId == existingAccessRule.OperationId);
+
+                _mapper.Map<AccessRule, AccessRule>(accRuleNeedToUpdate!, existingAccessRule);
+            }
+
+            _repoManager.AccessRule.UpdateRange(existingAccessRules);
+        }
+
+        var newAccessRules = accessRules.ToList();
+        newAccessRules.RemoveAll(x => existingAccessRules.Any(y => 
+            x.RoleId == y.RoleId &&
+            x.PermissionId == y.PermissionId &&
+            x.OperationId == y.OperationId));
+
+        _repoManager.AccessRule.AddRange(newAccessRules);
+
+        try
+        {
+            await _repoManager.SaveAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, ex.Message);
+            throw;
+        }
+    }
 
     private async Task _RemoveCurrentSecurityAsync()
     {
@@ -223,12 +283,13 @@ public class SeedService : BaseIdentityService, ISeedService
             foreach (var operation in operations)
             {
                 var existingOpePer = operationPermissions.FirstOrDefault(x => x.Permission.Code == permission.Code && x.Operation.Code == operation.Code);
+
                 if (existingOpePer is not null && !(children.Contains(operation.Code)))
                 {
                     _repoManager.OperationPermission.Remove(existingOpePer);
                 }
 
-                if (children.Contains(operation.Code))
+                if (children.Contains(operation.Code) && existingOpePer is null)
                 {
                     newOperationPermissions.Add(new OperationPermission()
                     {

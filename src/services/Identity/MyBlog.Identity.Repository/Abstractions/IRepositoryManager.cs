@@ -24,6 +24,7 @@ public interface IRepositoryManager
 
     #region Transaction
     Task SaveAsync();
+    void DetachEntities();
     Task<IDbContextTransaction> BeginTransactionAsync();
     Task EndTransactionAsync();
     Task RollbackTransactionAsync();

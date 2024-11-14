@@ -23,6 +23,12 @@ public class RepositoryManager : IRepositoryManager
     {
         await _context.SaveChangesAsync();
     }
+
+    public void DetachEntities()
+    {
+        _context.ChangeTracker.Clear();
+    }
+
     public Task<IDbContextTransaction> BeginTransactionAsync()
     {
         return _context.Database.BeginTransactionAsync();
