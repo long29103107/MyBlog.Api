@@ -102,6 +102,11 @@ public abstract class RepositoryIdentityBase<T, TContext>
 
         _context.Set<T>().RemoveRange(entities);
     }
+
+    public void Detach(T entity)
+    {
+        _context.Entry(entity).State = EntityState.Detached;
+    }
     #endregion
 
     #region Linq 

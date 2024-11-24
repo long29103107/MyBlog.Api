@@ -21,6 +21,7 @@ public interface IRepositoryIdentityBase<T, TContext>
     void UpdateRange(IEnumerable<T> entities);
     void Remove(T entity);
     void RemoveRange(IEnumerable<T> entities);
+    void Detach(T entity);
     #endregion
 
     #region Linq 

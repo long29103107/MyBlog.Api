@@ -11,8 +11,11 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
     public void Configure(EntityTypeBuilder<Role> builder)
     {
         builder.ToTable(name: IdentitySchemaConstants.Table.Roles);
+
         builder.HasIndex(c => c.Code)
            .IsUnique();
+
+        builder.HasQueryFilter(p => !p.IsActive);
     }
 }
 

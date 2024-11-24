@@ -1,6 +1,4 @@
-﻿
-using Contracts.Dtos;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Post.Service.Abstractions;
 using MyBlog.Shared.Lib;
 using Shared.APIs;
