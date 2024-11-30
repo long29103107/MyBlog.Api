@@ -21,7 +21,7 @@ public static class SeedDtos
     public sealed class PermissionRequest
     {
         public string Scope { get; set; }
-        public string Operation { get; set; }
+        public List<string> Operations { get; set; }
     }
 
     public sealed class RoleRequest
@@ -36,7 +36,7 @@ public static class SeedDtos
         public bool IsSeed { get; set; } = false;
     }
 
-    public sealed class PermissionSeedResponse
+    public sealed class PermissionSeedRequest
     {
         public string OperationCode  { get; set; }
         public string ScopeCode { get; set; }

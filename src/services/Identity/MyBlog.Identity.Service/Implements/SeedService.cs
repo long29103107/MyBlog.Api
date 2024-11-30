@@ -59,73 +59,62 @@ public class SeedService : BaseIdentityService, ISeedService
         logFormat.Add("=====================Add Scope=====================");
         var scopes = await _CreateOrUpdateScopeAsync(scopeRequests);
         operations.ForEach(x => logFormat.Add($"Scope {x}"));
-        await _repoManager.SaveAsync();
-        _repoManager.DetachEntities();
 
         logFormat.Add("=====================Add Permission=====================");
-        var permissions = await _CreateOrUpdatePermissionAsync(
-            operations.Select(x => x.Code).Distinct().ToList() ?? new List<string>(), 
-            scopes.Select(x => x.Code).Distinct().ToList() ?? new List<string>());
+        var permissions = await _CreateOrUpdatePermissionAsync(operations, scopes);
         permissions.ForEach(x => logFormat.Add($"Permission {x}"));
 
         logFormat.Add("=====================Add Role=====================");
         var roles = await _CreateOrUpdateRoleAsync(roleRequests);
         roles.ForEach(x => logFormat.Add($"Role {x}"));
         await _repoManager.SaveAsync();
+        _repoManager.DetachEntities();
 
-        await _AddNewRolePermissionAsync(roles, permissions);
-        await _AddNewOperationPermissionAsync(operations, permissions, permissionRequests);
+        //await _AddNewRolePermissionAsync(roles, permissions);
+        //await _AddNewOperationPermissionAsync(operations, permissions, permissionRequests);
 
-        var accessRules = (from p in permissions
-                           from r in roles
+        //var accessRules = (from p in permissions
+        //                   from r in roles
 
-                           select new AccessRule
-                           {
-                               PermissionId = p.Id,
-                               RoleId = r.Id,
-                           });
+        //                   select new AccessRule
+        //                   {
+        //                       PermissionId = p.Id,
+        //                       RoleId = r.Id,
+        //                   });
 
-        var existingAccessRules = await _repoManager.AccessRule.FindAll().ToListAsync();
+        //var existingAccessRules = await _repoManager.AccessRule.FindAll().ToListAsync();
 
-        existingAccessRules = existingAccessRules.Where(x =>
-            accessRules.Any(y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId))
-            .ToList();
+        //existingAccessRules = existingAccessRules.Where(x =>
+        //    accessRules.Any(y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId))
+        //    .ToList();
 
-        if (!existingAccessRules.IsNullOrEmpty())
-        {
-            var accRulesNeedToUpdate = accessRules.Where(x => existingAccessRules.Any(
-                y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId))
-                .ToList();
+        //if (!existingAccessRules.IsNullOrEmpty())
+        //{
+        //    var accRulesNeedToUpdate = accessRules.Where(x => existingAccessRules.Any(
+        //        y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId))
+        //        .ToList();
 
-            foreach (var existingAccessRule in existingAccessRules)
-            {
-                var accRuleNeedToUpdate = accRulesNeedToUpdate.FirstOrDefault(x =>
-                    x.RoleId == existingAccessRule.RoleId &&
-                    x.PermissionId == existingAccessRule.PermissionId));
+        //    foreach (var existingAccessRule in existingAccessRules)
+        //    {
+        //        var accRuleNeedToUpdate = accRulesNeedToUpdate.FirstOrDefault(x =>
+        //            x.RoleId == existingAccessRule.RoleId &&
+        //            x.PermissionId == existingAccessRule.PermissionId));
 
-                _mapper.Map<AccessRule, AccessRule>(accRuleNeedToUpdate!, existingAccessRule);
-            }
+        //        _mapper.Map<AccessRule, AccessRule>(accRuleNeedToUpdate!, existingAccessRule);
+        //    }
 
-            _repoManager.AccessRule.UpdateRange(existingAccessRules);
-        }
+        //    _repoManager.AccessRule.UpdateRange(existingAccessRules);
+        //}
 
-        var newAccessRules = accessRules.ToList();
-        newAccessRules.RemoveAll(x => existingAccessRules.Any(y =>
-            x.RoleId == y.RoleId &&
-            x.PermissionId == y.PermissionId &&
-            x.OperationId == y.OperationId));
+        //var newAccessRules = accessRules.ToList();
+        //newAccessRules.RemoveAll(x => existingAccessRules.Any(y =>
+        //    x.RoleId == y.RoleId &&
+        //    x.PermissionId == y.PermissionId &&
+        //    x.OperationId == y.OperationId));
 
-        _repoManager.AccessRule.AddRange(newAccessRules);
+        //_repoManager.AccessRule.AddRange(newAccessRules);
 
-        try
-        {
-            await _repoManager.SaveAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, ex.Message);
-            throw;
-        }
+        await _repoManager.SaveAsync();
     }
 
     private async Task _RemoveCurrentSecurityAsync()
@@ -209,15 +198,15 @@ public class SeedService : BaseIdentityService, ISeedService
     }
 
     private async Task<List<Permission>> _CreateOrUpdatePermissionAsync(
-        List<string> operationCodes, 
-        List<string> scopeCodes)
+        List<Operation> operations, 
+        List<Scope> scopes)
     {
-        var newRequests = (from op in operationCodes
-                           from sc in scopeCodes
-                           select new PermissionSeedResponse
+        var newRequests = (from op in operations
+                           from sc in scopes
+                           select new PermissionSeedRequest
                            {
-                               OperationCode = op,
-                               ScopeCode = sc,
+                               OperationCode = op.Code,
+                               ScopeCode = sc.Code,
                            }).ToList();
 
         var existingPermissions = await _repoManager.Permission.FindAll()
@@ -228,8 +217,8 @@ public class SeedService : BaseIdentityService, ISeedService
         //Case delete
         var permissionNeedToDelete = existingPermissions
             .Where(x =>
-                !operationCodes.Contains(x.Operation.Code) 
-                || !scopeCodes.Contains(x.Scope.Code))
+                !operations.Select(y => y.Code).Contains(x.Operation.Code) 
+                || !scopes.Select(y => y.Code).Contains(x.Scope.Code))
             .ToList();
 
         _repoManager.Permission.RemoveRange(permissionNeedToDelete);
@@ -239,10 +228,26 @@ public class SeedService : BaseIdentityService, ISeedService
         newRequests.RemoveAll(x => existingPermissions.Any(y => y.Operation.Code.Equals(x.OperationCode))
             && existingPermissions.Any(y => y.Scope.Code.Equals(x.ScopeCode)));
 
-        var permissionNeedToCreate = _mapper.Map<List<Permission>>(newRequests);
-        _repoManager.Permission.AddRange(permissionNeedToCreate);
+        var permissionsNeedToCreate = new List<Permission>();
 
-        return existingPermissions.Union(permissionNeedToCreate).ToList();
+        foreach (var newRequest in newRequests)
+        {
+            var operation = operations.FirstOrDefault(x => newRequest.OperationCode.Equals(x.Code));
+            if (operation is null) continue;
+
+            var scope = scopes.FirstOrDefault(x => newRequest.ScopeCode.Equals(x.Code));
+            if (scope is null) continue;
+
+            Permission permissionNeedToCreate = new()
+            {
+                OperationId = operation.Id,
+                ScopeId = scope.Id,
+            };
+            permissionsNeedToCreate.Add(permissionNeedToCreate);
+            _repoManager.Permission.Add(permissionNeedToCreate);
+        }
+
+        return existingPermissions.Union(permissionsNeedToCreate).ToList();
     }
 
     private async Task<List<Role>> _CreateOrUpdateRoleAsync(List<RoleRequest> requests)
@@ -274,77 +279,77 @@ public class SeedService : BaseIdentityService, ISeedService
 
     private async Task _AddNewRolePermissionAsync(List<Role> roles, List<Permission> permissions)
     {
-        var rolePermissions = await (from role in _repoManager.Role.FindByCondition(x => roles.Select(y => y.Code).Distinct().Contains(x.Code))
+        //var rolePermissions = await (from role in _repoManager.Role.FindByCondition(x => roles.Select(y => y.Code).Distinct().Contains(x.Code))
 
-                                     join rolePer in _repoManager.RolePermission.FindAll()
-                                     on role.Id equals rolePer.RoleId
+        //                             join rolePer in _repoManager.RolePermission.FindAll()
+        //                             on role.Id equals rolePer.RoleId
 
-                                     join per in _repoManager.Permission.FindByCondition(x => permissions.Select(y => y.Code).Distinct().Contains(x.Code))
-                                    on rolePer.PermissionId equals per.Id
+        //                             join per in _repoManager.Permission.FindByCondition(x => permissions.Select(y => y.Code).Distinct().Contains(x.Code))
+        //                            on rolePer.PermissionId equals per.Id
 
-                                     select rolePer)
-                        .Include(x => x.Role)
-                        .Include(x => x.Permission)
-                        .ToListAsync();
+        //                             select rolePer)
+        //                .Include(x => x.Role)
+        //                .Include(x => x.Permission)
+        //                .ToListAsync();
 
-        foreach (var role in roles)
-        {
-            foreach (var permission in permissions)
-            {
-                if (rolePermissions.Exists(x => x.Permission.Code == permission.Code && x.Role.Code == role.Code))
-                    continue;
+        //foreach (var role in roles)
+        //{
+        //    foreach (var permission in permissions)
+        //    {
+        //        if (rolePermissions.Exists(x => x.Permission.Code == permission.Code && x.Role.Code == role.Code))
+        //            continue;
 
-                _repoManager.RolePermission.Add(new RolePermission()
-                {
-                    RoleId = role.Id,
-                    PermissionId = permission.Id
-                });
-            }
-        }
+        //        _repoManager.RolePermission.Add(new RolePermission()
+        //        {
+        //            RoleId = role.Id,
+        //            PermissionId = permission.Id
+        //        });
+        //    }
+        //}
     }
 
     private async Task _AddNewOperationPermissionAsync(List<Operation> operations, List<Permission> permissions, List<PermissionRequest> permissionRequests)
     {
-        var operationPermissions = await (from ope in _repoManager.Operation.FindByCondition(x => operations.Select(y => y.Code).Distinct().Contains(x.Code))
+        //var operationPermissions = await (from ope in _repoManager.Operation.FindByCondition(x => operations.Select(y => y.Code).Distinct().Contains(x.Code))
 
-                                          join opePer in _repoManager.Scope.FindAll()
-                                          on ope.Id equals opePer.OperationId
+        //                                  join opePer in _repoManager.Scope.FindAll()
+        //                                  on ope.Id equals opePer.OperationId
 
-                                          join per in _repoManager.Permission.FindByCondition(x => permissions.Select(y => y.Code).Distinct().Contains(x.Code))
-                                         on opePer.PermissionId equals per.Id
+        //                                  join per in _repoManager.Permission.FindByCondition(x => permissions.Select(y => y.Code).Distinct().Contains(x.Code))
+        //                                 on opePer.PermissionId equals per.Id
 
-                                          select opePer)
-                                   .Include(x => x.Permission)
-                                   .Include(x => x.Operation)
-                                   .ToListAsync();
+        //                                  select opePer)
+        //                           .Include(x => x.Permission)
+        //                           .Include(x => x.Operation)
+        //                           .ToListAsync();
 
-        var newOperationPermissions = new List<OperationPermission>();
+        //var newOperationPermissions = new List<OperationPermission>();
 
-        foreach (var permission in permissions)
-        {
-            var children = permissionRequests.FirstOrDefault(x => x.Code == permission.Code)?.Children ?? new();
+        //foreach (var permission in permissions)
+        //{
+        //    var children = permissionRequests.FirstOrDefault(x => x.Code == permission.Code)?.Children ?? new();
 
-            foreach (var operation in operations)
-            {
-                var existingOpePer = operationPermissions.FirstOrDefault(x => x.Permission.Code == permission.Code && x.Operation.Code == operation.Code);
+        //    foreach (var operation in operations)
+        //    {
+        //        var existingOpePer = operationPermissions.FirstOrDefault(x => x.Permission.Code == permission.Code && x.Operation.Code == operation.Code);
 
-                if (existingOpePer is not null && !(children.Contains(operation.Code)))
-                {
-                    _repoManager.Scope.Remove(existingOpePer);
-                }
+        //        if (existingOpePer is not null && !(children.Contains(operation.Code)))
+        //        {
+        //            _repoManager.Scope.Remove(existingOpePer);
+        //        }
 
-                if (children.Contains(operation.Code) && existingOpePer is null)
-                {
-                    newOperationPermissions.Add(new OperationPermission()
-                    {
-                        OperationId = operation.Id,
-                        PermissionId = permission.Id
-                    });
-                }
+        //        if (children.Contains(operation.Code) && existingOpePer is null)
+        //        {
+        //            newOperationPermissions.Add(new OperationPermission()
+        //            {
+        //                OperationId = operation.Id,
+        //                PermissionId = permission.Id
+        //            });
+        //        }
 
-            }
-        }
-        _repoManager.Scope.AddRange(newOperationPermissions);
+        //    }
+        //}
+        //_repoManager.Scope.AddRange(newOperationPermissions);
     }
 }
 

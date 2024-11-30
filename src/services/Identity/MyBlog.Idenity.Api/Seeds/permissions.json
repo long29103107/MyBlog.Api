@@ -1,7 +1,7 @@
 ﻿[
   {
     "scope": "post",
-    "operation": [
+    "operations": [
       "read",
       "edit",
       "create",

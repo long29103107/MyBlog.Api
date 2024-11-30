@@ -9,6 +9,7 @@ public class PermissionMappingProfile : Profile
     public PermissionMappingProfile()
     {
         CreateMap<Permission, PermissionRequest>().ReverseMap();
+        CreateMap<Permission, PermissionSeedRequest>().ReverseMap();
     }
 }
 
