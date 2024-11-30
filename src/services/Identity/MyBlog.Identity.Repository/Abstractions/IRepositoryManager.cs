@@ -11,7 +11,7 @@ public interface IRepositoryManager
     public IPermissionRepository Permission { get; }
     public IOperationRepository Operation { get; }
     public IAccessRuleRepository AccessRule { get; }
-    public IOperationPermissionRepository OperationPermission { get; }
+    public IScopeRepository Scope { get; }
     public IRoleRepository Role { get; }
     public IRolePermissionRepository RolePermission { get; }
 
@@ -19,7 +19,7 @@ public interface IRepositoryManager
     DbSet<Operation> Operations { get; }
     DbSet<AccessRule> AccessRules { get; }
     DbSet<Role> Roles { get; }
-    DbSet<OperationPermission> OperationPermissions { get; }
+    DbSet<Scope> Scopes { get; }
     DbSet<RolePermission> RolePermissions { get; }
 
     #region Transaction

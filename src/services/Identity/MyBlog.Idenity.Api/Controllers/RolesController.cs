@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Service.Abstractions;
-using static Shared.Dtos.Identity.Role.RoleDtos;
+using static Shared.Dtos.Identity.RoleDtos;
 namespace MyBlog.Identity.Api.Controllers;
 
 public class RolesController : CustomIdentityControllerBase

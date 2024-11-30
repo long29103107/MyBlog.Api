@@ -8,7 +8,16 @@ public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
 {
     public void Configure(EntityTypeBuilder<Permission> builder)
     {
-        builder.HasIndex(c => c.Code)
-           .IsUnique();
+        builder.HasIndex(op => new { op.ScopeId, op.OperationId }).IsUnique();
+
+        builder.HasOne(p => p.Operation)
+           .WithMany() 
+           .HasForeignKey(p => p.OperationId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(p => p.Scope)
+         .WithMany()
+         .HasForeignKey(p => p.ScopeId)
+         .OnDelete(DeleteBehavior.Cascade);
     }
 }

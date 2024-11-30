@@ -3,9 +3,8 @@ using static Shared.Dtos.Identity.RoleDtos;
 
 namespace MyBlog.Identity.Service.Abstractions;
 
-public interface IRoleService : IBaseIdentityService
+public interface IPermissionService : IBaseIdentityService
 {
-    IQueryable<Role> _RoleIgnoreGlobalFilter();
     Task<RoleResponse> CreateAsync(RoleCreateRequest request);
     Task<RoleResponse> GetAsync(int id);
     Task<RoleResponse> GetActiveAsync(int id);

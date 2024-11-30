@@ -1,4 +1,4 @@
-﻿using Shared.Dtos.Identity.Seed;
+﻿using static Shared.Dtos.Identity.SeedDtos;
 
 namespace MyBlog.Identity.Service.Abstractions;
 

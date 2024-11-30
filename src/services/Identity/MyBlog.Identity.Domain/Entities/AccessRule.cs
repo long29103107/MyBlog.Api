@@ -5,10 +5,6 @@ namespace MyBlog.Identity.Domain.Entities;
 
 public class AccessRule : AuditEntity<int>
 {
-    [ForeignKey("Operation")]
-    public int? OperationId { get; set; }
-    public Operation Operation { get; set; }
-
     [ForeignKey("Permission")]
     public int? PermissionId { get; set; }
     public Permission Permission { get; set; }
@@ -16,6 +12,7 @@ public class AccessRule : AuditEntity<int>
     [ForeignKey("Role")]
     public int? RoleId { get; set; }
     public Role Role { get; set; }
+
     public bool Mode { get; set; } = false;
 
 }

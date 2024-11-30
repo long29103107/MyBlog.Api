@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Service.Abstractions;
-using Shared.Dtos.Identity.Seed;
+using static Shared.Dtos.Identity.SeedDtos;
 
 namespace MyBlog.Identity.Api.Controllers;
 

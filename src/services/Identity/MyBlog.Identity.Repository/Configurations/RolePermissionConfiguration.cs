@@ -14,10 +14,5 @@ public class RolePermissionConfiguration : IEntityTypeConfiguration<RolePermissi
             .WithMany(o => o.RolePermissions)
             .HasForeignKey(op => op.RoleId)
             .OnDelete(DeleteBehavior.Cascade); // Khi Role bị xóa, RolePermission cũng bị xóa
-
-        builder.HasOne(op => op.Permission)
-            .WithMany(p => p.RolePermissions)
-            .HasForeignKey(op => op.PermissionId)
-            .OnDelete(DeleteBehavior.Cascade); // Khi Permission bị xóa, RolePermission cũng bị xóa
     }
 }

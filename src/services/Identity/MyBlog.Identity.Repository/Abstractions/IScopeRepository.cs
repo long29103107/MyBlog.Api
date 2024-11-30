@@ -3,5 +3,5 @@ using MyBlog.Identity.Domain.Entities;
 
 namespace MyBlog.Identity.Repository.Abstractions;
 
-public interface IOperationPermissionRepository : IRepositoryIdentityBase<OperationPermission, MyIdentityDbContext>
+public interface IScopeRepository : IRepositoryIdentityBase<Scope, MyIdentityDbContext>
 { }

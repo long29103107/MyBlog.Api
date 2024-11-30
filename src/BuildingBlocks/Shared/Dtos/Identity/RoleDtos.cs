@@ -2,9 +2,8 @@
 using FilteringAndSortingExpression.Extensions;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Shared.Dtos.Post.CategoryDtos;
 
-namespace Shared.Dtos.Identity.Role;
+namespace Shared.Dtos.Identity;
 
 public static class RoleDtos
 {
@@ -19,7 +18,7 @@ public static class RoleDtos
         /// </summary>
         public override string Sort { get; set; }
             = LinqExtensions.GetPropertiesDefaultSortAsString<RoleResponse>(
-                $"-{nameof(CategoryResponse.Id).ToLower()}"
+                $"-{nameof(RoleResponse.Id).ToLower()}"
             );
     }
 

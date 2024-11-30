@@ -9,7 +9,7 @@ using MyBlog.Identity.Domain.Exceptions;
 using MyBlog.Identity.Repository.Abstractions;
 using MyBlog.Identity.Service.Abstractions;
 using Serilog;
-using static Shared.Dtos.Identity.Role.RoleDtos;
+using static Shared.Dtos.Identity.RoleDtos;
 
 namespace MyBlog.Identity.Service.Implements;
 public class RoleService : BaseIdentityService, IRoleService
@@ -41,20 +41,21 @@ public class RoleService : BaseIdentityService, IRoleService
         _repoManager.Role.Detach(newRole);
 
         //Add permission and operation for role
-        var permissions = _repoManager.Permission.FindAll().AsEnumerable();
+        var permissions = await _repoManager.Permission.FindAll().ToListAsync();
        
         //Add RolePermission
         _AddRolePermissionForNewFole(newRole, permissions);
+        await _repoManager.SaveAsync();
 
         //Add AccessRule
-        _AddAccessRuleForNewRole(newRole, permissions);
-
+        
+        await _AddAccessRuleForNewRoleAsync(newRole, permissions);
         await _repoManager.SaveAsync();
 
         return _mapper.Map<RoleResponse>(newRole);
     }
 
-    private void _AddRolePermissionForNewFole(Role newRole, IEnumerable<Permission> permissions)
+    private void _AddRolePermissionForNewFole(Role newRole, IList<Permission> permissions)
     {
         foreach (var permission in permissions) 
         {
@@ -68,9 +69,9 @@ public class RoleService : BaseIdentityService, IRoleService
         }
     }
 
-    private void _AddAccessRuleForNewRole(Role newRole, IEnumerable<Permission> permissions)
+    private async Task _AddAccessRuleForNewRoleAsync(Role newRole, IList<Permission> permissions)
     {
-        var operations = _repoManager.Operation.FindAll().AsEnumerable();
+        var operations = await _repoManager.Operation.FindAll().ToListAsync();
 
         var permissionRoles = from permission in permissions
                              from operation in operations
@@ -80,17 +81,17 @@ public class RoleService : BaseIdentityService, IRoleService
                                  Permission = permission
                              };
 
-        foreach (var permissionRole in permissionRoles)
-        {
-            var newAccessRule = new AccessRule()
-            {
-                RoleId = newRole.Id,
-                PermissionId = permissionRole.Permission.Id,
-                OperationId = permissionRole.Operation.Id,
-            };
+        //foreach (var permissionRole in permissionRoles)
+        //{
+        //    var newAccessRule = new AccessRule()
+        //    {
+        //        RoleId = newRole.Id,
+        //        PermissionId = permissionRole.Permission.Id,
+        //        OperationId = permissionRole.Operation.Id,
+        //    };
 
-            _repoManager.AccessRule.Add(newAccessRule);
-        }
+        //    _repoManager.AccessRule.Add(newAccessRule);
+        //}
     }
     #endregion
 

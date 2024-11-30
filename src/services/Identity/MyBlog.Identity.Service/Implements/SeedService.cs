@@ -9,10 +9,10 @@ using MyBlog.Identity.Service.Abstractions;
 using MyBlog.Identity.Service.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Serilog;
-using Shared.Dtos.Identity.Seed;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using static Shared.Dtos.Identity.SeedDtos;
 
 namespace MyBlog.Identity.Service.Implements;
 
@@ -38,7 +38,7 @@ public class SeedService : BaseIdentityService, ISeedService
             }
         }
 
-        if(request.IsSeed)
+        if (request.IsSeed)
         {
             await _ReSeedSecurityAsync();
         }
@@ -55,8 +55,16 @@ public class SeedService : BaseIdentityService, ISeedService
         var operations = await _CreateOrUpdateOperationAsync(operationRequests);
         operations.ForEach(x => logFormat.Add($"Operation {x}"));
 
+        logFormat.Add("=====================Add Scope=====================");
+        var scopes = await _CreateOrUpdateScopeAsync(permissionRequests);
+        operations.ForEach(x => logFormat.Add($"Scope {x}"));
+        await _repoManager.SaveAsync();
+        _repoManager.DetachEntities();
+
         logFormat.Add("=====================Add Permission=====================");
-        var permissions = await _CreateOrUpdatePermissionAsync(permissionRequests);
+        var permissions = await _CreateOrUpdatePermissionAsync(
+            operations.Select(x => x.Code).Distinct().ToList() ?? new List<string>(), 
+            scopes.Select(x => x.Code).Distinct().ToList() ?? new List<string>());
         permissions.ForEach(x => logFormat.Add($"Operation {x}"));
 
         logFormat.Add("=====================Add Role=====================");
@@ -90,7 +98,7 @@ public class SeedService : BaseIdentityService, ISeedService
                 y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId && x.OperationId == y.OperationId))
                 .ToList();
 
-            foreach(var existingAccessRule in existingAccessRules)
+            foreach (var existingAccessRule in existingAccessRules)
             {
                 var accRuleNeedToUpdate = accRulesNeedToUpdate.FirstOrDefault(x =>
                     x.RoleId == existingAccessRule.RoleId &&
@@ -104,7 +112,7 @@ public class SeedService : BaseIdentityService, ISeedService
         }
 
         var newAccessRules = accessRules.ToList();
-        newAccessRules.RemoveAll(x => existingAccessRules.Any(y => 
+        newAccessRules.RemoveAll(x => existingAccessRules.Any(y =>
             x.RoleId == y.RoleId &&
             x.PermissionId == y.PermissionId &&
             x.OperationId == y.OperationId));
@@ -125,7 +133,7 @@ public class SeedService : BaseIdentityService, ISeedService
     private async Task _RemoveCurrentSecurityAsync()
     {
         await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.AccessRules));
-        await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.OperationPermissions));
+        await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.Scopes));
         await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.RolePermissions));
         await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.Operations));
         await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.Permissions));
@@ -147,6 +155,34 @@ public class SeedService : BaseIdentityService, ISeedService
         return result;
     }
 
+    private async Task<List<Scope>> _CreateOrUpdateScopeAsync(List<PermissionRequest> requests)
+    {
+        var newRequest = new List<PermissionRequest>(requests);
+        var existingScopes = await _repoManager.Scope.FindAll().ToListAsync();
+
+        //Case delete
+        var scopeNeedToDelete = existingScopes.Where(x => !newRequest.Select(y => y.Code).Distinct().Contains(x.Code));
+
+        _repoManager.Scope.RemoveRange(scopeNeedToDelete);
+        existingScopes.RemoveAll(x => scopeNeedToDelete.Select(y => y.Code).Distinct().Contains(x.Code));
+
+        //Case update
+        foreach (var existingScope in existingScopes)
+        {
+            var request = newRequest.FirstOrDefault(x => x.Code == existingScope.Code);
+            if (request == null) continue;
+
+            _mapper.Map<PermissionRequest, Scope>(request, existingScope);
+        }
+
+        //Case create
+        newRequest.RemoveAll(x => existingScopes.Select(y => y.Code).Contains(x.Code));
+        var scopeNeedToCreate = _mapper.Map<List<Operation>>(newRequest);
+        _repoManager.Operation.AddRange(scopeNeedToCreate);
+
+        return existingScopes.Union(scopeNeedToCreate).ToList();
+    }
+
     private async Task<List<Operation>> _CreateOrUpdateOperationAsync(List<OperationRequest> requests)
     {
         var newRequest = new List<OperationRequest>(requests);
@@ -158,7 +194,7 @@ public class SeedService : BaseIdentityService, ISeedService
         existingOperations.RemoveAll(x => operationNeedToDelete.Select(y => y.Code).Distinct().Contains(x.Code));
 
         //Case update
-        foreach (var existingOperation in existingOperations) 
+        foreach (var existingOperation in existingOperations)
         {
             var request = newRequest.FirstOrDefault(x => x.Code == existingOperation.Code);
             if (request == null) continue;
@@ -174,27 +210,36 @@ public class SeedService : BaseIdentityService, ISeedService
         return existingOperations.Union(operationNeedToCreate).ToList();
     }
 
-    private async Task<List<Permission>> _CreateOrUpdatePermissionAsync(List<PermissionRequest> requests)
+    private async Task<List<Permission>> _CreateOrUpdatePermissionAsync(
+        List<string> operationCodes, 
+        List<string> scopeCodes)
     {
-        var newRequests = new List<PermissionRequest>(requests);
-        var existingPermissions = await _repoManager.Permission.FindAll().ToListAsync();
+        var newRequests = (from op in operationCodes
+                           from sc in scopeCodes
+                           select new
+                           {
+                               OperationCode = op,
+                               ScopeCode = sc,
+                           }).ToList();
+
+        var existingPermissions = await _repoManager.Permission.FindAll()
+            .Include(x => x.Operation)
+            .Include(x => x.Scope)
+            .ToListAsync();
 
         //Case delete
-        var permissionNeedToDelete = existingPermissions.Where(x => !newRequests.Select(y => y.Code).Distinct().Contains(x.Code));
+        var permissionNeedToDelete = existingPermissions
+            .Where(x =>
+                !operationCodes.Contains(x.Operation.Code) 
+                || !scopeCodes.Contains(x.Scope.Code))
+            .ToList();
+
         _repoManager.Permission.RemoveRange(permissionNeedToDelete);
-        existingPermissions.RemoveAll(x => permissionNeedToDelete.Select(y => y.Code).Distinct().Contains(x.Code));
-
-        //Case update
-        foreach (var existingPerrmission in existingPermissions)
-        {
-            var request = newRequests.FirstOrDefault(x => x.Code == existingPerrmission.Code);
-            if (request == null) continue;
-
-            _mapper.Map<PermissionRequest, Permission>(request, existingPerrmission);
-        }
+        existingPermissions.RemoveAll(x => permissionNeedToDelete.Any(y => x.Id == y.Id));
 
         //Case create
-        newRequests.RemoveAll(x => existingPermissions.Select(y => y.Code).Contains(x.Code));
+
+        newRequests.RemoveAll(x => );
         var permissionNeedToCreate = _mapper.Map<List<Permission>>(newRequests);
         _repoManager.Permission.AddRange(permissionNeedToCreate);
 
@@ -263,7 +308,7 @@ public class SeedService : BaseIdentityService, ISeedService
     {
         var operationPermissions = await (from ope in _repoManager.Operation.FindByCondition(x => operations.Select(y => y.Code).Distinct().Contains(x.Code))
 
-                                          join opePer in _repoManager.OperationPermission.FindAll()
+                                          join opePer in _repoManager.Scope.FindAll()
                                           on ope.Id equals opePer.OperationId
 
                                           join per in _repoManager.Permission.FindByCondition(x => permissions.Select(y => y.Code).Distinct().Contains(x.Code))
@@ -286,7 +331,7 @@ public class SeedService : BaseIdentityService, ISeedService
 
                 if (existingOpePer is not null && !(children.Contains(operation.Code)))
                 {
-                    _repoManager.OperationPermission.Remove(existingOpePer);
+                    _repoManager.Scope.Remove(existingOpePer);
                 }
 
                 if (children.Contains(operation.Code) && existingOpePer is null)
@@ -300,7 +345,7 @@ public class SeedService : BaseIdentityService, ISeedService
 
             }
         }
-        _repoManager.OperationPermission.AddRange(newOperationPermissions);
+        _repoManager.Scope.AddRange(newOperationPermissions);
     }
 }
 

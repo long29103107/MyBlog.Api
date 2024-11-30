@@ -1,10 +1,9 @@
 ﻿using Contracts.Domain;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using System.ComponentModel.DataAnnotations;
 namespace MyBlog.Identity.Domain.Entities;
 
-public class Operation 
+public class Scope
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -13,4 +12,3 @@ public class Operation
     public string Name { get; set; }
 }
 
-    

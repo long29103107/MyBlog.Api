@@ -9,11 +9,6 @@ public class AccessRuleConfiguration : IEntityTypeConfiguration<AccessRule>
 {
     public void Configure(EntityTypeBuilder<AccessRule> builder)
     {
-        builder.HasOne(ar => ar.Operation)
-            .WithMany()
-            .HasForeignKey(ar => ar.OperationId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasOne(ar => ar.Permission)
             .WithMany()
             .HasForeignKey(ar => ar.PermissionId)

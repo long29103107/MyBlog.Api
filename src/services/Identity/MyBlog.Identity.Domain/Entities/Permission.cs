@@ -1,18 +1,19 @@
 ﻿using Contracts.Domain;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyBlog.Identity.Domain.Entities;
 
 public class Permission : AuditEntity<int>
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public string Code { get; set; }
-    public string Name { get; set; }
-    public bool IsLocked { get; set; }
-    [ForeignKey("Role")]
-    public int? RoleId { get; set; }
-    public Role Role { get; set; }
-    public ICollection<OperationPermission> OperationPermissions { get; set; }
-    public ICollection<RolePermission> RolePermissions { get; set; }
+
+    public int OperationId { get; set; }
+    public Operation Operation { get; set; }
+
+    public int ScopeId { get; set; }
+    public Scope Scope { get; set; }
 }
 

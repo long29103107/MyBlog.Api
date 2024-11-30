@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MyBlog.Identity.Domain.Entities;
-using static Shared.Dtos.Identity.Role.RoleDtos;
+using static Shared.Dtos.Identity.RoleDtos;
 
 namespace MyBlog.Identity.Service.MappingProfiles;
 
