@@ -50,13 +50,14 @@ public class SeedService : BaseIdentityService, ISeedService
         var operationRequests = await _ReadSeedJsonFileAsync<OperationRequest>("operations");
         var permissionRequests = await _ReadSeedJsonFileAsync<PermissionRequest>("permissions");
         var roleRequests = await _ReadSeedJsonFileAsync<RoleRequest>("roles");
+        var scopeRequests = await _ReadSeedJsonFileAsync<ScopeRequest>("scopes");
 
         logFormat.Add("=====================Add Operation=====================");
         var operations = await _CreateOrUpdateOperationAsync(operationRequests);
         operations.ForEach(x => logFormat.Add($"Operation {x}"));
 
         logFormat.Add("=====================Add Scope=====================");
-        var scopes = await _CreateOrUpdateScopeAsync(permissionRequests);
+        var scopes = await _CreateOrUpdateScopeAsync(scopeRequests);
         operations.ForEach(x => logFormat.Add($"Scope {x}"));
         await _repoManager.SaveAsync();
         _repoManager.DetachEntities();
@@ -65,23 +66,21 @@ public class SeedService : BaseIdentityService, ISeedService
         var permissions = await _CreateOrUpdatePermissionAsync(
             operations.Select(x => x.Code).Distinct().ToList() ?? new List<string>(), 
             scopes.Select(x => x.Code).Distinct().ToList() ?? new List<string>());
-        permissions.ForEach(x => logFormat.Add($"Operation {x}"));
+        permissions.ForEach(x => logFormat.Add($"Permission {x}"));
 
         logFormat.Add("=====================Add Role=====================");
         var roles = await _CreateOrUpdateRoleAsync(roleRequests);
-        roles.ForEach(x => logFormat.Add($"Operation {x}"));
+        roles.ForEach(x => logFormat.Add($"Role {x}"));
         await _repoManager.SaveAsync();
 
         await _AddNewRolePermissionAsync(roles, permissions);
         await _AddNewOperationPermissionAsync(operations, permissions, permissionRequests);
 
-        var accessRules = (from o in operations
-                           from p in permissions
+        var accessRules = (from p in permissions
                            from r in roles
 
                            select new AccessRule
                            {
-                               OperationId = o.Id,
                                PermissionId = p.Id,
                                RoleId = r.Id,
                            });
@@ -89,21 +88,20 @@ public class SeedService : BaseIdentityService, ISeedService
         var existingAccessRules = await _repoManager.AccessRule.FindAll().ToListAsync();
 
         existingAccessRules = existingAccessRules.Where(x =>
-            accessRules.Any(y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId && x.OperationId == y.OperationId))
+            accessRules.Any(y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId))
             .ToList();
 
         if (!existingAccessRules.IsNullOrEmpty())
         {
             var accRulesNeedToUpdate = accessRules.Where(x => existingAccessRules.Any(
-                y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId && x.OperationId == y.OperationId))
+                y => x.RoleId == y.RoleId && x.PermissionId == y.PermissionId))
                 .ToList();
 
             foreach (var existingAccessRule in existingAccessRules)
             {
                 var accRuleNeedToUpdate = accRulesNeedToUpdate.FirstOrDefault(x =>
                     x.RoleId == existingAccessRule.RoleId &&
-                    x.PermissionId == existingAccessRule.PermissionId &&
-                    x.OperationId == existingAccessRule.OperationId);
+                    x.PermissionId == existingAccessRule.PermissionId));
 
                 _mapper.Map<AccessRule, AccessRule>(accRuleNeedToUpdate!, existingAccessRule);
             }
@@ -155,9 +153,9 @@ public class SeedService : BaseIdentityService, ISeedService
         return result;
     }
 
-    private async Task<List<Scope>> _CreateOrUpdateScopeAsync(List<PermissionRequest> requests)
+    private async Task<List<Scope>> _CreateOrUpdateScopeAsync(List<ScopeRequest> requests)
     {
-        var newRequest = new List<PermissionRequest>(requests);
+        var newRequest = new List<ScopeRequest>(requests);
         var existingScopes = await _repoManager.Scope.FindAll().ToListAsync();
 
         //Case delete
@@ -172,13 +170,13 @@ public class SeedService : BaseIdentityService, ISeedService
             var request = newRequest.FirstOrDefault(x => x.Code == existingScope.Code);
             if (request == null) continue;
 
-            _mapper.Map<PermissionRequest, Scope>(request, existingScope);
+            _mapper.Map<ScopeRequest, Scope>(request, existingScope);
         }
 
         //Case create
         newRequest.RemoveAll(x => existingScopes.Select(y => y.Code).Contains(x.Code));
-        var scopeNeedToCreate = _mapper.Map<List<Operation>>(newRequest);
-        _repoManager.Operation.AddRange(scopeNeedToCreate);
+        var scopeNeedToCreate = _mapper.Map<List<Scope>>(newRequest);
+        _repoManager.Scope.AddRange(scopeNeedToCreate);
 
         return existingScopes.Union(scopeNeedToCreate).ToList();
     }
@@ -216,7 +214,7 @@ public class SeedService : BaseIdentityService, ISeedService
     {
         var newRequests = (from op in operationCodes
                            from sc in scopeCodes
-                           select new
+                           select new PermissionSeedResponse
                            {
                                OperationCode = op,
                                ScopeCode = sc,
@@ -238,8 +236,9 @@ public class SeedService : BaseIdentityService, ISeedService
         existingPermissions.RemoveAll(x => permissionNeedToDelete.Any(y => x.Id == y.Id));
 
         //Case create
+        newRequests.RemoveAll(x => existingPermissions.Any(y => y.Operation.Code.Equals(x.OperationCode))
+            && existingPermissions.Any(y => y.Scope.Code.Equals(x.ScopeCode)));
 
-        newRequests.RemoveAll(x => );
         var permissionNeedToCreate = _mapper.Map<List<Permission>>(newRequests);
         _repoManager.Permission.AddRange(permissionNeedToCreate);
 

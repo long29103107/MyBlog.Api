@@ -11,12 +11,17 @@ public static class SeedDtos
         public bool IsLocked { get; set; } = true;
     }
 
-    public sealed class PermissionRequest
+    public sealed class ScopeRequest
     {
         public string Code { get; set; }
         public string Name { get; set; }
         public bool IsLocked { get; set; } = true;
-        public List<string> Children { get; set; } = new();
+    }
+
+    public sealed class PermissionRequest
+    {
+        public string Scope { get; set; }
+        public string Operation { get; set; }
     }
 
     public sealed class RoleRequest
@@ -31,11 +36,10 @@ public static class SeedDtos
         public bool IsSeed { get; set; } = false;
     }
 
-    public sealed class PermissionIncludeCodeResponse
+    public sealed class PermissionSeedResponse
     {
-        public int? OperationId  { get; set; }
-        public int? ScopeId { get; set; }
-        public string Code { get; set; }
+        public string OperationCode  { get; set; }
+        public string ScopeCode { get; set; }
     }
 }
 

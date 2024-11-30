@@ -1,8 +1,7 @@
 ﻿[
   {
-    "code": "post",
-    "name": "Post",
-    "children": [
+    "scope": "post",
+    "operation": [
       "read",
       "edit",
       "create",

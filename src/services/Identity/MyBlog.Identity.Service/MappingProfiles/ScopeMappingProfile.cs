@@ -4,11 +4,11 @@ using static Shared.Dtos.Identity.SeedDtos;
 
 namespace MyBlog.Identity.Service.MappingProfiles;
 
-public class PermissionMappingProfile : Profile
+public class ScopeMappingProfile : Profile
 {
-    public PermissionMappingProfile()
+    public ScopeMappingProfile()
     {
-        CreateMap<Permission, PermissionRequest>().ReverseMap();
+        CreateMap<Scope, ScopeRequest>().ReverseMap();
     }
 }
 
