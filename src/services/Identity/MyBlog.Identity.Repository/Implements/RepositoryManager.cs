@@ -54,7 +54,6 @@ public class RepositoryManager : IRepositoryManager
     private IOperationRepository _operation;
     private IAccessRuleRepository _accessRule;
     private IScopeRepository _scope;
-    private IRolePermissionRepository _rolePermission;
     private IRoleRepository _role;
 
     public IPermissionRepository Permission
@@ -108,19 +107,6 @@ public class RepositoryManager : IRepositoryManager
         }
     }
 
-    public IRolePermissionRepository RolePermission
-    {
-        get
-        {
-            if (_rolePermission == null)
-            {
-                _rolePermission = new RolePermissionRepository(_context);
-            }
-
-            return _rolePermission;
-        }
-    }
-
     public IRoleRepository Role
     {
         get
@@ -137,7 +123,6 @@ public class RepositoryManager : IRepositoryManager
     public DbSet<Operation> Operations { get { return _context.Operations; } }
     public DbSet<Permission> Permissions { get { return _context.Permissions; } }
     public DbSet<AccessRule> AccessRules { get { return _context.AccessRules; } }
-    public DbSet<RolePermission> RolePermissions { get { return _context.RolePermissions; } }
     public DbSet<Scope> Scopes { get { return _context.Scopes; } }
     public DbSet<Role> Roles { get { return _context.Roles; } }
 }

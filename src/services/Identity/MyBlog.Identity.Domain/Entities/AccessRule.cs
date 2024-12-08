@@ -14,5 +14,4 @@ public class AccessRule : AuditEntity<int>
     public Role Role { get; set; }
 
     public bool Mode { get; set; } = false;
-
 }

@@ -15,5 +15,7 @@ public class Permission : AuditEntity<int>
 
     public int ScopeId { get; set; }
     public Scope Scope { get; set; }
+
+    public virtual ICollection<AccessRule> AccessRules { get; set; } = new List<AccessRule>();
 }
 

@@ -1,9 +1,7 @@
 ﻿using Contracts.Dtos;
 using FilteringAndSortingExpression.Extensions;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Shared.Dtos.Identity.Role;
+namespace Shared.Dtos.Identity.Permission;
 
 public static class PermissionDtos
 {
@@ -21,37 +19,6 @@ public static class PermissionDtos
                 $"-{nameof(PermissionResponse.Id).ToLower()}"
             );
     }
-
-    public sealed class RoleCreateRequest : Request
-    {
-        [Required]
-        public string Code { get; set; }
-        [Required]
-        public string Name { get; set; }
-        [NotMapped]
-        public bool IsLocked { get; } = false;
-    }
-
-    public sealed class RoleUpdatePartialRequest : Request
-    {
-        [Required]
-        public string Code { get; set; }
-        [Required]
-        public string Name { get; set; }
-    }
-
-    public sealed class RoleUpdateRequest : Request
-    {
-        [Required]
-        public string Code { get; set; }
-        [Required]
-        public string Name { get; set; }
-    }
-
-    public sealed class RoleDeleteRequest : Request
-    {
-        public int Id { get; set; }
-    }
     #endregion
 
     #region Response
@@ -61,9 +28,7 @@ public static class PermissionDtos
         public string CreatedBy { get; set; } = string.Empty!;
         public string UpdatedBy { get; set; } = string.Empty!;
         public string Code { get; set; }
-        public string Name { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsLocked { get; set; }
+        public string Description { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
@@ -74,8 +39,7 @@ public static class PermissionDtos
         public string CreatedBy { get; set; } = string.Empty!;
         public string UpdatedBy { get; set; } = string.Empty!;
         public string Code { get; set; }
-        public string Name { get; set; }
-        public bool IsActive { get; set; }
+        public string Description { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

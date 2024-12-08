@@ -9,9 +9,6 @@ using MyBlog.Identity.Service.Abstractions;
 using MyBlog.Identity.Service.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Serilog;
-using StackExchange.Redis;
-using System.Data;
-using System.Linq;
 using System.Reflection;
 using static Shared.Dtos.Identity.SeedDtos;
 
@@ -59,14 +56,13 @@ public class SeedService : BaseIdentityService, ISeedService
         await _repoManager.SaveAsync();
         _repoManager.DetachEntities();
 
-        await _AddNewRolePermissionAsync(roles, permissions);
         await _AddNewAccessRuleAsync(roles, permissions);
         await _repoManager.SaveAsync();
 
-        LogSeed(operations.Select(x => x.Code).Distinct()
-            , scopes.Select(x => x.Code).Distinct()
-            , permissions.Select(x => x.GetPermission()).Distinct()
-            , roles.Select(x => x.Code).Distinct());
+        LogSeed(operations.Select(x => x.Code).Distinct().ToList()
+            , scopes.Select(x => x.Code).Distinct().ToList()
+            , permissions.Select(x => x.GetPermission()).Distinct().ToList()
+            , roles.Select(x => x.Code).Distinct().ToList());
     }
 
     private void LogSeed(List<string> operationCodes
@@ -91,7 +87,6 @@ public class SeedService : BaseIdentityService, ISeedService
     {
         await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.AccessRules));
         await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.Scopes));
-        await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.RolePermissions));
         await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.Operations));
         await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.Permissions));
         await _repoManager.TruncateAsync(nameof(MyIdentityDbContext.Roles));
@@ -247,7 +242,6 @@ public class SeedService : BaseIdentityService, ISeedService
         return existingRoles.Union(roleNeedToCreate).ToList();
     }
 
-
     private async Task _AddNewAccessRuleAsync(List<Role> roles, List<Permission> permissions)
     {
         var accessRules = (from p in permissions
@@ -289,50 +283,6 @@ public class SeedService : BaseIdentityService, ISeedService
             x.PermissionId == y.PermissionId));
 
         _repoManager.AccessRule.AddRange(newAccessRules);
-    }
-
-
-    private async Task _AddNewRolePermissionAsync(List<Role> roles, List<Permission> permissions)
-    {
-        var scopeCodes = permissions.Select(x => x.Scope.Code).Distinct().ToList();
-        var operationCodes = permissions.Select(x => x.Operation.Code).Distinct().ToList();
-
-        var rolePermissions = await (from role in _repoManager.Role.FindByCondition(x => roles.Select(y => y.Code).Distinct().Contains(x.Code))
-
-                                     join rolePer in _repoManager.RolePermission.FindAll()
-                                     on role.Id equals rolePer.RoleId
-
-                                     join per in _repoManager.Permission.FindByCondition(x =>
-                                          scopeCodes.Contains(x.Scope.Code)
-                                          && operationCodes.Contains(x.Operation.Code))
-                                    on rolePer.PermissionId equals per.Id
-
-                                     select rolePer)
-                        .Include(x => x.Role)
-                        .Include(x => x.Permission)
-                            .ThenInclude(x => x.Scope)
-                        .Include(x => x.Permission)
-                            .ThenInclude(x => x.Operation)
-                        .ToListAsync();
-
-        foreach (var role in roles)
-        {
-            foreach (var permission in permissions)
-            {
-                if (rolePermissions.Exists(x => 
-                    x.Permission.Scope.Code == permission.Scope.Code 
-                    && x.Permission.Operation.Code == permission.Operation.Code
-                    && x.Role.Code == role.Code
-                ))
-                    continue;
-
-                _repoManager.RolePermission.Add(new RolePermission()
-                {
-                    RoleId = role.Id,
-                    PermissionId = permission.Id
-                });
-            }
-        }
     }
 }
 

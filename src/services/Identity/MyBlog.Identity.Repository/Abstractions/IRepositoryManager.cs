@@ -1,8 +1,6 @@
-using Contracts.Abstractions.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using MyBlog.Identity.Domain.Entities;
-using MyBlog.Identity.Repository.Implements;
 
 namespace MyBlog.Identity.Repository.Abstractions;
 
@@ -13,14 +11,12 @@ public interface IRepositoryManager
     public IAccessRuleRepository AccessRule { get; }
     public IScopeRepository Scope { get; }
     public IRoleRepository Role { get; }
-    public IRolePermissionRepository RolePermission { get; }
 
     DbSet<Permission> Permissions { get; }
     DbSet<Operation> Operations { get; }
     DbSet<AccessRule> AccessRules { get; }
     DbSet<Role> Roles { get; }
     DbSet<Scope> Scopes { get; }
-    DbSet<RolePermission> RolePermissions { get; }
 
     #region Transaction
     Task SaveAsync();

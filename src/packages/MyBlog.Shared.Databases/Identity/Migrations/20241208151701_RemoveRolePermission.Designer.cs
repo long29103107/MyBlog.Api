@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyBlog.Identity.Repository;
 
@@ -11,9 +12,11 @@ using MyBlog.Identity.Repository;
 namespace MyBlog.Shared.Databases.Identity.Migrations
 {
     [DbContext(typeof(MyIdentityDbContext))]
-    partial class MyIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241208151701_RemoveRolePermission")]
+    partial class RemoveRolePermission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -9,6 +9,7 @@ using MyBlog.Identity.Domain.Exceptions;
 using MyBlog.Identity.Repository.Abstractions;
 using MyBlog.Identity.Service.Abstractions;
 using Serilog;
+using static Shared.Dtos.Identity.Permission.PermissionDtos;
 using static Shared.Dtos.Identity.RoleDtos;
 
 namespace MyBlog.Identity.Service.Implements;
@@ -43,55 +44,26 @@ public class RoleService : BaseIdentityService, IRoleService
         //Add permission and operation for role
         var permissions = await _repoManager.Permission.FindAll().ToListAsync();
        
-        //Add RolePermission
-        _AddRolePermissionForNewFole(newRole, permissions);
-        await _repoManager.SaveAsync();
-
         //Add AccessRule
-        
         await _AddAccessRuleForNewRoleAsync(newRole, permissions);
         await _repoManager.SaveAsync();
 
         return _mapper.Map<RoleResponse>(newRole);
     }
 
-    private void _AddRolePermissionForNewFole(Role newRole, IList<Permission> permissions)
+
+    private async Task _AddAccessRuleForNewRoleAsync(Role newRole, IList<Permission> permissions)
     {
-        foreach (var permission in permissions) 
+        foreach (var permission in permissions)
         {
-            var newRolePermission = new RolePermission()
+            var newAccessRule = new AccessRule()
             {
                 RoleId = newRole.Id,
                 PermissionId = permission.Id,
             };
 
-            _repoManager.RolePermission.Add(newRolePermission);
+            _repoManager.AccessRule.Add(newAccessRule);
         }
-    }
-
-    private async Task _AddAccessRuleForNewRoleAsync(Role newRole, IList<Permission> permissions)
-    {
-        var operations = await _repoManager.Operation.FindAll().ToListAsync();
-
-        var permissionRoles = from permission in permissions
-                             from operation in operations
-                             select new
-                             {
-                                 Operation = operation,
-                                 Permission = permission
-                             };
-
-        //foreach (var permissionRole in permissionRoles)
-        //{
-        //    var newAccessRule = new AccessRule()
-        //    {
-        //        RoleId = newRole.Id,
-        //        PermissionId = permissionRole.Permission.Id,
-        //        OperationId = permissionRole.Operation.Id,
-        //    };
-
-        //    _repoManager.AccessRule.Add(newAccessRule);
-        //}
     }
     #endregion
 
@@ -119,6 +91,50 @@ public class RoleService : BaseIdentityService, IRoleService
         return true;
     }
 
+    public async Task<IEnumerable<PermissionResponse>> GetPermissionsByRoleAsync(int roleId)
+    {
+        var role = await _GetRoleAsync(roleId)
+           ?? throw new RoleException.NotFound(roleId);
+
+        var result = await (from p in _repoManager.Permission.FindAll()
+
+                            join ac in _repoManager.AccessRule.FindAll()
+                            on p.Id equals ac.PermissionId
+
+                            join r in _repoManager.Role.FindAll()
+                            on ac.RoleId equals r.Id
+
+                            where r.Id == roleId
+
+                            select p)
+                    .ProjectTo<PermissionResponse>(_mapper.ConfigurationProvider)
+                    .ToListAsync();
+
+        return result;
+    }
+
+    public async Task<PermissionResponse> GetPermissionByRoleAsync(int roleId, int permissionId)
+    {
+        var role = await _GetRoleAsync(roleId)
+           ?? throw new RoleException.NotFound(roleId);
+
+        var result = await (from p in _repoManager.Permission.FindAll()
+
+                            join ac in _repoManager.AccessRule.FindAll()
+                            on p.Id equals ac.PermissionId
+
+                            join r in _repoManager.Role.FindAll()
+                            on ac.RoleId equals r.Id
+
+                            where r.Id == roleId
+
+                            select p)
+                    .ProjectTo<PermissionResponse>(_mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync()
+                     ?? throw new PermissionException.NotFound(roleId); ;
+
+        return result;
+    }
     public async Task<RoleResponse> GetAsync(int id)
     {
         var role = await _GetRoleAsync(id)
@@ -153,7 +169,16 @@ public class RoleService : BaseIdentityService, IRoleService
         if(role.IsLocked)
         {
             throw new BadRequestException("The role has created from system, cannot update this one!");
-        }    
+        }
+
+        var isExistingRole = await _repoManager.Role.FindByCondition(x =>
+                x.Code.Equals(request.Code) || x.Name.Equals(request.Name))
+            .AnyAsync();
+
+        if(isExistingRole)
+        {
+            throw new BadRequestException("Existing role has code or name!");
+        }
 
         _mapper.Map<RoleUpdateRequest, Role>(request, role);
         _repoManager.Role.Update(role);

@@ -41,4 +41,17 @@ public class RolesController : CustomIdentityControllerBase
     {
         return GetResponse(await _service.DeleteAsync(id));
     }
+
+    [HttpGet("{id}/permissions")]
+    public async Task<IActionResult> GetPermissionsByRoleAsync([FromRoute] int id)
+    {
+        return GetResponse(await _service.GetPermissionsByRoleAsync(id));
+    }
+
+
+    [HttpGet("{roleId}/permissions/{permissionId}")]
+    public async Task<IActionResult> GetPermissionByRoleAsync([FromRoute] int roleId, [FromRoute] int permissionId)
+    {
+        return GetResponse(await _service.GetPermissionByRoleAsync(roleId, permissionId));
+    }
 }
