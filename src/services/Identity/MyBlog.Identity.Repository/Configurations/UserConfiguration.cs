@@ -10,6 +10,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable(name: IdentitySchemaConstants.Table.Users);
+        builder.HasQueryFilter(p => p.IsActive);
     }
 }
 

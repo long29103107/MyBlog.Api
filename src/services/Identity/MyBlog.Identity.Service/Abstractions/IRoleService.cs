@@ -13,7 +13,6 @@ public interface IRoleService : IBaseIdentityService
     Task<IEnumerable<RoleResponse>> GetListAsync(RoleListRequest request);
     Task<RoleResponse> UpdateAsync(int id, RoleUpdateRequest request);
     Task<bool> DeleteAsync(int id);
-    
     Task<IEnumerable<PermissionResponse>> GetPermissionsByRoleAsync(int roleId);
     Task<PermissionResponse> GetPermissionByRoleAsync(int roleId, int permissionId);
 }

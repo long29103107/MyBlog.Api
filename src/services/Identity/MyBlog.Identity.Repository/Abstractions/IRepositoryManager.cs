@@ -11,12 +11,14 @@ public interface IRepositoryManager
     public IAccessRuleRepository AccessRule { get; }
     public IScopeRepository Scope { get; }
     public IRoleRepository Role { get; }
+    public IUserRepository User { get; }
 
     DbSet<Permission> Permissions { get; }
     DbSet<Operation> Operations { get; }
     DbSet<AccessRule> AccessRules { get; }
     DbSet<Role> Roles { get; }
     DbSet<Scope> Scopes { get; }
+    DbSet<User> Users { get; }
 
     #region Transaction
     Task SaveAsync();

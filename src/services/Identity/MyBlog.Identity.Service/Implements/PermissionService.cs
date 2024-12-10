@@ -35,4 +35,15 @@ public class PermissionService : BaseIdentityService, IPermissionService
 
         return result;
     }
+
+    public async Task<bool> HasPermissionAsync(int userId, string permission)
+    {
+        return true;
+    }
+
+    public async Task<bool> HasPermissionAsync(int userId, int permissionId)
+    {
+        return true;
+    }
+
 }

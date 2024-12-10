@@ -55,6 +55,7 @@ public class RepositoryManager : IRepositoryManager
     private IAccessRuleRepository _accessRule;
     private IScopeRepository _scope;
     private IRoleRepository _role;
+    private IUserRepository _user;
 
     public IPermissionRepository Permission
     {
@@ -120,9 +121,23 @@ public class RepositoryManager : IRepositoryManager
         }
     }
 
+    public IUserRepository User
+    {
+        get
+        {
+            if (_user == null)
+            {
+                _user = new UserRepository(_context);
+            }
+
+            return _user;
+        }
+    }
+
     public DbSet<Operation> Operations { get { return _context.Operations; } }
     public DbSet<Permission> Permissions { get { return _context.Permissions; } }
     public DbSet<AccessRule> AccessRules { get { return _context.AccessRules; } }
     public DbSet<Scope> Scopes { get { return _context.Scopes; } }
     public DbSet<Role> Roles { get { return _context.Roles; } }
+    public DbSet<User> User { get { return _context.Users; } }
 }

@@ -2,5 +2,5 @@
 
 namespace MyBlog.Identity.Repository.Abstractions;
 
-public interface IScopeRepository : IRepositoryIdentityBase<Scope, MyIdentityDbContext>
+public interface IUserRepository : IRepositoryIdentityBase<User, MyIdentityDbContext>
 { }

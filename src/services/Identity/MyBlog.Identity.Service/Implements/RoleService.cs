@@ -20,11 +20,6 @@ public class RoleService : BaseIdentityService, IRoleService
     {
     }
 
-    public IQueryable<Role> _RoleIgnoreGlobalFilter()
-    {
-        return _repoManager.Roles.IgnoreQueryFilters();
-    }
-
     #region Create
     public async Task<RoleResponse> CreateAsync(RoleCreateRequest request)
     {
@@ -45,14 +40,14 @@ public class RoleService : BaseIdentityService, IRoleService
         var permissions = await _repoManager.Permission.FindAll().ToListAsync();
        
         //Add AccessRule
-        await _AddAccessRuleForNewRoleAsync(newRole, permissions);
+        _AddAccessRuleForNewRole(newRole, permissions);
         await _repoManager.SaveAsync();
 
         return _mapper.Map<RoleResponse>(newRole);
     }
 
 
-    private async Task _AddAccessRuleForNewRoleAsync(Role newRole, IList<Permission> permissions)
+    private void _AddAccessRuleForNewRole(Role newRole, IList<Permission> permissions)
     {
         foreach (var permission in permissions)
         {
@@ -67,6 +62,7 @@ public class RoleService : BaseIdentityService, IRoleService
     }
     #endregion
 
+    #region Delete
     public async Task<bool> DeleteAsync(int id)
     {
         var role = await _GetRoleAsync(id)
@@ -90,51 +86,9 @@ public class RoleService : BaseIdentityService, IRoleService
 
         return true;
     }
+    #endregion
 
-    public async Task<IEnumerable<PermissionResponse>> GetPermissionsByRoleAsync(int roleId)
-    {
-        var role = await _GetRoleAsync(roleId)
-           ?? throw new RoleException.NotFound(roleId);
-
-        var result = await (from p in _repoManager.Permission.FindAll()
-
-                            join ac in _repoManager.AccessRule.FindAll()
-                            on p.Id equals ac.PermissionId
-
-                            join r in _repoManager.Role.FindAll()
-                            on ac.RoleId equals r.Id
-
-                            where r.Id == roleId
-
-                            select p)
-                    .ProjectTo<PermissionResponse>(_mapper.ConfigurationProvider)
-                    .ToListAsync();
-
-        return result;
-    }
-
-    public async Task<PermissionResponse> GetPermissionByRoleAsync(int roleId, int permissionId)
-    {
-        var role = await _GetRoleAsync(roleId)
-           ?? throw new RoleException.NotFound(roleId);
-
-        var result = await (from p in _repoManager.Permission.FindAll()
-
-                            join ac in _repoManager.AccessRule.FindAll()
-                            on p.Id equals ac.PermissionId
-
-                            join r in _repoManager.Role.FindAll()
-                            on ac.RoleId equals r.Id
-
-                            where r.Id == roleId
-
-                            select p)
-                    .ProjectTo<PermissionResponse>(_mapper.ConfigurationProvider)
-                    .FirstOrDefaultAsync()
-                     ?? throw new PermissionException.NotFound(roleId); ;
-
-        return result;
-    }
+    #region Get
     public async Task<RoleResponse> GetAsync(int id)
     {
         var role = await _GetRoleAsync(id)
@@ -142,7 +96,9 @@ public class RoleService : BaseIdentityService, IRoleService
 
         return _mapper.Map<RoleResponse>(role);
     }
+    #endregion
 
+    #region Get Active Role
     public async Task<RoleResponse> GetActiveAsync(int id)
     {
         var role = await _GetActiveRoleAsync(id)
@@ -151,6 +107,13 @@ public class RoleService : BaseIdentityService, IRoleService
         return _mapper.Map<RoleResponse>(role);
     }
 
+    private async Task<Role> _GetActiveRoleAsync(int id)
+    {
+        return await _repoManager.Role.FirstOrDefaultAsync(x => x.Id == id);
+    }
+    #endregion
+
+    #region Get List
     public async Task<IEnumerable<RoleResponse>> GetListAsync(RoleListRequest request)
     {
         var result = await _RoleIgnoreGlobalFilter()
@@ -160,7 +123,9 @@ public class RoleService : BaseIdentityService, IRoleService
 
         return result;
     }
+    #endregion
 
+    #region Update
     public async Task<RoleResponse> UpdateAsync(int id, RoleUpdateRequest request)
     {
         var role = await _GetRoleAsync(id)
@@ -186,14 +151,66 @@ public class RoleService : BaseIdentityService, IRoleService
 
         return _mapper.Map<RoleResponse>(role);
     }
+    #endregion
 
+    #region Get Permissions By Role
+    public async Task<IEnumerable<PermissionResponse>> GetPermissionsByRoleAsync(int roleId)
+    {
+        var role = await _GetRoleAsync(roleId)
+           ?? throw new RoleException.NotFound(roleId);
+
+        var result = await (from p in _repoManager.Permission.FindAll()
+
+                            join ac in _repoManager.AccessRule.FindAll()
+                            on p.Id equals ac.PermissionId
+
+                            join r in _repoManager.Role.FindAll()
+                            on ac.RoleId equals r.Id
+
+                            where r.Id == roleId
+
+                            select p)
+                    .ProjectTo<PermissionResponse>(_mapper.ConfigurationProvider)
+                    .ToListAsync();
+
+        return result;
+    }
+    #endregion
+
+    #region Get Permission By Role
+    public async Task<PermissionResponse> GetPermissionByRoleAsync(int roleId, int permissionId)
+    {
+        var role = await _GetRoleAsync(roleId)
+           ?? throw new RoleException.NotFound(roleId);
+
+        var result = await (from p in _repoManager.Permission.FindAll()
+
+                            join ac in _repoManager.AccessRule.FindAll()
+                            on p.Id equals ac.PermissionId
+
+                            join r in _repoManager.Role.FindAll()
+                            on ac.RoleId equals r.Id
+
+                            where r.Id == roleId
+
+                            select p)
+                    .ProjectTo<PermissionResponse>(_mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync()
+                     ?? throw new PermissionException.NotFound(roleId); ;
+
+        return result;
+    }
+    #endregion
+
+    #region Common Private
     private async Task<Role> _GetRoleAsync(int id)
     {
         return await _RoleIgnoreGlobalFilter().FirstOrDefaultAsync(x => x.Id == id); 
     }
 
-    private async Task<Role> _GetActiveRoleAsync(int id)
+    public IQueryable<Role> _RoleIgnoreGlobalFilter()
     {
-        return await _repoManager.Role.FirstOrDefaultAsync(x => x.Id == id);
+        return _repoManager.Role.FindAll().IgnoreQueryFilters();
     }
+    #endregion
 }
