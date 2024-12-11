@@ -30,7 +30,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddDbContext<PostDbContext>(
-           (sp, options) => options.UseNpgsql(connectionString,
+           (sp, options) => options.UseSqlServer(connectionString,
            b => b.MigrationsAssembly(PostRepositoryReference.AssemblyName))
             .AddInterceptors(sp.GetRequiredService<UpdateAuditableEntitiesInterceptor>()));
     }

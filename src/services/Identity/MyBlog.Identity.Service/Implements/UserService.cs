@@ -8,6 +8,7 @@ using MyBlog.Identity.Domain.Entities;
 using MyBlog.Identity.Domain.Exceptions;
 using MyBlog.Identity.Repository.Abstractions;
 using MyBlog.Identity.Service.Abstractions;
+using Serilog;
 using static Shared.Dtos.Identity.UserDtos;
 
 namespace MyBlog.Identity.Service.Implements;

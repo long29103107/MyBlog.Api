@@ -139,5 +139,5 @@ public class RepositoryManager : IRepositoryManager
     public DbSet<AccessRule> AccessRules { get { return _context.AccessRules; } }
     public DbSet<Scope> Scopes { get { return _context.Scopes; } }
     public DbSet<Role> Roles { get { return _context.Roles; } }
-    public DbSet<User> User { get { return _context.Users; } }
+    public DbSet<User> Users { get { return _context.Users; } }
 }

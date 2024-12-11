@@ -72,17 +72,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\Building
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Shared.Serilog", "src\packages\MyBlog.Shared.Serilog\MyBlog.Shared.Serilog.csproj", "{B0C36FF5-61D9-4F7E-AECE-FDDE612FCA09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Api", "src\services\Identity\MyBlog.Idenity.Api\MyBlog.Identity.Api.csproj", "{7839CE77-CE63-48AC-A90B-E28E377169FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Identity.Api", "src\services\Identity\MyBlog.Idenity.Api\MyBlog.Identity.Api.csproj", "{7839CE77-CE63-48AC-A90B-E28E377169FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Domain", "src\services\Identity\MyBlog.Identity.Domain\MyBlog.Identity.Domain.csproj", "{59BF2397-8961-4711-932F-E0ABC264326D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Identity.Domain", "src\services\Identity\MyBlog.Identity.Domain\MyBlog.Identity.Domain.csproj", "{59BF2397-8961-4711-932F-E0ABC264326D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Repository", "src\services\Identity\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj", "{4B58DC70-F011-4B16-B2EF-19B2C233AD29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Identity.Repository", "src\services\Identity\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj", "{4B58DC70-F011-4B16-B2EF-19B2C233AD29}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedSettings", "src\shared\SharedSettings\SharedSettings.shproj", "{C6995D1D-B1D1-4762-B031-5003E5C2C1D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBlog.Identity.Service", "src\services\Identity\MyBlog.Identity.Service\MyBlog.Identity.Service.csproj", "{B1D981A5-7DA6-4EB8-AC3F-F38ACF02F112}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBlog.Identity.Service", "src\services\Identity\MyBlog.Identity.Service\MyBlog.Identity.Service.csproj", "{B1D981A5-7DA6-4EB8-AC3F-F38ACF02F112}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization", "src\BuildingBlocks\Authorization\Authorization.csproj", "{3E4BFCE8-598E-4269-9BF5-F20F144222B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization", "src\BuildingBlocks\Authorization\Authorization.csproj", "{3E4BFCE8-598E-4269-9BF5-F20F144222B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "src\ApiGateway\ApiGateway\ApiGateway.csproj", "{ACC79C87-16FD-478D-B04A-5125AB571F13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,6 +176,10 @@ Global
 		{3E4BFCE8-598E-4269-9BF5-F20F144222B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E4BFCE8-598E-4269-9BF5-F20F144222B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E4BFCE8-598E-4269-9BF5-F20F144222B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACC79C87-16FD-478D-B04A-5125AB571F13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC79C87-16FD-478D-B04A-5125AB571F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACC79C87-16FD-478D-B04A-5125AB571F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACC79C87-16FD-478D-B04A-5125AB571F13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -211,6 +217,7 @@ Global
 		{C6995D1D-B1D1-4762-B031-5003E5C2C1D4} = {EFD4F465-362A-4C73-A48C-149E52ABF75D}
 		{B1D981A5-7DA6-4EB8-AC3F-F38ACF02F112} = {3994AB01-52A0-434E-BEDF-F75DA5A4034F}
 		{3E4BFCE8-598E-4269-9BF5-F20F144222B6} = {EE6C4D88-F526-4E49-9B3B-52FB6E2E34DC}
+		{ACC79C87-16FD-478D-B04A-5125AB571F13} = {C106083C-5B7B-4678-877E-801B89E42F59}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {840449B2-65DC-473A-84C8-CB4E4FEB614B}

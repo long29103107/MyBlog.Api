@@ -7,8 +7,7 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml up
 
 - Gateway: http://localhost:5000
 - Identity: http://localhost:5001
-- Category: http://localhost:5002
-- Post: http://localhost:5003
+- Post: http://localhost:5002
 
 ## Migrations
 |  Service  |  Method   |      Migration command																 |

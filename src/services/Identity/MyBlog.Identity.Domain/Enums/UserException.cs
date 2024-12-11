@@ -13,9 +13,8 @@ public static class UserException
     {
         public NotFound(int id) : base($"The user `{id}` was not found.") { }
     }
-}
 
-public class Conflict : ConflictException
+    public class Conflict : ConflictException
     {
         public Conflict(string message) : base(message) { }
     }
