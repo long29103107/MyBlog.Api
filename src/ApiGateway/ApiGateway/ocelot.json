@@ -5,7 +5,7 @@
   "Routes": [
     // Identity API config
     {
-      "DownstreamPathTemplate": "api/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -25,9 +25,9 @@
       "Key": "identity",
       "SwaggerKey": "identity"
     },
-    // Identity API config
+    // Blog API config
     {
-      "DownstreamPathTemplate": "api/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -35,7 +35,7 @@
           "Port": 5002
         }
       ],
-      "UpstreamPathTemplate": "/post/{everything}",
+      "UpstreamPathTemplate": "/blog/{everything}",
       "UpstreamHttpMethod": [
         "Get",
         "Post",
@@ -44,8 +44,8 @@
         "Delete",
         "Option"
       ],
-      "Key": "post",
-      "SwaggerKey": "post"
+      "Key": "blog",
+      "SwaggerKey": "blog"
     }
   ],
   "SwaggerEndPoints": [
@@ -60,10 +60,10 @@
       ]
     },
     {
-      "Key": "post",
+      "Key": "blog",
       "Config": [
         {
-          "Name": "Post API",
+          "Name": "Blog API",
           "Version": "v1",
           "Url": "http://localhost:5002/swagger/v1/swagger.json"
         }

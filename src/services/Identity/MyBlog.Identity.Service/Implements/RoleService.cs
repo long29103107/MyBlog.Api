@@ -8,9 +8,13 @@ using MyBlog.Identity.Domain.Entities;
 using MyBlog.Identity.Domain.Exceptions;
 using MyBlog.Identity.Repository.Abstractions;
 using MyBlog.Identity.Service.Abstractions;
+using MyBlog.Shared.Lib;
 using Serilog;
 using static Shared.Dtos.Identity.Permission.PermissionDtos;
 using static Shared.Dtos.Identity.RoleDtos;
+using MyBlog.Shared.Lib.Extensions;
+using Exceptions = Contracts.Domain.Exceptions;
+using Contracts.Domain.Exceptions;
 
 namespace MyBlog.Identity.Service.Implements;
 public class RoleService : BaseIdentityService, IRoleService
@@ -19,6 +23,43 @@ public class RoleService : BaseIdentityService, IRoleService
     public RoleService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger) : base(repoManager, mapper, validatorFactory, logger)
     {
     }
+
+    #region Get
+    public async Task<RoleResponse> GetAsync(int id)
+    {
+        var role = await _GetRoleAsync(id)
+           ?? throw new RoleException.NotFound(id);
+
+        return _mapper.Map<RoleResponse>(role);
+    }
+    #endregion
+
+    #region Get Active Role
+    public async Task<RoleResponse> GetActiveAsync(int id)
+    {
+        var role = await _GetActiveRoleAsync(id)
+           ?? throw new RoleException.NotFound(id);
+
+        return _mapper.Map<RoleResponse>(role);
+    }
+
+    private async Task<Role> _GetActiveRoleAsync(int id)
+    {
+        return await _repoManager.Role.FirstOrDefaultAsync(x => x.Id == id);
+    }
+    #endregion
+
+    #region Get List
+    public async Task<IEnumerable<RoleResponse>> GetListAsync(RoleListRequest request)
+    {
+        var result = await _RoleIgnoreGlobalFilter()
+           .Filter(request)
+           .ProjectTo<RoleResponse>(_mapper.ConfigurationProvider)
+           .ToListAsync();
+
+        return result;
+    }
+    #endregion
 
     #region Create
     public async Task<RoleResponse> CreateAsync(RoleCreateRequest request)
@@ -62,16 +103,61 @@ public class RoleService : BaseIdentityService, IRoleService
     }
     #endregion
 
+    #region Update
+    public async Task<RoleResponse> UpdateAsync(int id, RoleUpdateRequest request)
+    {
+        var role = await _GetRoleAsync(id)
+          ?? throw new RoleException.NotFound(id);
+
+        _mapper.Map<RoleUpdateRequest, Role>(request, role);
+
+
+
+        _repoManager.Role.Update(role);
+        await _repoManager.SaveAsync();
+
+        return _mapper.Map<RoleResponse>(role);
+    }
+    #endregion
+
+    #region Update Partial
+    public async Task<RoleResponse> UpdatePartialAsync(int id, JsonPathRequest<RoleUpdatePartialRequest> request)
+    {
+        var role = await _GetRoleAsync(id)
+          ?? throw new RoleException.NotFound(id);
+
+        //if (role.IsLocked)
+        //{
+        //    throw new BadRequestException("The role has created from system, cannot update this one!");
+        //}
+
+        //var isExistingRole = await _RoleIgnoreGlobalFilter().Where(x =>
+        //       x.Code.Equals(role.Code) || x.Name.Equals(role.Name))
+        //   .AnyAsync();
+
+        //if (isExistingRole)
+        //{
+        //    throw new BadRequestException("Existing role has code or name!");
+        //}
+
+        request.ApplyTo(role, _mapper);
+
+
+
+        _repoManager.Role.Update(role);
+        await _repoManager.SaveAsync();
+
+        return _mapper.Map<RoleResponse>(role);
+    }
+    #endregion
+
     #region Delete
     public async Task<bool> DeleteAsync(int id)
     {
         var role = await _GetRoleAsync(id)
             ?? throw new RoleException.NotFound(id);
 
-        if (role.IsLocked)
-        {
-            throw new BadRequestException("The role has created from system, cannot update this one!");
-        }
+        _CheckLock(role.IsLocked);
 
         _repoManager.Role.Remove(role);
         try
@@ -85,71 +171,6 @@ public class RoleService : BaseIdentityService, IRoleService
         }
 
         return true;
-    }
-    #endregion
-
-    #region Get
-    public async Task<RoleResponse> GetAsync(int id)
-    {
-        var role = await _GetRoleAsync(id)
-           ?? throw new RoleException.NotFound(id);
-
-        return _mapper.Map<RoleResponse>(role);
-    }
-    #endregion
-
-    #region Get Active Role
-    public async Task<RoleResponse> GetActiveAsync(int id)
-    {
-        var role = await _GetActiveRoleAsync(id)
-           ?? throw new RoleException.NotFound(id);
-
-        return _mapper.Map<RoleResponse>(role);
-    }
-
-    private async Task<Role> _GetActiveRoleAsync(int id)
-    {
-        return await _repoManager.Role.FirstOrDefaultAsync(x => x.Id == id);
-    }
-    #endregion
-
-    #region Get List
-    public async Task<IEnumerable<RoleResponse>> GetListAsync(RoleListRequest request)
-    {
-        var result = await _RoleIgnoreGlobalFilter()
-           .Filter(request)
-           .ProjectTo<RoleResponse>(_mapper.ConfigurationProvider)
-           .ToListAsync();
-
-        return result;
-    }
-    #endregion
-
-    #region Update
-    public async Task<RoleResponse> UpdateAsync(int id, RoleUpdateRequest request)
-    {
-        var role = await _GetRoleAsync(id)
-          ?? throw new RoleException.NotFound(id);
-
-        if(role.IsLocked)
-        {
-            throw new BadRequestException("The role has created from system, cannot update this one!");
-        }
-
-        var isExistingRole = await _repoManager.Role.FindByCondition(x =>
-                x.Code.Equals(request.Code) || x.Name.Equals(request.Name))
-            .AnyAsync();
-
-        if(isExistingRole)
-        {
-            throw new BadRequestException("Existing role has code or name!");
-        }
-
-        _mapper.Map<RoleUpdateRequest, Role>(request, role);
-        _repoManager.Role.Update(role);
-        await _repoManager.SaveAsync();
-
-        return _mapper.Map<RoleResponse>(role);
     }
     #endregion
 
@@ -212,5 +233,27 @@ public class RoleService : BaseIdentityService, IRoleService
     {
         return _repoManager.Role.FindAll().IgnoreQueryFilters();
     }
+
+    private async Task _ValidateRoleAsync(Role model)
+    {
+        var validator = _validatorFactory.GetValidator<Role>();
+        var result = await validator.ValidateAsync(model);
+
+        if (!result.IsValid)
+        {
+            var errors = result.Errors.Select(x => new ValidationError(x.PropertyName, x.ErrorMessage)).ToList();
+
+            throw new Exceptions.ValidationException(errors);
+        }
+    }
+
+    private void _CheckLock(bool isLocked)
+    {
+        if (isLocked)
+        {
+            throw new BadRequestException("The role has created from system, cannot update this one!");
+        }
+    }
+
     #endregion
 }

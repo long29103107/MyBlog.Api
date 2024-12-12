@@ -16,8 +16,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\packages\MyBlog.Shared.Lib\MyBlog.Shared.Lib.csproj" />
 		<ProjectReference Include="..\Contracts\Contracts.csproj" />
 		<ProjectReference Include="..\Shared\Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Extensions\" />
 	</ItemGroup>
 
 </Project>
