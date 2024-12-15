@@ -34,10 +34,7 @@ public static class RoleDtos
 
     public sealed class RoleUpdatePartialRequest : Request
     {
-        [Required]
-        public string Code { get; set; }
-        [Required]
-        public string Name { get; set; }
+        public bool IsActive { get; set; }
     }
 
     public sealed class RoleUpdateRequest : Request

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Service.Abstractions;
+using MyBlog.Shared.Lib;
 using static Shared.Dtos.Identity.RoleDtos;
 namespace MyBlog.Identity.Api.Controllers;
 
@@ -34,6 +35,12 @@ public class RolesController : CustomIdentityControllerBase
     public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] RoleUpdateRequest request)
     {
         return GetResponse(await _service.UpdateAsync(id, request));
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> UpdatePartialAsync([FromRoute] int id, [FromBody] JsonPathRequest<RoleUpdatePartialRequest> request)
+    {
+        return GetResponse(await _service.UpdatePartialAsync(id, request));
     }
 
     [HttpDelete("{id}")]
