@@ -1,8 +1,9 @@
 ﻿using Shared.Dtos.Identity.Register;
+using static Shared.Dtos.Identity.UserDtos;
 
 namespace MyBlog.Identity.Service.Abstractions;
 
-public interface IRegisterService
+public interface IRegisterService : IBaseIdentityService
 {
-    Task<RegisterResponse> RegisterAsync(RegisterRequest request);
+    Task<UserResponse> RegisterAsync(RegisterRequest request);
 }

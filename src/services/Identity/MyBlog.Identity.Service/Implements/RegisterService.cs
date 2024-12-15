@@ -1,22 +1,26 @@
-﻿using Contracts.Domain.Exceptions.Abtractions;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Contracts.Domain.Exceptions.Abtractions;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using MyBlog.Identity.Domain.Entities;
+using MyBlog.Identity.Repository.Abstractions;
 using MyBlog.Identity.Service.Abstractions;
+using Serilog;
 using Shared.Dtos.Identity.Register;
+using static Shared.Dtos.Identity.UserDtos;
 
 namespace MyBlog.Identity.Service.Implements;
 
-public class RegisterService : IRegisterService
+public class RegisterService : BaseIdentityService, IRegisterService
 {
     private readonly UserManager<User> _userManager;
 
-    public RegisterService(UserManager<User> userManager)
+    public RegisterService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger, UserManager<User> userManager) : base(repoManager, mapper, validatorFactory, logger)
     {
         _userManager = userManager;
     }
 
-    public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
+    public async Task<UserResponse> RegisterAsync(RegisterRequest request)
     {
         var userExisting = await _userManager.FindByEmailAsync(request.Email);
 
@@ -36,10 +40,7 @@ public class RegisterService : IRegisterService
             throw new BadRequestException("User creation failed! Please check user details and try again.");
         }
 
-        return new RegisterResponse
-        {
-            IsRegistered = true
-        };
+        return _mapper.Map<UserResponse>(user);
     }
 }
 

@@ -9,6 +9,7 @@ using MyBlog.Identity.Service.Abstractions;
 using MyBlog.Identity.Service.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Serilog;
+using Shared.Dtos.Identity.Register;
 using System.Reflection;
 using static Shared.Dtos.Identity.SeedDtos;
 
@@ -16,9 +17,14 @@ namespace MyBlog.Identity.Service.Implements;
 
 public class SeedService : BaseIdentityService, ISeedService
 {
-    public SeedService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger)
+    private readonly IRegisterService _registerService;
+    private readonly IUserService _userService;
+
+    public SeedService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger, IRegisterService registerService, IUserService userService)
         : base(repoManager, mapper, validatorFactory, logger)
     {
+        _registerService = registerService;
+        _userService = userService;
     }
 
     public async Task SeedDataAsync(SeedDataRequest request)
@@ -41,6 +47,20 @@ public class SeedService : BaseIdentityService, ISeedService
             await _ReSeedSecurityAsync();
         }
     }
+
+    public async Task SeedAccountAsync()
+    {
+        var request = new RegisterRequest
+        {
+            Email = "superadmin@gmail.com",
+            Password = "Long123456@@"
+        };
+
+        var userRes = await _registerService.RegisterAsync(request);
+
+        await _userService.AssignRoleAsync(userRes.Id);
+    }
+    
 
     private async Task _ReSeedSecurityAsync()
     {

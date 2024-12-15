@@ -19,4 +19,12 @@ public class SeedController : CustomIdentityControllerBase
         await _seedService.SeedDataAsync(request);
         return GetResponse();
     }
+
+
+    [HttpPost("account")]
+    public async Task<IActionResult> SeedAccountSuperAdmin()
+    {
+        await _seedService.SeedAccountAsync();
+        return GetResponse();
+    }
 }

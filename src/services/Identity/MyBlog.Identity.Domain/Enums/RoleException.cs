@@ -14,4 +14,9 @@ public static class RoleException
     {
         public NotFound(int id) : base($"The role `{id}` was not found.") { }
     }
+
+    public class NameNotFound : NotFoundException
+    {
+        public NameNotFound(string name) : base($"The role name `{name}` was not found.") { }
+    }
 }

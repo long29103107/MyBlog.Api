@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Contracts.Domain.Constants;
 using Contracts.Domain.Exceptions.Abtractions;
 using FilteringAndSortingExpression.Extensions;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Identity.Domain.Entities;
 using MyBlog.Identity.Domain.Exceptions;
@@ -15,9 +17,14 @@ namespace MyBlog.Identity.Service.Implements;
 
 public class UserService : BaseIdentityService, IUserService
 {
-    public UserService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger )
+    private readonly RoleManager<Role> _roleManager;
+    private readonly UserManager<User> _userManager;
+
+    public UserService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger, RoleManager<Role> roleManager, UserManager<User> userManager)
         : base(repoManager, mapper, validatorFactory, logger)
     {
+        _roleManager = roleManager;
+        _userManager = userManager;
     }
 
     #region Get
@@ -65,6 +72,31 @@ public class UserService : BaseIdentityService, IUserService
         }
 
         return true;
+    }
+    #endregion
+
+    #region Assign role to user
+    public async Task AssignRoleAsync(int userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString())
+            ?? throw new UserException.NotFound(userId);
+
+        if (!user.IsActive)
+        {
+            throw new BadRequestException($"User is deactivated");
+        }
+
+        var role = await _repoManager.Role.FindByCondition(x => 
+                x.Code.Equals(IdentitySchemaConstants.RoleCode.SuperAdmin))
+            .FirstOrDefaultAsync()
+            ?? throw new RoleException.NameNotFound(IdentitySchemaConstants.RoleCode.SuperAdmin);
+
+        if(!role.IsActive)
+        {
+            throw new BadRequestException("Role is deactivated");
+        }
+
+        await _userManager.AddToRoleAsync(user, role.Name ?? string.Empty);
     }
     #endregion
 

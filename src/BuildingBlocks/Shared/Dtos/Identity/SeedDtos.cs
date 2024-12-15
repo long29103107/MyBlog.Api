@@ -28,6 +28,13 @@ public static class SeedDtos
     {
         public string Code { get; set; }
         public string Name { get; set; }
+        public string NormalizedName
+        {
+            get
+            {
+                return this.Name.ToUpper();
+            }
+        }
         public bool IsLocked { get; set; } = true;
     }
     public sealed class SeedDataRequest : Request
