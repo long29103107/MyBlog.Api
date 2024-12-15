@@ -25,8 +25,17 @@ public class RegisterService : BaseIdentityService, IRegisterService
         var userExisting = await _userManager.FindByEmailAsync(request.Email);
 
         if (userExisting is not null)
-            throw new BadRequestException("User already exists!");
-
+        {
+            if(request.IsSeed)
+            {
+                return _mapper.Map<UserResponse>(userExisting);
+            }
+            else
+            {
+                throw new BadRequestException("User already exists!");
+            }
+        }
+           
         User user = new User()
         {
             Email = request.Email,

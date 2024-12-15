@@ -45,11 +45,6 @@ public class UserService : BaseIdentityService, IUserService
 
         return _mapper.Map<UserResponse>(user);
     }
-
-    private async Task<User> _GetActiveUserAsync(int id)
-    {
-        return await _repoManager.User.FirstOrDefaultAsync(x => x.Id == id);
-    }
     #endregion
 
     #region Delete
@@ -96,7 +91,30 @@ public class UserService : BaseIdentityService, IUserService
             throw new BadRequestException("Role is deactivated");
         }
 
+        _repoManager.User.Detach(user);
         await _userManager.AddToRoleAsync(user, role.Name ?? string.Empty);
+    }
+    #endregion
+
+    #region Has Permission 
+    public async Task<bool> HasPermissionAsync(int userId, string scopeCode, string operationCode)
+    {
+        var result = false;
+        var user = await _GetActiveUserAsync(userId)
+           ?? throw new UserException.NotFound(userId);
+
+        //var hasPermission = await (from userRole in _repoManager.UserRole.FindByCondition(x => x.UserId == userId)
+                                   
+        //                           join role in  _repoManager.Role.FindAll()
+        //                           on userRole.RoleId equals role.Id
+
+        //                           join accessRule in _repoManager.AccessRule.FindByCondition(x => x.)
+
+
+        //                           join )
+
+
+        return result;
     }
     #endregion
 
@@ -137,6 +155,12 @@ public class UserService : BaseIdentityService, IUserService
     #endregion
 
     #region Common Private
+
+    private async Task<User> _GetActiveUserAsync(int id)
+    {
+        return await _repoManager.User.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     private async Task<User> _GetUserAsync(int id)
     {
         return await _UserIgnoreGlobalFilter().FirstOrDefaultAsync(x => x.Id == id);

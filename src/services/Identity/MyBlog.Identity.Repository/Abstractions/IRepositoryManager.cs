@@ -12,6 +12,7 @@ public interface IRepositoryManager
     public IScopeRepository Scope { get; }
     public IRoleRepository Role { get; }
     public IUserRepository User { get; }
+    public IUserRoleRepository UserRole { get; }
 
     DbSet<Permission> Permissions { get; }
     DbSet<Operation> Operations { get; }
@@ -19,6 +20,7 @@ public interface IRepositoryManager
     DbSet<Role> Roles { get; }
     DbSet<Scope> Scopes { get; }
     DbSet<User> Users { get; }
+    DbSet<UserRole> UserRoles { get; }
 
     #region Transaction
     Task SaveAsync();

@@ -10,6 +10,5 @@ public class ScopeConfiguration : IEntityTypeConfiguration<Scope>
     {
         builder.HasIndex(c => c.Code)
             .IsUnique();
-
     }
 }

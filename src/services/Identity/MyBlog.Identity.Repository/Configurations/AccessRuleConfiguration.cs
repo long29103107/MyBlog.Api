@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Identity.Domain.Entities;
-using System.Reflection.Emit;
 
 namespace MyBlog.Identity.Repository.Configurations;
 
@@ -9,14 +8,15 @@ public class AccessRuleConfiguration : IEntityTypeConfiguration<AccessRule>
 {
     public void Configure(EntityTypeBuilder<AccessRule> builder)
     {
-        builder.HasOne(ar => ar.Permission)
-            .WithMany()
-            .HasForeignKey(ar => ar.PermissionId)
+        // Configure relationships without cascading deletes
+        builder.HasOne(x => x.Role)
+            .WithMany(x => x.AccessRules)
+            .HasForeignKey(x => x.RoleId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(ar => ar.Role)
-            .WithMany()
-            .HasForeignKey(ar => ar.RoleId)
+        builder.HasOne(ur => ur.Permission)
+            .WithMany(r => r.AccessRules)
+            .HasForeignKey(ur => ur.PermissionId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -53,11 +53,13 @@ public class SeedService : BaseIdentityService, ISeedService
         var request = new RegisterRequest
         {
             Email = "superadmin@gmail.com",
-            Password = "Long123456@@"
+            Password = "Long123456@@",
+            IsSeed = true
         };
 
         var userRes = await _registerService.RegisterAsync(request);
 
+        _repoManager.DetachEntities();
         await _userService.AssignRoleAsync(userRes.Id);
     }
     

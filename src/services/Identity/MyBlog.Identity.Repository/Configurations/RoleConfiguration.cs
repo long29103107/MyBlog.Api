@@ -14,7 +14,8 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
 
         builder.HasIndex(c => c.Code)
            .IsUnique();
-
+        builder.HasIndex(c => c.Weight)
+            .IsUnique();
         builder.HasQueryFilter(p => p.IsActive);
     }
 }

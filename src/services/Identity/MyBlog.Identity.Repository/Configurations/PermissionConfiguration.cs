@@ -16,8 +16,8 @@ public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(p => p.Scope)
-         .WithMany()
-         .HasForeignKey(p => p.ScopeId)
-         .OnDelete(DeleteBehavior.Cascade);
+            .WithMany()
+            .HasForeignKey(p => p.ScopeId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

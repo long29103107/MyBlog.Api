@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyBlog.Identity.Repository;
 
@@ -11,9 +12,11 @@ using MyBlog.Identity.Repository;
 namespace MyBlog.Shared.Databases.Identity.Migrations
 {
     [DbContext(typeof(MyIdentityDbContext))]
-    partial class MyIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241215114329_UpdatePermission")]
+    partial class UpdatePermission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,6 +137,9 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RoleId1")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -146,6 +152,8 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                     b.HasIndex("PermissionId");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("RoleId1");
 
                     b.ToTable("AccessRules");
                 });
@@ -443,12 +451,16 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
                     b.HasOne("MyBlog.Identity.Domain.Entities.Permission", "Permission")
                         .WithMany("AccessRules")
                         .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MyBlog.Identity.Domain.Entities.Role", "Role")
                         .WithMany("AccessRules")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MyBlog.Identity.Domain.Entities.Role", null)
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId1");
 
                     b.Navigation("Permission");
 
@@ -501,6 +513,8 @@ namespace MyBlog.Shared.Databases.Identity.Migrations
             modelBuilder.Entity("MyBlog.Identity.Domain.Entities.Role", b =>
                 {
                     b.Navigation("AccessRules");
+
+                    b.Navigation("RolePermissions");
 
                     b.Navigation("UserRoles");
                 });

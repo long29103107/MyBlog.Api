@@ -12,7 +12,7 @@ public class IdentityValidator : AbstractValidator<Role>
         _repoManager = repoManager;
         RuleFor(p => p.Code).NotEmpty();
         RuleFor(p => p.Name).NotEmpty();
-        RuleFor(ExistingRoleAsync);
+        //RuleFor(ExistingRoleAsync);
     }
 
     private async Task ExistingRoleAsync()

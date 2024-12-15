@@ -36,6 +36,7 @@ public static class SeedDtos
             }
         }
         public bool IsLocked { get; set; } = true;
+        public int Weight { get; set; }
     }
     public sealed class SeedDataRequest : Request
     {

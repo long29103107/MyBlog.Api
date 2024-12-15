@@ -142,8 +142,6 @@ public class RoleService : BaseIdentityService, IRoleService
 
         request.ApplyTo(role, _mapper);
 
-
-
         _repoManager.Role.Update(role);
         await _repoManager.SaveAsync();
 

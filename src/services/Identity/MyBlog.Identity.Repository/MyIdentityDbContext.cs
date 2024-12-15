@@ -19,6 +19,7 @@ public class MyIdentityDbContext : IdentityDbContext<User, Role, int, IdentityUs
     public virtual DbSet<AccessRule> AccessRules { get; set; }
     public virtual DbSet<Scope> Scopes { get; set; }
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<UserRole> UserRoles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

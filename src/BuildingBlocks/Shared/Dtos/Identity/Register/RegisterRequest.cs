@@ -11,5 +11,7 @@ public sealed class RegisterRequest : Request
 
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; }
+
+    public bool IsSeed { get; set; } = false;
 }
 
