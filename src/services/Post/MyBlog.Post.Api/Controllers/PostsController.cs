@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Authorization.Attributes;
+using Microsoft.AspNetCore.Mvc;
 using MyBlog.Post.Service.Abstractions;
 using MyBlog.Shared.Lib;
 using Shared.APIs;
@@ -16,6 +17,7 @@ public partial class PostsController : CustomControllerBase
     }
 
     [HttpGet]
+    [LonGAuth()]
     public async Task<IActionResult> GetListAsync([FromQuery] PostListRequest request)
     {
         return GetResponse(await _service.GetListAsync(request));

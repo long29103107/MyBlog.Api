@@ -19,4 +19,10 @@ public static class IdentitySchemaConstants
         public const string SuperAdmin = "super-admin";
         public const string Admin = "admin";
     }
+
+    public class Role
+    {
+        public const string SuperAdmin = "Super Admin";
+        public const string Admin = "Admin";
+    }
 }

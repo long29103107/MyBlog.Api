@@ -4,6 +4,13 @@ namespace Authorization.Attributes;
 
 public class ClaimRequirementAttribute : IAuthorizationRequirement
 {
-    public ClaimRequirementAttribute(string condition) => Condition = condition;
-    public string Condition { get; set; }
+    public string Scope { get; set; }
+    public string Operation { get; set; }
+
+    public ClaimRequirementAttribute(string scope, string operation)
+    {
+        Scope = scope;
+        Operation = operation;
+    }
+    
 }

@@ -84,15 +84,27 @@ public class UserService : BaseIdentityService, IUserService
         var role = await _repoManager.Role.FindByCondition(x => 
                 x.Code.Equals(IdentitySchemaConstants.RoleCode.SuperAdmin))
             .FirstOrDefaultAsync()
-            ?? throw new RoleException.NameNotFound(IdentitySchemaConstants.RoleCode.SuperAdmin);
+            ?? throw new RoleException.NameNotFound(IdentitySchemaConstants.Role.SuperAdmin);
 
         if(!role.IsActive)
         {
             throw new BadRequestException("Role is deactivated");
         }
 
-        _repoManager.User.Detach(user);
-        await _userManager.AddToRoleAsync(user, role.Name ?? string.Empty);
+        var existingUserRole = await _repoManager.UserRole.FindByCondition(x =>
+                x.RoleId == role.Id
+                && x.UserId == userId)
+            .AnyAsync();
+
+        if(!existingUserRole)
+        {
+            _repoManager.UserRole.Add(new UserRole()
+            {
+                RoleId = role.Id,
+                UserId = user.Id
+            });
+            await _repoManager.SaveAsync();
+        }    
     }
     #endregion
 

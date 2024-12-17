@@ -6,7 +6,8 @@ namespace Authorization.Attributes;
 
 public class LonGAuth : Attribute, IAsyncAuthorizationFilter
 {
-    private readonly string condition = string.Empty; 
+    private string _scope = string.Empty; 
+    private string _operation = string.Empty; 
 
     public LonGAuth()
     {
@@ -14,9 +15,10 @@ public class LonGAuth : Attribute, IAsyncAuthorizationFilter
     }
 
 
-    public LonGAuth(string condition)
+    public LonGAuth(string scope, string operation)
     {
-        this.condition = condition;
+        _scope = scope;
+        _operation = operation;
     }
 
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
@@ -25,7 +27,7 @@ public class LonGAuth : Attribute, IAsyncAuthorizationFilter
         {
             var myCustomAuthService = context.HttpContext.RequestServices.GetRequiredService<ICustomAuthService>();
 
-            if (!await myCustomAuthService.CheckIfAllowed(condition))
+            if (!await myCustomAuthService.CheckIfAllowed(_scope, _operation))
             {
                 context.Result = new ForbidResult();
             }

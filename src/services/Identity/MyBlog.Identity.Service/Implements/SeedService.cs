@@ -59,7 +59,6 @@ public class SeedService : BaseIdentityService, ISeedService
 
         var userRes = await _registerService.RegisterAsync(request);
 
-        _repoManager.DetachEntities();
         await _userService.AssignRoleAsync(userRes.Id);
     }
     
