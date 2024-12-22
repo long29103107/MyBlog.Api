@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Authorization\Authorization.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Shared\Shared.csproj" />
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Autofac\MyBlog.Shared.Autofac.csproj" />
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Lib\MyBlog.Shared.Lib.csproj" />

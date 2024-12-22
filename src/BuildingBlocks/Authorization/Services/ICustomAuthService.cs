@@ -2,6 +2,6 @@
 
 public interface ICustomAuthService
 {
-    Task<bool> CheckIfAllowed(string condition);
+    Task<bool> CheckIfAllowedAsync(int userId, string scope, string operation);
 }
 

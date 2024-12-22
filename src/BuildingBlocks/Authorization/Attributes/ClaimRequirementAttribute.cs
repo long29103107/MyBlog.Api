@@ -6,11 +6,13 @@ public class ClaimRequirementAttribute : IAuthorizationRequirement
 {
     public string Scope { get; set; }
     public string Operation { get; set; }
+    public int UserId { get; set; }
 
-    public ClaimRequirementAttribute(string scope, string operation)
+    public ClaimRequirementAttribute(int userId, string scope, string operation)
     {
         Scope = scope;
         Operation = operation;
+        UserId = userId;
     }
     
 }

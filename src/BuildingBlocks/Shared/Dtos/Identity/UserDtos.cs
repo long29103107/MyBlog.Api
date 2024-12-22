@@ -64,6 +64,12 @@ public static class UserDtos
     {
         public int Id { get; set; }
     }
+
+    public sealed class UserHasPermissionRequest : Request
+    {
+        public string ScopeCode { get; set; }
+        public string OperationCode { get; set; }
+    }
     #endregion
 
     #region Response

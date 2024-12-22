@@ -73,9 +73,9 @@ public class AuthenticateService : IAuthenticateService
 
         var result = new List<Claim>
         {
-            new Claim(ClaimConstants.RoleIds, JsonConvert.SerializeObject(rolesIds)),
-            new Claim(ClaimConstants.UserId, user.Id.ToString()),
-            new Claim(ClaimConstants.Email, user.Email),
+            new Claim(ClaimsConstants.UserId, user.Id.ToString()),
+            new Claim(ClaimsConstants.RoleIds, string.Join(",",rolesIds)), 
+            new Claim(ClaimsConstants.Email, user.Email),
         };
 
         return result;

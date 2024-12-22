@@ -5,12 +5,17 @@ using MyBlog.Shared.ExceptionHandler;
 using FilteringAndSortingExpression.Swagger.Extensions;
 using System.Reflection;
 using System.Xml.Linq;
+using Authorization.Attributes;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace MyBlog.Post.Api.DependencyInjection.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddServiceCollectionApi(this IServiceCollection services)
+    public static IServiceCollection AddServiceCollectionApi(this IServiceCollection services
+        , IConfiguration configuration)
     {
         services.AddHttpContextAccessor();
         services.AddRouting(x => x.LowercaseUrls = true);
@@ -23,6 +28,29 @@ public static class ServiceCollectionExtensions
             x.Version = "v1";
             x.Title = PostApiReference.AssemblyName;
         });
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+
+         // Adding Jwt Bearer
+         .AddJwtBearer(options =>
+         {
+             options.SaveToken = true;
+             options.RequireHttpsMetadata = false;
+             options.TokenValidationParameters = new TokenValidationParameters()
+             {
+                 ValidateIssuer = true,
+                 ValidateAudience = true,
+                 ValidAudience = configuration["JWT:ValidAudience"],
+                 ValidIssuer = configuration["JWT:ValidIssuer"],
+                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+             };
+         });
+
+        services.AddAuthorization();
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();

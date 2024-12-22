@@ -9,7 +9,7 @@ public class MyCustomAuthorizationHandler(ICustomAuthService customAuthService) 
 
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimRequirementAttribute requirement)
     {
-        if (await customAuthService.CheckIfAllowed(requirement.Condition))
+        if (await customAuthService.CheckIfAllowedAsync(requirement.UserId, requirement.Scope, requirement.Operation))
         {
             context.Succeed(requirement);
         }

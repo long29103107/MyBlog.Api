@@ -109,22 +109,51 @@ public class UserService : BaseIdentityService, IUserService
     #endregion
 
     #region Has Permission 
-    public async Task<bool> HasPermissionAsync(int userId, string scopeCode, string operationCode)
+    public async Task<bool> HasPermissionAsync(int userId, int permissionId)
     {
         var result = false;
         var user = await _GetActiveUserAsync(userId)
            ?? throw new UserException.NotFound(userId);
 
-        //var hasPermission = await (from userRole in _repoManager.UserRole.FindByCondition(x => x.UserId == userId)
-                                   
-        //                           join role in  _repoManager.Role.FindAll()
-        //                           on userRole.RoleId equals role.Id
+        var query = _repoManager.AccessRule
+            .FindByCondition(x => x.Mode == true
+                && x.Role.UserRoles.Any(y => y.User.Id == userId)
+                && true == x.Role.IsActive
+                && x.PermissionId == permissionId)
+            .Include(x => x.Permission)
+                .ThenInclude(x => x.Scope)
+            .Include(x => x.Permission)
+                .ThenInclude(x => x.Operation)
+            .Include(x => x.Role)
+                .ThenInclude(x => x.UserRoles)
+                .ThenInclude(x => x.User);
 
-        //                           join accessRule in _repoManager.AccessRule.FindByCondition(x => x.)
+        result = await query.AnyAsync();
 
+        return result;
+    }
 
-        //                           join )
+    public async Task<bool> HasPermissionAsync(int userId, UserHasPermissionRequest request)
+    {
+        var result = false;
+        var user = await _GetActiveUserAsync(userId)
+           ?? throw new UserException.NotFound(userId);
 
+        var query = _repoManager.AccessRule
+            .FindByCondition(x => x.Mode == true
+                && x.Role.UserRoles.Any(y => y.User.Id == userId)
+                && true == x.Role.IsActive
+                && x.Permission.Scope.Code == request.ScopeCode
+                && x.Permission.Operation.Code == request.OperationCode)
+            .Include(x => x.Permission)
+                .ThenInclude(x => x.Scope)
+            .Include(x => x.Permission)
+                .ThenInclude(x => x.Operation)
+            .Include(x => x.Role)
+                .ThenInclude(x => x.UserRoles)
+                .ThenInclude(x => x.User);
+
+        result = await query.AnyAsync();
 
         return result;
     }

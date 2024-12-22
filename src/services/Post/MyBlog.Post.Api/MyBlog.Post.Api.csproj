@@ -8,7 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" /> 
+	<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" /> 
     <PackageReference Include="Swashbuckle.AspNetCore" />
 	<PackageReference Include="Autofac" />
 	<PackageReference Include="AutoMapper" />

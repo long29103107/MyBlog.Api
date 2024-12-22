@@ -10,5 +10,6 @@ public interface IUserService : IBaseIdentityService
     Task<UserResponse> UpdateAsync(int id, UserUpdateRequest request);
     Task<bool> DeleteAsync(int id);
     Task AssignRoleAsync(int userId);
-    //Task<bool> HasPermissionAsync(int userId);
+    Task<bool> HasPermissionAsync(int userId, int permissionId);
+    Task<bool> HasPermissionAsync(int userId, UserHasPermissionRequest request);
 }
