@@ -14,5 +14,4 @@ public class ClaimRequirementAttribute : IAuthorizationRequirement
         Operation = operation;
         UserId = userId;
     }
-    
 }

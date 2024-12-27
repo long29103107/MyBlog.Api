@@ -1,0 +1,3 @@
+Gateway=MyBlog.Api\src\ApiGateway\ApiGateway = true
+Identity=MyBlog.Api\src\services\Identity\MyBlog.Idenity.Api = true
+IdentityApi=MyBlog.Api\src\services\Post\MyBlog.Post.Api = true
