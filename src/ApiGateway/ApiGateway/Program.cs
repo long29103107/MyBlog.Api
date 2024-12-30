@@ -1,13 +1,10 @@
 ﻿using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Values;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerForOcelot(builder.Configuration);
@@ -16,7 +13,7 @@ builder.Services.AddOcelot(builder.Configuration);
 // Add CORS services
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost3000",
+    options.AddPolicy("client",
         builder => builder.WithOrigins("http://localhost:3000")
                           .AllowAnyMethod()
                           .AllowAnyHeader());
@@ -29,7 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
 }
 
-app.UseCors("AllowLocalhost3000");
+app.UseCors("client");
 app.UseRouting();
 app.UseAuthorization();
 

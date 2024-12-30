@@ -12,4 +12,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DependencyInjection\Extensions\" />
+    <Folder Include="DependencyInjection\" />
+  </ItemGroup>
+
 </Project>
