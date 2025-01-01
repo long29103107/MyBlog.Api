@@ -1,11 +1,13 @@
-﻿using MyBlog.Identity.Domain.Entities;
+﻿using Contracts.Abstractions.Common;
+using MyBlog.Identity.Domain.Entities;
+using MyBlog.Identity.Repository.Abstractions;
 using MyBlog.Shared.Lib;
 using static Shared.Dtos.Identity.Permission.PermissionDtos;
 using static Shared.Dtos.Identity.RoleDtos;
 
 namespace MyBlog.Identity.Service.Abstractions;
 
-public interface IRoleService : IBaseIdentityService
+public interface IRoleService : IBaseService<IRepositoryManager>
 {
     IQueryable<Role> _RoleIgnoreGlobalFilter();
     Task<IEnumerable<RoleResponse>> GetListAsync(RoleListRequest request);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Contracts.Dtos;
+using Microsoft.AspNetCore.JsonPatch;
 using MyBlog.Contracts.Dtos.Interfaces;
 namespace MyBlog.Shared.Lib;
 
@@ -13,7 +14,7 @@ public class JsonPathRequest<T> : JsonPatchDocument<T>, IRequest where T : class
     {
     }
 
-    public IScopedContext? ScopedContext { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public ScopedContext? ScopedContext { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     //[JsonIgnore]
     //[BindNever]

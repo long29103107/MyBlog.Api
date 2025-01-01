@@ -1,11 +1,14 @@
 ﻿using Authorization.Constants;
+using AutoMapper;
 using Azure.Core;
 using Contracts.Domain.Exceptions.Abtractions;
+using Infrastructures.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using MyBlog.Identity.Domain.Entities;
+using MyBlog.Identity.Repository.Abstractions;
 using MyBlog.Identity.Service.Abstractions;
 using Newtonsoft.Json;
 using Shared.Dtos.Identity.Authenticate;
@@ -15,13 +18,19 @@ using static MyBlog.Identity.Domain.Exceptions.UserException;
 
 namespace MyBlog.Identity.Service.Implements;
 
-public class AuthenticateService : IAuthenticateService
+public class AuthenticateService : BaseService<IRepositoryManager>, IAuthenticateService
 {
     private readonly ITokenService _tokenService;
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Role> _roleManager;
 
-    public AuthenticateService(UserManager<User> userManager, ITokenService tokenService, RoleManager<Role> roleManager)
+    public AuthenticateService(
+        UserManager<User> userManager, 
+        ITokenService tokenService, 
+        RoleManager<Role> roleManager, 
+        IRepositoryManager repositoryManager,
+        IMapper mapper) 
+        : base(repositoryManager, mapper)
     {
         _userManager = userManager;
         _tokenService = tokenService;

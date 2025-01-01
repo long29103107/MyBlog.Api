@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Contracts.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.Contracts.Dtos.Interfaces;
 
@@ -9,7 +10,7 @@ namespace Shared.APIs;
 
 public abstract class CustomControllerBase : ControllerBase
 {
-    //protected IScopedCache _scopedCache;
+    protected IScopedCache _scopedCache;
 
     protected IActionResult GetResponse(bool res)
     {

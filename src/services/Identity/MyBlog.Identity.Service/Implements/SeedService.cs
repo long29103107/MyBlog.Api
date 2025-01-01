@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Infrastructures.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyBlog.Identity.Domain.Entities;
@@ -15,16 +16,20 @@ using static Shared.Dtos.Identity.SeedDtos;
 
 namespace MyBlog.Identity.Service.Implements;
 
-public class SeedService : BaseIdentityService, ISeedService
+public class SeedService : BaseService<IRepositoryManager>, ISeedService
 {
     private readonly IRegisterService _registerService;
     private readonly IUserService _userService;
+    private readonly IValidatorFactory _validatorFactory;
+    private readonly ILogger _logger;
 
-    public SeedService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger, IRegisterService registerService, IUserService userService)
-        : base(repoManager, mapper, validatorFactory, logger)
+    public SeedService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, IRegisterService registerService, IUserService userService, ILogger logger)
+        : base(repoManager, mapper)
     {
         _registerService = registerService;
         _userService = userService;
+        _validatorFactory = validatorFactory;
+        _logger = logger;
     }
 
     public async Task SeedDataAsync(SeedDataRequest request)

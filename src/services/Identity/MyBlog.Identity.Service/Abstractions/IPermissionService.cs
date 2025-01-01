@@ -1,8 +1,10 @@
-﻿using static Shared.Dtos.Identity.Permission.PermissionDtos;
+﻿using Contracts.Abstractions.Common;
+using MyBlog.Identity.Repository.Abstractions;
+using static Shared.Dtos.Identity.Permission.PermissionDtos;
 
 namespace MyBlog.Identity.Service.Abstractions;
 
-public interface IPermissionService : IBaseIdentityService
+public interface IPermissionService : IBaseService<IRepositoryManager>
 {
     Task<PermissionResponse> GetAsync(int id);
     Task<IEnumerable<PermissionResponse>> GetListAsync(PermissionListRequest request);

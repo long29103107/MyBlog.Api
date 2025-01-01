@@ -9,6 +9,7 @@ using Authorization.Attributes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Contracts.Dtos;
 
 namespace MyBlog.Post.Api.DependencyInjection.Extensions;
 
@@ -22,6 +23,7 @@ public static class ServiceCollectionExtensions
         services.AddControllers()
             .AddNewtonsoftJson();
         services.AddEndpointsApiExplorer();
+        services.AddScoped<IScopedCache, ScopedCache>();
         services.AddSwagger(x =>
         {
             x.Name = PostApiReference.AssemblyName;

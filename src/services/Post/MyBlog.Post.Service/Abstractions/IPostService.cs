@@ -6,7 +6,7 @@ using static Shared.Dtos.Post.PostDtos;
 
 namespace MyBlog.Post.Service.Abstractions;
 
-public interface IPostService : IBaseService<IRepositoryManager, PostDbContext>
+public interface IPostService : IBaseService<IRepositoryManager>
 {
     Task<List<PostListResponse>> GetListAsync(PostListRequest request);
     Task<List<PostListResponse>> GetPagedListAsync(PagingPostRequest request);

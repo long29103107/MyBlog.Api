@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
 using Contracts.Domain.Exceptions;
 using Contracts.Domain.Exceptions.Abtractions;
+using MyBlog.FluentValidation.Exceptions;
 
 namespace MyBlog.Shared.ExceptionHandler;
 

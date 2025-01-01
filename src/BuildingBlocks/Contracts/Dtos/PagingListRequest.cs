@@ -1,5 +1,4 @@
-﻿using MyBlog.Contracts.Dtos.Interfaces;
-using System.Web;
+﻿using System.Web;
 
 namespace Contracts.Dtos;
 
@@ -28,24 +27,24 @@ public abstract class PagingListRequest : ListRequest
             PageSize = this.PageSize
         };
 
-        if(this.ScopedContext == null) this.ScopedContext = new ScopedContext();
+        //if(this.ScopedContext == null) this.ScopedContext = new ScopedContext();
 
-        if (this.ScopedContext.RequestQueryString == null)
-        {
-            this.ScopedContext.RequestQueryString = HttpUtility.ParseQueryString("page=1");
-        }
+        //if (this.ScopedContext.RequestQueryString == null)
+        //{
+        //    this.ScopedContext.RequestQueryString = HttpUtility.ParseQueryString("page=1");
+        //}
 
-        if (listResponse.Results.Count >= PageSize)
-        {
-            this.ScopedContext.RequestQueryString["page"] = (this.Page + 1).ToString();
-            listResponse.NextUrl = this.ScopedContext.RequestPath + "?" + this.ScopedContext.RequestQueryString.ToString();
-        }
+        //if (listResponse.Results.Count >= PageSize)
+        //{
+        //    this.ScopedContext.RequestQueryString["page"] = (this.Page + 1).ToString();
+        //    listResponse.NextUrl = this.ScopedContext.RequestPath + "?" + this.ScopedContext.RequestQueryString.ToString();
+        //}
 
-        if (this.Page > 1)
-        {
-            this.ScopedContext.RequestQueryString["page"] = (Math.Max(1, this.Page - 1)).ToString();
-            listResponse.PrevUrl = this.ScopedContext.RequestPath + "?" + this.ScopedContext.RequestQueryString.ToString();
-        }
+        //if (this.Page > 1)
+        //{
+        //    this.ScopedContext.RequestQueryString["page"] = (Math.Max(1, this.Page - 1)).ToString();
+        //    listResponse.PrevUrl = this.ScopedContext.RequestPath + "?" + this.ScopedContext.RequestQueryString.ToString();
+        //}
 
         if (listResponse.Count <= 0)
         {

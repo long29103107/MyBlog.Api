@@ -10,5 +10,5 @@ public abstract class Request : IRequest
     [JsonIgnore]
     [BindNever]
     //[SwaggerIgnore]
-    public IScopedContext? ScopedContext { get; set; }
+    public ScopedContext? ScopedContext { get; set; }
 }

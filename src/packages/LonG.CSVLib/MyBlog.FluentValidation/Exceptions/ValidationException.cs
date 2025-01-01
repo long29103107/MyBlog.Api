@@ -1,6 +1,6 @@
 ﻿using Contracts.Domain.Exceptions.Abtractions;
 
-namespace Contracts.Domain.Exceptions;
+namespace MyBlog.FluentValidation.Exceptions;
 
 public sealed class ValidationException : DomainException
 {

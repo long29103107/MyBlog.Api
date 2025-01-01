@@ -16,19 +16,22 @@ using MyBlog.Post.Domain.Exceptions;
 using MyBlog.Post.Repository;
 using Contracts.Abstractions.Common;
 using System.Data;
+using MyBlog.FluentValidation.Exceptions;
+using ValidationException = MyBlog.FluentValidation.Exceptions.ValidationException;
 namespace MyBlog.Post.Service.Implements;
 
-public class PostService : BaseService<IRepositoryManager, PostDbContext>, IPostService
+public class PostService : BaseService<IRepositoryManager>, IPostService
 {
+    private readonly IValidatorFactory _validatorFactory;
+
     public PostService(
         IRepositoryManager repoManager
         , IMapper mapper
         , IValidatorFactory validatorFactory
-        , IUnitOfWork<PostDbContext> unitOfWork
         ) 
-        : base(repoManager, mapper, validatorFactory, unitOfWork)
+        : base(repoManager, mapper)
     {
-       
+        _validatorFactory = validatorFactory;
     }
 
     public async Task<List<PostListResponse>> GetListAsync(PostListRequest request)
@@ -74,7 +77,7 @@ public class PostService : BaseService<IRepositoryManager, PostDbContext>, IPost
 
         _repoManager.Post.Add(model);
 
-        await _SaveAsync();
+        await _repoManager.SaveAsync();
 
         return _mapper.Map<PostResponse>(model);
     }
@@ -89,7 +92,7 @@ public class PostService : BaseService<IRepositoryManager, PostDbContext>, IPost
 
         _repoManager.Post.Update(model);
 
-        await _SaveAsync();
+        await _repoManager.SaveAsync();
 
         return _mapper.Map<PostResponse>(model);
     }
@@ -104,7 +107,7 @@ public class PostService : BaseService<IRepositoryManager, PostDbContext>, IPost
 
         _repoManager.Post.Update(model);
 
-        await _SaveAsync();
+        await _repoManager.SaveAsync();
 
         return _mapper.Map<PostResponse>(model);
     }
@@ -115,7 +118,7 @@ public class PostService : BaseService<IRepositoryManager, PostDbContext>, IPost
 
         _repoManager.Post.Remove(model);
 
-        await _SaveAsync();
+        await _repoManager.SaveAsync();
 
         return true;
     }
@@ -139,7 +142,7 @@ public class PostService : BaseService<IRepositoryManager, PostDbContext>, IPost
         {
             var errors = result.Errors.Select(x => new ValidationError(x.PropertyName, x.ErrorMessage)).ToList();
 
-            throw new Exceptions.ValidationException(errors);
+            throw new ValidationException(errors);
         }
     }
 }

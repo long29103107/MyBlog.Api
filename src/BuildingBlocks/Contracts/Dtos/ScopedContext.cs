@@ -1,14 +1,15 @@
-﻿using MyBlog.Contracts.Dtos.Interfaces;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 
 namespace Contracts.Dtos;
 
-public class ScopedContext : IScopedContext
+public class ScopedContext
 {
-    //public string TransactionId { get; set; }
-    //public string UserId { get; set; }
-    //public string UserName { get; set; }
-    //public string AccessToken { get; set; }
+    public bool IsTransactionOrdinary { get; set; } = false;
+    public string UserId { get; set; }
+    public string UserName { get; set; }
+    public string Email { get; set; }
+    public string RemoteIp { get; set; }
+    public string AccessToken { get; set; }
     public NameValueCollection RequestQueryString { get; set; }
     public string RequestPath { get; set; }
 }

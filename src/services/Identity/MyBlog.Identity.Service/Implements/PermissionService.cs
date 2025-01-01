@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using FilteringAndSortingExpression.Extensions;
 using FluentValidation;
+using Infrastructures.Common;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Identity.Domain.Exceptions;
 using MyBlog.Identity.Repository.Abstractions;
@@ -10,11 +11,13 @@ using MyBlog.Identity.Service.DependencyInjection.Extensions;
 using Serilog;
 using static Shared.Dtos.Identity.Permission.PermissionDtos;
 namespace MyBlog.Identity.Service.Implements;
-public class PermissionService : BaseIdentityService, IPermissionService
+public class PermissionService : BaseService<IRepositoryManager>, IPermissionService
 {
-    public PermissionService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger) 
-        : base(repoManager, mapper, validatorFactory, logger)
+    private readonly IValidatorFactory _validatorFactory;
+    public PermissionService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory) 
+        : base(repoManager, mapper)
     {
+        _validatorFactory = validatorFactory;
     }
 
     public async Task<PermissionResponse> GetAsync(int id)

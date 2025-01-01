@@ -4,6 +4,7 @@ using Contracts.Domain.Constants;
 using Contracts.Domain.Exceptions.Abtractions;
 using FilteringAndSortingExpression.Extensions;
 using FluentValidation;
+using Infrastructures.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Identity.Domain.Entities;
@@ -15,16 +16,19 @@ using static Shared.Dtos.Identity.UserDtos;
 
 namespace MyBlog.Identity.Service.Implements;
 
-public class UserService : BaseIdentityService, IUserService
+public class UserService : BaseService<IRepositoryManager>, IUserService
 {
     private readonly RoleManager<Role> _roleManager;
     private readonly UserManager<User> _userManager;
+    private readonly IValidatorFactory _validatorFactory;
+    private readonly ILogger _logger;
 
-    public UserService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger, RoleManager<Role> roleManager, UserManager<User> userManager)
-        : base(repoManager, mapper, validatorFactory, logger)
+    public UserService(IRepositoryManager repoManager, IMapper mapper, RoleManager<Role> roleManager, UserManager<User> userManager, ILogger logger)
+        : base(repoManager, mapper)
     {
         _roleManager = roleManager;
         _userManager = userManager;
+        _logger = logger;
     }
 
     #region Get

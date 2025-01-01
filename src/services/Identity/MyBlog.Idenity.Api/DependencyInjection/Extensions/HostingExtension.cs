@@ -1,5 +1,6 @@
 ﻿using Authorization.Attributes;
 using Authorization.Services;
+using Contracts.Dtos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,6 @@ using MyBlog.Identity.Repository;
 using MyBlog.Identity.Service;
 using MyBlog.Shared.Serilog;
 using Serilog;
-using System.Security.Claims;
 using System.Text;
 
 namespace MyBlog.Identity.Api.DependencyInjection.Extensions;
@@ -36,6 +36,8 @@ public static class HostingExtension
         services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<MyIdentityDbContext>()
             .AddDefaultTokenProviders();
+
+        services.AddScoped<IScopedCache, ScopedCache>();
 
         // Adding Authentication
         services.AddAuthentication(options =>

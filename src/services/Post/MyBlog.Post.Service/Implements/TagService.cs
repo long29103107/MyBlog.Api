@@ -12,20 +12,21 @@ using Entities = MyBlog.Post.Domain.Entities;
 using Contracts.Domain.Exceptions;
 using Exceptions = Contracts.Domain.Exceptions;
 using MyBlog.Post.Domain.Exceptions;
+using MyBlog.FluentValidation.Exceptions;
+using ValidationException = MyBlog.FluentValidation.Exceptions.ValidationException;
 
 namespace MyBlog.Post.Service.Implements;
 
-public class TagService : BaseService<IRepositoryManager, PostDbContext>, ITagService
+public class TagService : BaseService<IRepositoryManager>, ITagService
 {
+    private readonly IValidatorFactory _validatorFactory;
     public TagService(
         IRepositoryManager repoManager
         , IMapper mapper
-        , IValidatorFactory validatorFactory
-        , IUnitOfWork<PostDbContext> unitOfWork
-        )
-        : base(repoManager, mapper, validatorFactory, unitOfWork)
+        , IValidatorFactory validatorFactory)
+        : base(repoManager, mapper)
     {
-
+        _validatorFactory = validatorFactory;
     }
 
     public async Task<TagResponse> CreateAsync(TagCreateRequest request)
@@ -81,7 +82,7 @@ public class TagService : BaseService<IRepositoryManager, PostDbContext>, ITagSe
         {
             var errors = result.Errors.Select(x => new ValidationError(x.PropertyName, x.ErrorMessage)).ToList();
 
-            throw new Exceptions.ValidationException(errors);
+            throw new ValidationException(errors);
         }
     }
 }

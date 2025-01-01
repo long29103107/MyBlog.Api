@@ -1,6 +1,4 @@
-﻿using Contracts.Domain;
-using System.Xml.Linq;
-using System;
+﻿using MyBlog.MediatR;
 
 namespace MyBlog.Post.Domain.Entities;
 

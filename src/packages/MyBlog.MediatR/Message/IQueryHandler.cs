@@ -1,7 +1,7 @@
 ﻿using Contracts.Dtos;
 using MediatR;
 
-namespace DistributedSystem.Contract.Abstractions.Message;
+namespace MyBlog.MediatR.Message;
 
 public interface IQueryHandler<TQuery, TResponse> : IRequestHandler<TQuery, ResponseResult<TResponse>>
     where TQuery : IQuery<TResponse>

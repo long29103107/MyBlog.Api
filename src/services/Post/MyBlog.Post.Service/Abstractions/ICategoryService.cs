@@ -5,7 +5,7 @@ using static Shared.Dtos.Post.CategoryDtos;
 
 namespace MyBlog.Post.Service.Abstractions;
 
-public interface ICategoryService : IBaseService<IRepositoryManager, PostDbContext>
+public interface ICategoryService : IBaseService<IRepositoryManager>
 {
     Task<CategoryResponse> CreateAsync(CategoryCreateRequest request);
     Task<CategoryResponse> GetAsync(int id);

@@ -2,6 +2,6 @@
 
 public interface IRequest
 {
-    IScopedContext? ScopedContext { get; set; }
+    //IScopedContext? ScopedContext { get; set; }
 }
 

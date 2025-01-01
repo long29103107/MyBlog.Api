@@ -27,19 +27,16 @@ public static class ServiceCollectionExtensions
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-
-        //services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
         services.AddDbContext<MyIdentityDbContext>(
         (sp, options) =>
         {
-               var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
-               options.UseSqlServer(connectionString,
-                   b => b.MigrationsAssembly(IdentityRepositoryReference.AssemblyName))
-                    .UseLoggerFactory(loggerFactory)
-                    .EnableSensitiveDataLogging();
+            var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
+            options.UseSqlServer(connectionString,
+                b => b.MigrationsAssembly(IdentityRepositoryReference.AssemblyName))
+                .UseLoggerFactory(loggerFactory)
+                .EnableSensitiveDataLogging();
 
-           });
-        //.AddInterceptors(sp.GetRequiredService<UpdateAuditableEntitiesInterceptor>()));
+        });
     }
 
     public static IHostBuilder AddHostRepository(this IHostBuilder builder)

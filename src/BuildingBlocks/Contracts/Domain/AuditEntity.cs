@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Contracts.Domain.Abstractions;
-using Contracts.Domain.Abstractions.Primitives;
-
 namespace Contracts.Domain;
 
 public abstract class AuditEntity<T> : /* ValueObject,*/ IAuditEntity<T>

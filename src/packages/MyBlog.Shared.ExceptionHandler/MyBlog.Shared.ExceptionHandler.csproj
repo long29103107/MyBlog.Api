@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\LonG.CSVLib\MyBlog.FluentValidation\MyBlog.FluentValidation.csproj" />
   </ItemGroup>
 
 </Project>

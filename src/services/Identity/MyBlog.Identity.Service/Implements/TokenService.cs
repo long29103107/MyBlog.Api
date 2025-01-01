@@ -1,4 +1,7 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using AutoMapper;
+using Infrastructures.Common;
+using Microsoft.IdentityModel.Tokens;
+using MyBlog.Identity.Repository.Abstractions;
 using MyBlog.Identity.Service.Abstractions;
 using MyBlog.Identity.Service.DependencyInjection.Options;
 using Shared.Dtos.Identity.Token;
@@ -7,11 +10,12 @@ using System.Text;
 
 namespace MyBlog.Identity.Service.Implements;
 
-public class TokenService : ITokenService
+public class TokenService : BaseService<IRepositoryManager>, ITokenService
 {
     private readonly JWT _jwtSettings;
 
-    public TokenService(JWT jwtSettings)
+    public TokenService(IRepositoryManager repoManager, IMapper mapper, JWT jwtSettings) 
+        : base(repoManager, mapper)
     {
         _jwtSettings = jwtSettings;
     }

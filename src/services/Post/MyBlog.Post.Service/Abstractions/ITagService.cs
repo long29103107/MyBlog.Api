@@ -5,7 +5,7 @@ using static Shared.Dtos.Post.TagDtos;
 
 namespace MyBlog.Post.Service.Abstractions;
 
-public interface ITagService : IBaseService<IRepositoryManager, PostDbContext>
+public interface ITagService : IBaseService<IRepositoryManager>
 {
     Task<TagResponse> CreateAsync(TagCreateRequest request);
     Task<TagResponse> GetAsync(int id);

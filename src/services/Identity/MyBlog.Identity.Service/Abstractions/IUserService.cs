@@ -1,8 +1,10 @@
-﻿using static Shared.Dtos.Identity.UserDtos;
+﻿using Contracts.Abstractions.Common;
+using MyBlog.Identity.Repository.Abstractions;
+using static Shared.Dtos.Identity.UserDtos;
 
 namespace MyBlog.Identity.Service.Abstractions;
 
-public interface IUserService : IBaseIdentityService
+public interface IUserService : IBaseService<IRepositoryManager>
 {
     Task<UserResponse> GetAsync(int id);
     Task<UserResponse> GetActiveAsync(int id);

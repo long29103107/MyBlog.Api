@@ -2,4 +2,4 @@
 
 namespace Contracts.Abstractions.Common;
 
-public interface IBaseService<TRepoManager, TContext> where TContext : DbContext { }
+public interface IBaseService<TRepoManager> { }

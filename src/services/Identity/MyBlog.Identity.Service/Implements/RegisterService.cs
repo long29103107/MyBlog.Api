@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts.Domain.Exceptions.Abtractions;
 using FluentValidation;
+using Infrastructures.Common;
 using Microsoft.AspNetCore.Identity;
 using MyBlog.Identity.Domain.Entities;
 using MyBlog.Identity.Repository.Abstractions;
@@ -11,13 +12,15 @@ using static Shared.Dtos.Identity.UserDtos;
 
 namespace MyBlog.Identity.Service.Implements;
 
-public class RegisterService : BaseIdentityService, IRegisterService
+public class RegisterService : BaseService<IRepositoryManager>, IRegisterService
 {
     private readonly UserManager<User> _userManager;
+    private readonly IValidatorFactory _validatorFactory;
 
-    public RegisterService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger, UserManager<User> userManager) : base(repoManager, mapper, validatorFactory, logger)
+    public RegisterService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, UserManager<User> userManager) : base(repoManager, mapper)
     {
         _userManager = userManager;
+        _validatorFactory = validatorFactory;
     }
 
     public async Task<UserResponse> RegisterAsync(RegisterRequest request)

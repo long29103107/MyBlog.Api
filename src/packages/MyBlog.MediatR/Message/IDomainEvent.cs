@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Contracts.Abstractions.Message;
+namespace MyBlog.MediatR.Message;
 
 public interface IDomainEvent : INotification
 {

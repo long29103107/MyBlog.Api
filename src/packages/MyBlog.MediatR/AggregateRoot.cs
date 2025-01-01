@@ -1,6 +1,7 @@
-﻿using Contracts.Abstractions.Message;
+﻿using Contracts.Domain;
+using MyBlog.MediatR.Message;
 
-namespace Contracts.Domain;
+namespace MyBlog.MediatR;
 
 public abstract class AggregateRoot<T> :  AuditEntity<T>
 {

@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Contracts.Dtos;
 namespace Authorization.Attributes;
 
 public class LonGAuth : Attribute, IAsyncAuthorizationFilter
@@ -61,7 +62,7 @@ public class LonGAuth : Attribute, IAsyncAuthorizationFilter
             }
 
             //TODO: Add Scoped Cache
-
+           var scopeCache = context.HttpContext.RequestServices.GetRequiredService<IScopedCache>();
 
 
             // Set the authenticated user

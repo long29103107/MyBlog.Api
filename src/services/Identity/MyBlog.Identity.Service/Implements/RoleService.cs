@@ -13,16 +13,19 @@ using Serilog;
 using static Shared.Dtos.Identity.Permission.PermissionDtos;
 using static Shared.Dtos.Identity.RoleDtos;
 using MyBlog.Shared.Lib.Extensions;
-using Exceptions = Contracts.Domain.Exceptions;
-using Contracts.Domain.Exceptions;
-using MyBlog.Identity.Service.DependencyInjection.Extensions;
+using MyBlog.FluentValidation.Exceptions;
+using ValidationException = MyBlog.FluentValidation.Exceptions.ValidationException;
+using Infrastructures.Common;
 
 namespace MyBlog.Identity.Service.Implements;
-public class RoleService : BaseIdentityService, IRoleService
+public class RoleService : BaseService<IRepositoryManager>, IRoleService
 {
-    
-    public RoleService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger) : base(repoManager, mapper, validatorFactory, logger)
+    private readonly IValidatorFactory _validatorFactory;
+    private readonly ILogger _logger;
+    public RoleService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, ILogger logger) : base(repoManager, mapper)
     {
+        _validatorFactory = validatorFactory;
+        _logger = logger;
     }
 
     #region Get
@@ -242,7 +245,7 @@ public class RoleService : BaseIdentityService, IRoleService
         {
             var errors = result.Errors.Select(x => new ValidationError(x.PropertyName, x.ErrorMessage)).ToList();
 
-            throw new Exceptions.ValidationException(errors);
+            throw new ValidationException(errors);
         }
     }
 

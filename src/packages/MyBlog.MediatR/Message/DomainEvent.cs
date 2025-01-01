@@ -1,6 +1,4 @@
-﻿using Contracts.Abstractions.Message;
-
-namespace Contracts.Domain;
+﻿namespace MyBlog.MediatR.Message;
 
 public abstract class DomainEvent : IDomainEvent
 {

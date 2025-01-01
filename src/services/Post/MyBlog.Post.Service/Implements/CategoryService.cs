@@ -16,11 +16,12 @@ using MyBlog.Post.Domain.Entities;
 
 namespace MyBlog.Post.Service.Implements;
 
-public class CategoryService : BaseService<IRepositoryManager, PostDbContext>, ICategoryService
+public class CategoryService : BaseService<IRepositoryManager>, ICategoryService
 {
-    public CategoryService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory, IUnitOfWork<PostDbContext> unitOfWork) : base(repoManager, mapper, validatorFactory, unitOfWork)
+    private readonly IValidatorFactory _validatorFactory;
+    public CategoryService(IRepositoryManager repoManager, IMapper mapper, IValidatorFactory validatorFactory) : base(repoManager, mapper)
     {
-       
+        _validatorFactory = validatorFactory;
     }
 
     public async Task<CategoryResponse> CreateAsync(CategoryCreateRequest request)

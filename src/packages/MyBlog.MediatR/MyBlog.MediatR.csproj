@@ -6,9 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+	<ItemGroup>
+		<PackageReference Include="MediatR" />
+	</ItemGroup>
+
+	<ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\Contracts\Contracts.csproj" />
   </ItemGroup>
 
 </Project>

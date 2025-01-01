@@ -9,12 +9,14 @@
   <ItemGroup>
 	  <PackageReference Include="AutoMapper" />
 	  <PackageReference Include="FluentValidation.AspNetCore" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Authorization\Authorization.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructures\Infrastructures.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Shared\Shared.csproj" />
+    <ProjectReference Include="..\..\..\packages\LonG.CSVLib\MyBlog.FluentValidation\MyBlog.FluentValidation.csproj" />
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Autofac\MyBlog.Shared.Autofac.csproj" />
     <ProjectReference Include="..\..\..\packages\MyBlog.Shared.Lib\MyBlog.Shared.Lib.csproj" />
     <ProjectReference Include="..\MyBlog.Identity.Repository\MyBlog.Identity.Repository.csproj" />
