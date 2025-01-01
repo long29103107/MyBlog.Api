@@ -82,7 +82,7 @@ public class SeedService : BaseIdentityService, ISeedService
 
         LogSeed(operations.Select(x => x.Code).Distinct().ToList()
             , scopes.Select(x => x.Code).Distinct().ToList()
-            , permissions.Select(x => x.GetPermission()).Distinct().ToList()
+            , permissions.Select(x => x.GetPermissionCode()).Distinct().ToList()
             , roles.Select(x => x.Code).Distinct().ToList());
     }
 

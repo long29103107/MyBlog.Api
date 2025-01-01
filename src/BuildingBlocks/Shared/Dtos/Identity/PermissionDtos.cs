@@ -61,9 +61,21 @@ public static class PermissionDtos
 
     public sealed class PermissionListByRoleResponse : AuditResponse
     {
-        public int Id { get; set; }
+        public int ScopeId { get; set; }
         public bool IsEnabled { get; set; } = false;
         public string ScopeName { get; set; }
+        public int OperationId { get; set; }
+        public string OperationName { get; set; }
+        public string PermissionName { get; set; }
+        public int RoleId { get; set; }
+    }
+
+    public sealed class PermissionGrpListByRoleResponse : AuditResponse
+    {
+        public int Id { get; set; }
+        public bool IsEnabled { get; set; } = false;
+        public string Name { get; set; }
+        public string PermissionName { get; set; }
 
         public List<OperationByRoleResponse> Operations = new();
     }

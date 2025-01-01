@@ -4,7 +4,7 @@ REM Initialize variables
 setlocal enabledelayedexpansion
 
 REM Define base path
-set "basePath=D:\2.Backend\MyBlog.Api"
+set "basePath=D:\1.BE\MyBlog.Api"
 
 REM Load service paths and build each service
 for /f "tokens=1,2,3 delims== " %%A in (servicePaths.txt) do (

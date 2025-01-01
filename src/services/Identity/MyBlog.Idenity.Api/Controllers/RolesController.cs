@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Service.Abstractions;
 using MyBlog.Shared.Lib;
+using static Shared.Dtos.Identity.Permission.PermissionDtos;
 using static Shared.Dtos.Identity.RoleDtos;
 
 namespace MyBlog.Identity.Api.Controllers;

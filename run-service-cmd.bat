@@ -4,7 +4,7 @@ REM Initialize variables
 setlocal enabledelayedexpansion
 
 REM Define base path
-set "basePath=D:\2.Backend\"
+set "basePath=D:\1.BE\"
 
 REM Load service paths and run each service
 for /f "tokens=1,2,3 delims== " %%A in (servicePaths.txt) do (

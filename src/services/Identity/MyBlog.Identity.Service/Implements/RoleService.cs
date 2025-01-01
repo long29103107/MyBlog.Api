@@ -15,6 +15,7 @@ using static Shared.Dtos.Identity.RoleDtos;
 using MyBlog.Shared.Lib.Extensions;
 using Exceptions = Contracts.Domain.Exceptions;
 using Contracts.Domain.Exceptions;
+using MyBlog.Identity.Service.DependencyInjection.Extensions;
 
 namespace MyBlog.Identity.Service.Implements;
 public class RoleService : BaseIdentityService, IRoleService
