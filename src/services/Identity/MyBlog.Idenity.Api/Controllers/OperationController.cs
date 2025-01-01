@@ -1,6 +1,8 @@
-﻿namespace MyBlog.Identity.Api.Controllers;
+﻿using Shared.APIs;
 
-public class OperationController : CustomIdentityControllerBase
+namespace MyBlog.Identity.Api.Controllers;
+
+public class OperationController : CustomControllerBase
 {
 
 }

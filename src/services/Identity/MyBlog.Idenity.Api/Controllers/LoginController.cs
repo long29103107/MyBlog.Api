@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Api.Controllers;
 using MyBlog.Identity.Service.Abstractions;
+using Shared.APIs;
 using Shared.Dtos.Identity.Authenticate;
 
 namespace MyBlog.Idenity.Api.Controllers;
 
-public class LoginController : CustomIdentityControllerBase
+public class LoginController : CustomControllerBase
 {
     private readonly IAuthenticateService _authenticateService;
 

@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Service.Abstractions;
 using MyBlog.Shared.Lib;
+using Shared.APIs;
 using static Shared.Dtos.Identity.Permission.PermissionDtos;
 using static Shared.Dtos.Identity.RoleDtos;
 
 namespace MyBlog.Identity.Api.Controllers;
 
-public class RolesController : CustomIdentityControllerBase
+public class RolesController : CustomControllerBase
 {
     private readonly IRoleService _service;
 

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Service.Abstractions;
+using Shared.APIs;
 using static Shared.Dtos.Identity.SeedDtos;
 
 namespace MyBlog.Identity.Api.Controllers;
 
-public class SeedController : CustomIdentityControllerBase
+public class SeedController : CustomControllerBase
 {
     private readonly ISeedService _seedService;
 

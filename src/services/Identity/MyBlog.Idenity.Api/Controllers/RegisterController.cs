@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Api.Controllers;
 using MyBlog.Identity.Service.Abstractions;
+using Shared.APIs;
 using Shared.Dtos.Identity.Register;
 
 namespace MyBlog.Idenity.Api.Controllers;
 
-public class RegisterController : CustomIdentityControllerBase
+public class RegisterController : CustomControllerBase
 {
     private readonly IRegisterService _registerService;
 

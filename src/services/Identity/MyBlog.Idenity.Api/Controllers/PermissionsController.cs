@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Service.Abstractions;
+using Shared.APIs;
 using static Shared.Dtos.Identity.Permission.PermissionDtos;
 
 namespace MyBlog.Identity.Api.Controllers;
 
-public class PermissionsController : CustomIdentityControllerBase
+public class PermissionsController : CustomControllerBase
 {
     private readonly IPermissionService _service;
 

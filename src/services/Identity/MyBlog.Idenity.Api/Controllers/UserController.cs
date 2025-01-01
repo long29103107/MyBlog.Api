@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Identity.Service.Abstractions;
 using MyBlog.Shared.Lib;
+using Shared.APIs;
 using static Shared.Dtos.Identity.UserDtos;
 
 namespace MyBlog.Identity.Api.Controllers;
 
-public class UserController : CustomIdentityControllerBase
+public class UserController : CustomControllerBase
 {
     private readonly IUserService _service;
 
