@@ -63,4 +63,11 @@ public class UserController : CustomControllerBase
     {
         return GetResponse(await _service.HasPermissionAsync(userId, request));
     }
+
+    [HttpPost("{userId}/assigned/{roleId}")]
+    public async Task<IActionResult> HasPermissionAsync([FromRoute] int userId, [FromRoute] int roleId)
+    {
+        await _service.AssignedRoleAsync(userId, roleId);
+        return GetResponse();
+    }
 }

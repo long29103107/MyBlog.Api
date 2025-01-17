@@ -11,7 +11,7 @@ public interface IUserService : IBaseService<IRepositoryManager>
     Task<IEnumerable<UserResponse>> GetListAsync(UserListRequest request);
     Task<UserResponse> UpdateAsync(int id, UserUpdateRequest request);
     Task<bool> DeleteAsync(int id);
-    Task AssignRoleAsync(int userId);
+    Task AssignedRoleAsync(int userId, int roleId);
     Task<bool> HasPermissionAsync(int userId, int permissionId);
     Task<bool> HasPermissionAsync(int userId, UserHasPermissionRequest request);
 }

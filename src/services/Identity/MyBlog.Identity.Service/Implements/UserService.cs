@@ -75,7 +75,7 @@ public class UserService : BaseService<IRepositoryManager>, IUserService
     #endregion
 
     #region Assign role to user
-    public async Task AssignRoleAsync(int userId)
+    public async Task AssignedRoleAsync(int userId, int roleId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString())
             ?? throw new UserException.NotFound(userId);
@@ -85,12 +85,11 @@ public class UserService : BaseService<IRepositoryManager>, IUserService
             throw new BadRequestException($"User is deactivated");
         }
 
-        var role = await _repoManager.Role.FindByCondition(x => 
-                x.Code.Equals(IdentitySchemaConstants.RoleCode.SuperAdmin))
+        var role = await _repoManager.Role.FindByCondition(x => x.Id == roleId)
             .FirstOrDefaultAsync()
-            ?? throw new RoleException.NameNotFound(IdentitySchemaConstants.Role.SuperAdmin);
+            ?? throw new RoleException.NotFound(roleId);
 
-        if(!role.IsActive)
+        if (!role.IsActive)
         {
             throw new BadRequestException("Role is deactivated");
         }

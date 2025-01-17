@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyBlog.Identity.Api.Controllers;
 using MyBlog.Identity.Service.Abstractions;
 using Shared.APIs;
 using Shared.Dtos.Identity.Register;

@@ -21,7 +21,6 @@ public class SeedController : CustomControllerBase
         return GetResponse();
     }
 
-
     [HttpPost("account")]
     public async Task<IActionResult> SeedAccountSuperAdmin()
     {

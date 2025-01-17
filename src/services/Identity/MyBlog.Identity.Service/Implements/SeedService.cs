@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Contracts.Domain.Constants;
 using FluentValidation;
 using Infrastructures.Common;
 using Microsoft.EntityFrameworkCore;
@@ -64,7 +65,12 @@ public class SeedService : BaseService<IRepositoryManager>, ISeedService
 
         var userRes = await _registerService.RegisterAsync(request);
 
-        await _userService.AssignRoleAsync(userRes.Id);
+        var roleId = await _repoManager.Role.FindByCondition(x =>
+                x.Code.Equals(IdentitySchemaConstants.RoleCode.SuperAdmin))
+            .Select(x => x.Id)
+            .FirstOrDefaultAsync();
+
+        await _userService.AssignedRoleAsync(userRes.Id, roleId);
     }
     
 
