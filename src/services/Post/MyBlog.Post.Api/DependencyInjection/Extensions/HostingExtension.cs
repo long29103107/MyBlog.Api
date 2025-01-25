@@ -40,6 +40,7 @@ public static class HostingExtension
         }
 
         app.UseRouting();
+        //app.UseCors();
         app.UseHttpsRedirection();
 
         app.UseAuthentication();

@@ -3,13 +3,11 @@ using MyBlog.Post.Service.Implements;
 using MyBlog.Post.Service.Abstractions;
 using MyBlog.Shared.ExceptionHandler;
 using FilteringAndSortingExpression.Swagger.Extensions;
-using System.Reflection;
-using System.Xml.Linq;
-using Authorization.Attributes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Contracts.Dtos;
+using Microsoft.Extensions.Options;
 
 namespace MyBlog.Post.Api.DependencyInjection.Extensions;
 
@@ -53,6 +51,14 @@ public static class ServiceCollectionExtensions
          });
 
         services.AddAuthorization();
+        //services.AddCors(options =>
+        //{
+        //    options.AddDefaultPolicy(
+        //                      builder =>
+        //                      {
+        //                          builder.WithOrigins("http://localhost:5000");
+        //                      });
+        //});
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
